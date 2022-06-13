@@ -46,8 +46,8 @@ sub parse_input {
 
 sub solve_part_one {
 	my $polymer = shift;
-	my $reacted = react($polymer);
-	
+	my $reacted = react3($polymer);
+	#say $reacted;
 	say "Part One:";
 	say "The length of the polymer after reactions is " . (length($reacted));
 }
@@ -60,7 +60,7 @@ sub solve_part_two {
 	for my $letter ('a' .. 'z') {
 		my $test = $polymer;
 		$test =~ s/$letter//gi;
-		my $result = react($test);
+		my $result = react3($test);
 		#say "$letter: $result";
 		my $result_length = length($result);
 		if ($result_length < $shortest) {
@@ -73,7 +73,13 @@ sub solve_part_two {
 	say "The best letter to remove is $best_letter, resulting in a polymer with length $shortest";
 }
 
-sub react {
+/*
+	I am leaving in react1 and react2, both successful algorithms, but slow.
+*/
+
+# Builds a copy of the polymer in a new array on each loop.
+# Slow in three areas: (1) the conditional, (2) pushing onto @newunits, (3) @units = @newunits
+sub react1 {
 	my $polymer = shift;
 	my @units = split('', $polymer);
 	my $changed = 1;
@@ -94,4 +100,63 @@ sub react {
 		@units = @newunits;
 	}
 	return join('', @units);
+}
+
+# Tried using a mask (for units no longer in the polymer) to avoid mem copying
+# Conditional is still there (slow). So much math in Perl is slow, apparently.
+# Was faster to run than react1, but profiling was super slow.
+sub react2 {
+	my $polymer = shift;
+	my @units = split('', $polymer);
+	my @mask = (1) x scalar(@units);
+	my $changed = 1;
+	
+	while ($changed) {
+		$changed = 0;
+		for (my $i = 0; $i <= $#units; $i++) {
+			next if ($mask[$i] == 0);
+			my $offset = 1;
+			while (($i+$offset <= $#units) && ($mask[$i+$offset] == 0)) {
+				$offset++;
+			}
+			my $j = $i+$offset;
+			next if ($j > $#units);
+			
+			if (($i < $#units) && ($units[$i] ne $units[$j]) && (lc($units[$i]) eq lc($units[$j]))) {
+				# Collapse. Jump over second character.
+				#say "letter at $i is $units[$i]. letter at $j is $units[$j]";
+				$mask[$i] = 0;
+				$mask[$i+$offset] = 0;
+				$i += $offset + 1;
+				$changed = 1;
+			}
+		}
+		#say join('', @units);
+		#say join('', @mask);
+	}
+	
+	my @reacted = ();
+	for (my $i = 0; $i <= $#units; $i++) {
+		if ($mask[$i]) {
+			push(@reacted, $units[$i]);
+		}
+	}
+	return join('', @reacted);
+}
+
+# Probably should have started here. Using regex to remove the pairs.
+sub react3 {
+	my $polymer = shift;
+	my $len = 100000;
+	
+	while ($len != length($polymer)) {
+		$len = length($polymer);
+		for my $l ('a' .. 'z') {
+			my $u = uc($l);
+			$polymer =~ s/$l$u//g;
+			$polymer =~ s/$u$l//g;
+		}
+		#say $polymer;
+	}
+	return $polymer;
 }
