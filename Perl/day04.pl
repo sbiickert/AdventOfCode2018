@@ -27,14 +27,14 @@ __PACKAGE__->meta->make_immutable;
 package main;
 
 my $INPUT_PATH = '../input';
-my $INPUT_FILE = '04.test.txt';
-#my $INPUT_FILE = '04.challenge.txt';
+#my $INPUT_FILE = '04.test.txt';
+my $INPUT_FILE = '04.challenge.txt';
 my %input = parse_input("$INPUT_PATH/$INPUT_FILE");
 
 say "Advent of Code 2018, Day 04: Repose Record";
 
 solve_part_one(%input);
-#solve_part_two(%input);
+solve_part_two(%input);
 
 
 exit( 0 );
@@ -148,6 +148,53 @@ sub solve_part_one {
 
 sub solve_part_two {
 	my %input = @_;
+	my %guard_records = ();
+	
+	for my $ymd (keys(%input)) {
+		my $record = $input{$ymd};
+		if (!exists($guard_records{$record->guard})) {
+			$guard_records{$record->guard} = [];
+		}
+		push( @{$guard_records{$record->guard}}, $record );
+	}
+	
+	my $sleepiest_guard = -1;
+	my $max_count = 0;
+	my $sleepiest_minute = -1;
+	
+	for my $guard (keys(%guard_records)) {
+		my @histogram = (0) x 60;
+		for my $record (@{$guard_records{$guard}}) {
+			my @we = @{$record->wake_events};
+			my @se = @{$record->sleep_events};
+			for (my $i = 0; $i <= $#we; $i++) {
+				for (my $minute = $se[$i]; $minute < $we[$i]; $minute++) {
+					$histogram[$minute]++;
+				}
+			}
+		}
+	
+		# Find index with highest count
+		my $m = -1;
+		my $max_count_this_guard = 0;
+		for (my $i = 0; $i < 60; $i++) {
+			if ($histogram[$i] > $max_count_this_guard) {
+				$max_count_this_guard = $histogram[$i];
+				$m = $i;
+			}
+		}
+		
+		if ($max_count_this_guard > $max_count) {
+			$max_count = $max_count_this_guard;
+			$sleepiest_minute = $m;
+			$sleepiest_guard = $guard;
+		}
+	}
+
+	say "Part Two:";
+	say "The sleepiest guard is $sleepiest_guard.";
+	say "The sleepiest time is minute $sleepiest_minute with $max_count times.";
+	say "The guard ID x the minute is " . ($sleepiest_guard * $sleepiest_minute);
 }
 
 sub increment_date {
@@ -161,8 +208,4 @@ sub increment_date {
 		$d = '01';
 	}
 	return ($m, $d);
-}
-
-sub find_sleepiest_minute {
-	my () = @_;
 }
