@@ -15,14 +15,14 @@ use Data::Dumper;
 #use AOC::Geometry qw(Point2D Line2D);
 
 my $INPUT_PATH = '../input';
-my $INPUT_FILE = '05.test.txt';
-#my $INPUT_FILE = '05.challenge.txt';
+#my $INPUT_FILE = '05.test.txt';
+my $INPUT_FILE = '05.challenge.txt';
 my $input = parse_input("$INPUT_PATH/$INPUT_FILE");
 
 say "Advent of Code 2018, Day 05: Alchemical Reduction";
 
 solve_part_one($input);
-#solve_part_two($input);
+solve_part_two($input);
 
 
 exit( 0 );
@@ -46,7 +46,35 @@ sub parse_input {
 
 sub solve_part_one {
 	my $polymer = shift;
-	#say $polymer;
+	my $reacted = react($polymer);
+	
+	say "Part One:";
+	say "The length of the polymer after reactions is " . (length($reacted));
+}
+
+sub solve_part_two {
+	my $polymer = shift;
+	my $best_letter = '';
+	my $shortest = 50000;
+	
+	for my $letter ('a' .. 'z') {
+		my $test = $polymer;
+		$test =~ s/$letter//gi;
+		my $result = react($test);
+		#say "$letter: $result";
+		my $result_length = length($result);
+		if ($result_length < $shortest) {
+			$shortest = $result_length;
+			$best_letter = $letter;
+		}
+	}
+	
+	say "Part Two:";
+	say "The best letter to remove is $best_letter, resulting in a polymer with length $shortest";
+}
+
+sub react {
+	my $polymer = shift;
 	my @units = split('', $polymer);
 	my $changed = 1;
 	
@@ -64,14 +92,6 @@ sub solve_part_one {
 			}
 		}
 		@units = @newunits;
-		#say join('', @units);
-		#say scalar @units;
 	}
-	
-	say "Part One:";
-	say "The length of the polymer after reactions is " . (scalar @units);
-}
-
-sub solve_part_two {
-	my @input = @_;
+	return join('', @units);
 }
