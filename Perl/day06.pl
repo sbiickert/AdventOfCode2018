@@ -12,7 +12,7 @@ use Modern::Perl;
 use autodie;
 use Data::Dumper;
 #use Storable 'dclone';
-use AOC::Geometry qw(Point2D Line2D);
+use AOC::Geometry qw(Point2D Line2D Bounds2D);
 use List::Util qw(max);
 
 my $INPUT_PATH = '../input';
@@ -20,8 +20,8 @@ my $INPUT_PATH = '../input';
 my $INPUT_FILE = '06.challenge.txt';
 my @input = parse_input("$INPUT_PATH/$INPUT_FILE");
 
-#my $LIMIT = 32;
-my $LIMIT = 10000;
+#my $LIMIT = 32; 	# for test
+my $LIMIT = 10000;	# for challenge
 
 say "Advent of Code 2018, Day 06: Chronal Coordinates";
 
@@ -56,7 +56,6 @@ sub solve_part_one {
 	for (my $i = 1; $i <= $#points; $i++) {
 		$bounds->grow_to_fit($points[$i]);
 	}
-	#$bounds->expand(1);
 
 	my @grid = ();
 	for (my $r = $bounds->ymin; $r <= $bounds->ymax; $r++) {
@@ -75,8 +74,11 @@ sub solve_part_one {
 			my $shortest_md = 100000;
 			my $pt = Point2D->new('px' => $c, 'py' => $r);
 			for (my $i = 0; $i <= $#points; $i++) {
-				my $line = Line2D->new('from' => $pt, 'to' => $points[$i]);
-				my $md = $line->manhattan_distance();
+				# Removed Moose from tightest loop for 4x speed boost
+				#my $line = Line2D->new('from' => $pt, 'to' => $points[$i]);
+				#my $md = $line->manhattan_distance();
+				#
+				my $md = manhattan_distance($pt, $points[$i]);
 				if ($md < $shortest_md) {
 					$shortest_md = $md;
 					@closest = ($i);
@@ -113,8 +115,6 @@ sub solve_part_one {
 			}
 		}
 	}
-
-	#print Dumper(\%counts);
 	
 	say "Part One:";
 	say "The largest non-infinite area is " . max(values(%counts));
@@ -136,8 +136,11 @@ sub solve_part_two {
 			my $total = 0;
 			my $pt = Point2D->new('px' => $c, 'py' => $r);
 			for (my $i = 0; $i <= $#points; $i++) {
-				my $line = Line2D->new('from' => $pt, 'to' => $points[$i]);
-				$total += $line->manhattan_distance();
+				# Removed Moose from tightest loop for 4x speed boost
+				#my $line = Line2D->new('from' => $pt, 'to' => $points[$i]);
+				#$total += $line->manhattan_distance();
+				#
+				$total += manhattan_distance($pt, $points[$i]);
 			}
 			$count++ if ($total < $LIMIT);			
 		}
@@ -156,4 +159,11 @@ sub print_grid {
 		}
 		print "\n";
 	}
+}
+
+sub manhattan_distance {
+	my ($p1, $p2) = @_;
+	my $dx = $p1->px - $p2->px;
+	my $dy = $p1->py - $p2->py;
+	return abs($dx) + abs($dy);
 }
