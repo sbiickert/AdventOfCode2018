@@ -20,6 +20,9 @@ my $INPUT_PATH = '../input';
 my $INPUT_FILE = '06.challenge.txt';
 my @input = parse_input("$INPUT_PATH/$INPUT_FILE");
 
+#my $LIMIT = 32;
+my $LIMIT = 10000;
+
 say "Advent of Code 2018, Day 06: Chronal Coordinates";
 
 solve_part_one(@input);
@@ -111,14 +114,37 @@ sub solve_part_one {
 		}
 	}
 
-	print Dumper(\%counts);
+	#print Dumper(\%counts);
 	
 	say "Part One:";
 	say "The largest non-infinite area is " . max(values(%counts));
 }
 
 sub solve_part_two {
-	my @input = @_;
+	my @points = @_;
+	my $bounds = Bounds2D->new('xmin' => $points[0]->px, 'ymin' => $points[0]->py, 
+								'xmax' => $points[0]->px, 'ymax' => $points[0]->py);
+	for (my $i = 1; $i <= $#points; $i++) {
+		$bounds->grow_to_fit($points[$i]);
+	}
+	
+	my $count = 0;
+	
+	# Calculate the sum distance for all grid cells
+	for (my $r = $bounds->ymin; $r <= $bounds->ymax; $r++) {
+		for (my $c = $bounds->xmin; $c <= $bounds->xmax; $c++) {
+			my $total = 0;
+			my $pt = Point2D->new('px' => $c, 'py' => $r);
+			for (my $i = 0; $i <= $#points; $i++) {
+				my $line = Line2D->new('from' => $pt, 'to' => $points[$i]);
+				$total += $line->manhattan_distance();
+			}
+			$count++ if ($total < $LIMIT);			
+		}
+	}
+	
+	say "Part Two:";
+	say "The number of cells with sum distance less than $LIMIT is " . $count;
 }
 
 sub print_grid {
