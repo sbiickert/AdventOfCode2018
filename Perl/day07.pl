@@ -24,7 +24,7 @@ say "Advent of Code 2018, Day 07: The Sum of Its Parts";
 my %prereqs = init(@input);
 
 solve_part_one(%prereqs);
-#solve_part_two(@input);
+solve_part_two(%prereqs);
 
 
 exit( 0 );
@@ -52,7 +52,7 @@ sub solve_part_one {
 	
 	while (scalar(keys(%prereqs)) > 0) {
 		my @ready_keys = find_keys_with_empty_list(\%prereqs);
-	
+		#say "Ready keys: " . join(',', @ready_keys);
 		my $key = $ready_keys[0];
 		push(@order, $key);
 		delete $prereqs{$key};
@@ -68,7 +68,67 @@ sub solve_part_one {
 }
 
 sub solve_part_two {
-	my @input = @_;
+	my %prereqs = @_;
+	
+	my $base_time = 60;
+	my $worker_count = 5;
+	if ($INPUT_FILE =~ m/test/) {
+		$base_time = 0;
+		$worker_count = 2;
+	}
+	
+	my %times = ();
+	my $i = 1;
+	for my $letter ('A' .. 'Z') {
+		$times{$letter} = $base_time + $i;
+		$i++;
+	}
+	
+	my $tick = 0;
+	my %workers = ('' => 1); # Dummy data to get in the loop.
+	my @done_order = ();
+	
+	while (scalar(keys(%workers)) > 0) {
+		# Workers make progress
+		for my $letter (keys(%workers)) {
+			$workers{$letter}--;
+		}
+		
+		# Look for finished jobs
+		for my $letter (keys(%workers)) {
+			if ($workers{$letter} == 0) {
+				delete $workers{$letter};
+				delete $prereqs{$letter};
+				push(@done_order, $letter);
+				for my $other (keys(%prereqs)) {
+					my @filtered = grep { $_ ne $letter } @{$prereqs{$other}};
+					$prereqs{$other} = \@filtered;
+				}
+			}
+		}
+		
+		# Refill workers
+		my @ready_keys = find_keys_with_empty_list(\%prereqs);
+		for my $letter (@ready_keys) {
+			if (scalar(keys(%workers)) < $worker_count && !exists($workers{$letter})) {
+				$workers{$letter} = $times{$letter};
+			}
+		}
+		
+		#print "$tick: \t";
+		#for my $letter (sort keys(%workers)) {
+		#	print "$letter $workers{$letter}  \t";
+		#}
+		#say join('', @done_order);
+		
+		$tick++;
+	}
+	
+	$tick--; # Last $tick++ was spurious.
+	
+	say "Part Two:";
+	say "The order that the instructions completed is " . join('', @done_order);
+	say "The total time taken is $tick seconds.";
 }
 
 sub init {
