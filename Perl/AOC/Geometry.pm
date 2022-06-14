@@ -46,7 +46,34 @@ package Line2D;
 
 	no Moose;
 __PACKAGE__->meta->make_immutable;
+
+package Bounds2D;
+	use Moose;
 	
+	has 'xmin' => 	(is => 'rw', isa => 'Int', default => 0);
+	has 'xmax' => 	(is => 'rw', isa => 'Int', default => 0);
+	has 'ymin' => 	(is => 'rw', isa => 'Int', default => 0);
+	has 'ymax' => 	(is => 'rw', isa => 'Int', default => 0);
+	
+	sub expand {
+		my ($self, $amt) = @_;
+		$self->xmin($self->xmin - $amt);
+		$self->xmax($self->xmax + $amt);
+		$self->ymin($self->ymin - $amt);
+		$self->ymax($self->ymax + $amt);
+	}
+	
+	sub grow_to_fit {
+		my ($self, $pt) = @_;
+		$self->xmin($pt->px) if $pt->px < $self->xmin;
+		$self->xmax($pt->px) if $pt->px > $self->xmax;
+		$self->ymin($pt->py) if $pt->py < $self->ymin;
+		$self->ymax($pt->py) if $pt->py > $self->ymax;
+	}
+	
+	no Moose;
+__PACKAGE__->meta->make_immutable;	
+
 package Point3D;
 	use Moose;
 	
