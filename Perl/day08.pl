@@ -23,7 +23,7 @@ my @input = parse_input("$INPUT_PATH/$INPUT_FILE");
 say "Advent of Code 2018, Day 08: Memory Maneuver";
 
 solve_part_one(@input);
-#solve_part_two(@input);
+solve_part_two(@input);
 
 
 exit( 0 );
@@ -51,7 +51,6 @@ sub parse_input {
 sub solve_part_one {
 	my @input = @_;
 	my %root_node = parse_node(\@input);
-	#print Dumper(\%root_node);
 	my $sum = sum_metadata(\%root_node);
 	
 	say "Part One:";
@@ -60,6 +59,11 @@ sub solve_part_one {
 
 sub solve_part_two {
 	my @input = @_;
+	my %root_node = parse_node(\@input);
+	my $value = calc_value(\%root_node);
+	
+	say "Part Two:";
+	say "The value of the root node is $value";
 }
 
 sub parse_node {
@@ -84,10 +88,32 @@ sub sum_metadata {
 	my $n_ref = shift;
 	my %n = %{$n_ref};
 	my @m = @{ $n{'metadata'} };
-	my $sum = sum(@m);
 	my @c = @{ $n{'children'} };
+	
+	my $sum = sum(@m);
 	for my $child (@c) {
 		$sum += sum_metadata($child);
 	}
 	return $sum;
+}
+
+sub calc_value {
+	my $n_ref = shift;
+	my %n = %{$n_ref};
+	my @m = @{ $n{'metadata'} };
+	my @c = @{ $n{'children'} };
+
+	my $value = 0;
+	if (scalar @c == 0) {
+		$value = sum(@m);
+	}
+	else {
+		for my $i (@m) {
+			$i--; # to make zero-based index
+			if ($i >= 0 && $i <= $#c) {
+				$value += calc_value($c[$i]);
+			}
+		}
+	}
+	return $value;
 }
