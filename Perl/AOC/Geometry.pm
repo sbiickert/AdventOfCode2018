@@ -49,6 +49,7 @@ __PACKAGE__->meta->make_immutable;
 
 package Bounds2D;
 	use Moose;
+	use List::Util qw(min max);
 	
 	has 'xmin' => 	(is => 'rw', isa => 'Int', default => 0);
 	has 'xmax' => 	(is => 'rw', isa => 'Int', default => 0);
@@ -77,6 +78,20 @@ package Bounds2D;
 		$self->xmax($pt->px);
 		$self->ymin($pt->py);
 		$self->ymax($pt->py);
+	}
+	
+	sub fit_to_points {
+		my $self = shift;
+		my @points = @_;
+		my @x = (); my @y = ();
+		for my $pt (@points) {
+			push(@x, $pt->px);
+			push(@y, $pt->py);
+		}
+		$self->xmin(min(@x));
+		$self->xmax(max(@x));
+		$self->ymin(min(@y));
+		$self->ymax(max(@y));
 	}
 	
 	sub size {
