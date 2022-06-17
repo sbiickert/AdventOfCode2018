@@ -71,6 +71,19 @@ package Bounds2D;
 		$self->ymax($pt->py) if $pt->py > $self->ymax;
 	}
 	
+	sub shrink_to_fit {
+		my ($self, $pt) = @_;
+		$self->xmin($pt->px);
+		$self->xmax($pt->px);
+		$self->ymin($pt->py);
+		$self->ymax($pt->py);
+	}
+	
+	sub size {
+		my $self = shift;
+		return Point2D->new('px' => ($self->xmax - $self->xmin), 'py' => ($self->ymax - $self->ymin));
+	}
+	
 	no Moose;
 __PACKAGE__->meta->make_immutable;	
 
