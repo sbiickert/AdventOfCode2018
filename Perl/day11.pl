@@ -88,12 +88,23 @@ sub find_max_power {
 	my $max_power = -1000;
 	my $max_coords = '';
 	for (my $y = 1; $y <= $SIZE-$sqr_size; $y++) {
+		my $power = 0;
 		for (my $x = 1; $x <= $SIZE-$sqr_size; $x++) {
-			my $power = 0;
-			for (my $a = 0; $a < $sqr_size; $a++) {
-				for (my $b = 0; $b < $sqr_size; $b++) {
+			if ($x == 1) {
+				for (my $a = 0; $a < $sqr_size; $a++) {
+					for (my $b = 0; $b < $sqr_size; $b++) {
+						$power += $grid->get($y+$a, $x+$b);
+					}
+				}
+			}
+			else {
+				my $b = -1;
+				for (my $a = 0; $a < $sqr_size; $a++) {
+					$power -= $grid->get($y+$a, $x+$b);
+				}
+				$b = $sqr_size-1;
+				for (my $a = 0; $a < $sqr_size; $a++) {
 					$power += $grid->get($y+$a, $x+$b);
-					$i++;
 				}
 			}
 			if ($power > $max_power) {
