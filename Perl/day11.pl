@@ -12,7 +12,7 @@ use Modern::Perl;
 use autodie;
 use Data::Dumper;
 #use Storable 'dclone';
-use AOC::Grid qw(Grid2D);
+#use AOC::Grid qw(Grid2D);
 
 my $INPUT = 2187;
 my $SIZE = 300;
@@ -25,15 +25,15 @@ say "Advent of Code 2018, Day 11: Chronal Charge";
 # say calc_power_level(39,217,196);
 # say calc_power_level(71,101,153);
 
-my $grid = Grid2D->new('width' => $SIZE, 'height' => $SIZE, 'default' => 0);
+my @grid = ();
 for (my $y = 1; $y <= $SIZE; $y++) {
 	for (my $x = 1; $x <= $SIZE; $x++) {
-		$grid->set(calc_power_level($INPUT,$x,$y), $y, $x);
+		$grid[$y][$x] = calc_power_level($INPUT,$x,$y);
 	}
 }
 
-solve_part_one($grid);
-solve_part_two($grid);
+solve_part_one(\@grid);
+solve_part_two(\@grid);
 
 
 exit( 0 );
@@ -63,6 +63,7 @@ sub solve_part_one {
 
 }
 
+
 sub solve_part_two {
 	my $grid = shift;
 	my $max_power = -1000;
@@ -83,7 +84,8 @@ sub solve_part_two {
 }
 
 sub find_max_power {
-	my ($grid, $sqr_size) = @_;
+	my ($grid_ref, $sqr_size) = @_;
+	my @grid = @{$grid_ref};
 	
 	my $max_power = -1000;
 	my $max_coords = '';
@@ -93,18 +95,18 @@ sub find_max_power {
 			if ($x == 1) {
 				for (my $a = 0; $a < $sqr_size; $a++) {
 					for (my $b = 0; $b < $sqr_size; $b++) {
-						$power += $grid->get($y+$a, $x+$b);
+						$power += $grid[$y+$a][$x+$b];
 					}
 				}
 			}
 			else {
 				my $b = -1;
 				for (my $a = 0; $a < $sqr_size; $a++) {
-					$power -= $grid->get($y+$a, $x+$b);
+					$power -= $grid[$y+$a][$x+$b];
 				}
 				$b = $sqr_size-1;
 				for (my $a = 0; $a < $sqr_size; $a++) {
-					$power += $grid->get($y+$a, $x+$b);
+					$power += $grid[$y+$a][$x+$b];
 				}
 			}
 			if ($power > $max_power) {
