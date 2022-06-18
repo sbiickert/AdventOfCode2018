@@ -25,8 +25,15 @@ say "Advent of Code 2018, Day 11: Chronal Charge";
 # say calc_power_level(39,217,196);
 # say calc_power_level(71,101,153);
 
-solve_part_one();
-#solve_part_two(@input);
+my $grid = Grid2D->new('width' => $SIZE, 'height' => $SIZE, 'default' => 0);
+for (my $y = 1; $y <= $SIZE; $y++) {
+	for (my $x = 1; $x <= $SIZE; $x++) {
+		$grid->set(calc_power_level($INPUT,$x,$y), $y, $x);
+	}
+}
+
+solve_part_one($grid);
+solve_part_two($grid);
 
 
 exit( 0 );
@@ -49,34 +56,54 @@ sub parse_input {
 }
 
 sub solve_part_one {
-	my $grid = Grid2D->new('width' => $SIZE, 'height' => $SIZE, 'default' => 0);
-	for (my $y = 1; $y <= $SIZE; $y++) {
-		for (my $x = 1; $x <= $SIZE; $x++) {
-			$grid->set(calc_power_level($INPUT,$x,$y), $y, $x);
+	my $grid = shift;
+	my ($power, $coords) = find_max_power($grid, 3);
+	say "Part One:";
+	say "Max power $power at $coords with square size 3.";
+
+}
+
+sub solve_part_two {
+	my $grid = shift;
+	my $max_power = -1000;
+	my $max_coords = '';
+	my $max_s = 0;
+	
+	say "Part Two:";
+	for (my $s = 3; $s <= $SIZE; $s++) {
+		my ($power, $coords) = find_max_power($grid, $s);
+		if ($power > $max_power) {
+			$max_power = $power;
+			$max_coords = $coords;
+			$max_s = $s;
 		}
+		say "$s: $max_power at $max_coords with square size $max_s";
 	}
+	say "Max power $max_power at $max_coords with square size $max_s.";
+}
+
+sub find_max_power {
+	my ($grid, $sqr_size) = @_;
 	
 	my $max_power = -1000;
 	my $max_coords = '';
-	for (my $y = 1; $y <= $SIZE-3; $y++) {
-		for (my $x = 1; $x <= $SIZE-3; $x++) {
+	for (my $y = 1; $y <= $SIZE-$sqr_size; $y++) {
+		for (my $x = 1; $x <= $SIZE-$sqr_size; $x++) {
 			my $power = 0;
-			for (my $a = 0; $a < 3; $a++) {
-				for (my $b = 0; $b < 3; $b++) {
+			for (my $a = 0; $a < $sqr_size; $a++) {
+				for (my $b = 0; $b < $sqr_size; $b++) {
 					$power += $grid->get($y+$a, $x+$b);
+					$i++;
 				}
 			}
 			if ($power > $max_power) {
 				$max_power = $power;
 				$max_coords = "$x,$y";
-				say "New highest: power $power at $max_coords";
 			}
 		}
 	}	
-}
-
-sub solve_part_two {
-	my @input = @_;
+	
+	return ($max_power, $max_coords);
 }
 
 sub calc_power_level {
