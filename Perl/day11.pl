@@ -38,23 +38,6 @@ solve_part_two(\@grid);
 
 exit( 0 );
 
-sub parse_input {
-	my $input_file = shift;
-	
-	open my $input, '<', $input_file or die "Failed to open input: $!";
-	
-	my @content;
-	
-	while (my $line = <$input>) {
-		chomp $line;
-		push(@content, $line);
-	}
-	
-	close $input;
-	
-	return @content;
-}
-
 sub solve_part_one {
 	my $grid = shift;
 	my ($power, $coords) = find_max_power($grid, 3);
@@ -66,20 +49,44 @@ sub solve_part_one {
 
 sub solve_part_two {
 	my $grid = shift;
+	my %grids = (1 => $grid);
+	
 	my $max_power = -1000;
 	my $max_coords = '';
 	my $max_s = 0;
 	
 	say "Part Two:";
-	for (my $s = 3; $s <= $SIZE; $s++) {
-		my ($power, $coords) = find_max_power($grid, $s);
+	for (my $s = 2; $s <= $SIZE; $s++) {
+		my $largest_factor = 0;
+		for (my $f = $s-1; $f > 0; $f--) {
+			if ($s % $f == 0) {
+				$largest_factor = $f;
+				last;
+			}
+		}
+		
+		my ($power, $coords, $g);
+		#say "Largest factor of $s is $largest_factor";
+		if ($largest_factor == 1) {
+			# Square size is a prime number
+			($power, $coords, $g) = find_max_power($grids{1}, $s);
+		}
+		else {
+			# Square size has a factor that we've already summed.
+			# Grab the sums from the previous work.
+			($power, $coords, $g) = find_factored_max_power($grids{$largest_factor}, $s, $largest_factor);
+		}
+		
+		$grids{$s} = $g;
+		
 		if ($power > $max_power) {
 			$max_power = $power;
 			$max_coords = $coords;
 			$max_s = $s;
 		}
-		say "$s: $max_power at $max_coords with square size $max_s";
+		#say "$s: $max_power at $max_coords with square size $max_s";
 	}
+	
 	say "Max power $max_power at $max_coords with square size $max_s.";
 }
 
@@ -89,6 +96,8 @@ sub find_max_power {
 	
 	my $max_power = -1000;
 	my $max_coords = '';
+	my @out_grid = ();
+	
 	for (my $y = 1; $y <= $SIZE-$sqr_size; $y++) {
 		my $power = 0;
 		for (my $x = 1; $x <= $SIZE-$sqr_size; $x++) {
@@ -109,6 +118,7 @@ sub find_max_power {
 					$power += $grid[$y+$a][$x+$b];
 				}
 			}
+			$out_grid[$y][$x] = $power;
 			if ($power > $max_power) {
 				$max_power = $power;
 				$max_coords = "$x,$y";
@@ -116,7 +126,35 @@ sub find_max_power {
 		}
 	}	
 	
-	return ($max_power, $max_coords);
+	return ($max_power, $max_coords, \@out_grid);
+}
+
+sub find_factored_max_power {
+	my ($grid_ref, $sqr_size, $factor) = @_;
+	my @grid = @{$grid_ref};
+	
+	my $max_power = -1000;
+	my $max_coords = '';
+	my @out_grid = ();
+
+	for (my $y = 1; $y <= $SIZE-$sqr_size; $y++) {
+		for (my $x = 1; $x <= $SIZE-$sqr_size; $x++) {
+			my $power = 0;
+			
+			for (my $fy = 0; $fy < $sqr_size; $fy += $factor) {
+				for (my $fx = 0; $fx < $sqr_size; $fx += $factor) {
+					$power += $grid[$y+$fy][$x+$fx];
+				}
+			}
+			$out_grid[$y][$x] = $power;
+			if ($power > $max_power) {
+				$max_power = $power;
+				$max_coords = "$x,$y";
+			}
+		}
+	}
+		
+	return ($max_power, $max_coords, \@out_grid);
 }
 
 sub calc_power_level {
