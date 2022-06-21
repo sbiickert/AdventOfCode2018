@@ -22,11 +22,9 @@ my @input = parse_input("$INPUT_PATH/$INPUT_FILE");
 
 say "Advent of Code 2018, Day 12: Subterranean Sustainability";
 
-my $ALIVE = '#';
-my $DEAD = '.';
 
 solve_part_one(@input);
-#solve_part_two(@input);
+solve_part_two(@input);
 
 
 exit( 0 );
@@ -66,36 +64,64 @@ sub solve_part_one {
 	my ($state, @rules) = @_;
 	
 	say "Part One:";
+	my $score = process($state, \@rules, 20);
+	
+	say "Total score is $score";
+}
+
+sub solve_part_two {
+	my ($state, @rules) = @_;
+	
+	say "Part Two:";
+	my $first_thousand_score = process($state, \@rules, 1000);
+	my $second_thousand_score = process($state, \@rules, 2000);
+	my $score_per_thousand = $second_thousand_score - $first_thousand_score;
+
+	my $score = 50000000 * $score_per_thousand; 
+	$score = $score - $score_per_thousand + $first_thousand_score;
+	say "Total score for fifty billion iterations is $score";
+	
+	my @iterations = (1000, 2000, 3000);
+	for my $i (@iterations) {
+		my $score = process($state, \@rules, $i);
+	}
+}
+
+sub process {
+	my ($state, $rules_ref, $iterations) = @_;
+	my @rules = @{$rules_ref};
 	
 	# Pad with '.'
-	$state = ($DEAD x 5) . $state . ($DEAD x 50);
-	say "0: $state";
+	my $left_offset = -5;
+	$state = ('.' x abs($left_offset)) . $state . ('.' x 100);
+	#say "0: $state";
 	
-	for (my $iter = 1; $iter <= 200; $iter++) {
-		my $new_state = $DEAD x length($state); # assume dead
+	for (my $iter = 1; $iter <= $iterations; $iter++) {
+		my $new_state = '.' x length($state); # assume dead
 		
 		for my $rule (@rules) {
 			my $i = 0;
 			$i = index($state, $rule, $i);
 			while ($i > 0) {
 				# Matched rule at $i. The pot we are considering is in the middle at $i+2
-				substr($new_state, $i+2, 1, $ALIVE);
+				substr($new_state, $i+2, 1, '#');
 				$i = index($state, $rule, ++$i);
 			}
 		}
 		
 		$state = $new_state;
-		say "$iter: $state";
+		if ($state =~ m/^\.{20}/) {
+			$state =~ s/^\.{5}//;
+			$state .= '.' x 5;
+			$left_offset += 5;
+		}
+		#say "$iter: $state";
 	}
 	
 	my $score = 0;
 	my @chars = split('', $state);
 	for (my $i = 0; $i <= $#chars; $i++) {
-		$score += ($i - 5) if ($chars[$i] eq '#');
+		$score += ($i + $left_offset) if ($chars[$i] eq '#');
 	}
-	say "Total score is $score";
-}
-
-sub solve_part_two {
-	my @input = @_;
+	return $score;
 }
