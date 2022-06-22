@@ -91,8 +91,8 @@ say "Advent of Code 2018, Day 13: Mine Cart Madness";
 
 #print_map(\@carts);
 
-solve_part_one(@carts);
-#solve_part_two(@input);
+#solve_part_one(@carts);
+solve_part_two(@carts);
 
 
 exit( 0 );
@@ -137,24 +137,37 @@ sub solve_part_one {
 	my @carts = @_;
 	my $collision_pos;
 	
+	# Arrange carts by rows and cols
+	my @cart_locations;
+	for my $cart (@carts) { $cart_locations[$cart->pos->py][$cart->pos->px] = $cart; }
+	
 	while (!$collision_pos) {
-		# Sort carts by rows and cols
-		my @cart_locations;
-		for my $cart (@carts) { $cart_locations[$cart->pos->py][$cart->pos->px] = $cart; }
-		
-		# Move carts
+		# Get work to do
+		my @loc_list = ();
 		for (my $r = 0; $r <= $#MAP; $r++) {
 			my @row = @{$MAP[$r]};
 			for (my $c = 0; $c <= $#row; $c++) {
-				if ($cart_locations[$r][$c]) {
-					# Move cart
-					my $cart = $cart_locations[$r][$c];
-					$cart->move($MAP[$r][$c]);
-	
-					$collision_pos = find_collision(\@carts);
-					if ($collision_pos) { last; }
+				if (defined($cart_locations[$r][$c])) {
+					push(@loc_list, $cart_locations[$r][$c]->pos);
 				}
 			}
+		}
+		
+		# Move carts
+		for my $pos (@loc_list) {
+			# Move cart at $pos
+			my $r = $pos->py;
+			my $c = $pos->px;
+			my $cart = $cart_locations[$r][$c];
+			$cart->move($MAP[$r][$c]);
+					
+			if (defined($cart_locations[$cart->pos->py][$cart->pos->px])) {
+				$collision_pos = $cart->pos;
+				last;
+			}
+					
+			$cart_locations[$r][$c] = undef;
+			$cart_locations[$cart->pos->py][$cart->pos->px] = $cart;
 		}
 		#print_map(\@carts);
 	}
@@ -164,23 +177,56 @@ sub solve_part_one {
 }
 
 sub solve_part_two {
-	my @input = @_;
-}
-
-sub find_collision {
-	my $carts_ref = shift;
-	my @carts = @{$carts_ref};
-	my %cart_locations = ();
-	for my $cart (@carts) {
-		my $key = $cart->pos->px . ',' . $cart->pos->py;
-		if (!exists($cart_locations{$key})) {
-			$cart_locations{$key} = $cart->pos;
+	my @carts = @_;
+	my $last_cart;
+	
+	# Arrange carts by rows and cols
+	my @cart_locations;
+	for my $cart (@carts) { $cart_locations[$cart->pos->py][$cart->pos->px] = $cart; }
+	
+	while (1) {
+		# Get work to do
+		# This is the slowest part of the task.
+		my @loc_list = ();
+		for (my $r = 0; $r <= $#MAP; $r++) {
+			my @row = @{$MAP[$r]};
+			for (my $c = 0; $c <= $#row; $c++) {
+				if (defined($cart_locations[$r][$c])) {
+					push(@loc_list, $cart_locations[$r][$c]->pos);
+					$last_cart = $cart_locations[$r][$c];
+				}
+			}
 		}
-		else {
-			return $cart->pos;
+		
+		say scalar @loc_list;
+		last if (scalar(@loc_list) == 1);
+		
+		# Move carts
+		for my $pos (@loc_list) {
+			# Move cart at $pos
+			my $r = $pos->py;
+			my $c = $pos->px;
+			my $cart = $cart_locations[$r][$c];
+			if (defined($cart)) { # the cart might have been undef'd in a collision
+				$cart->move($MAP[$r][$c]);
+					
+				if (defined($cart_locations[$cart->pos->py][$cart->pos->px])) {
+					# Collision
+					$cart_locations[$cart->pos->py][$cart->pos->px] = undef;
+				}
+				else {
+					$cart_locations[$cart->pos->py][$cart->pos->px] = $cart;
+				}
+					
+				$cart_locations[$r][$c] = undef;
+			}
 		}
 	}
-	return 0;
+	
+	# There is only one cart left, in $last_cart
+	
+	say "Part Two:";
+	say "The last remaining cart is at " . $last_cart->pos->debugStr;
 }
 
 sub print_map {
