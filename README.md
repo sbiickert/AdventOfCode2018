@@ -6,3 +6,4 @@ https://adventofcode.com/2018
 
 I was notified of the challenge by [mradamclark](https://github.com/mradamclark)
 
+This is an update from Raspberry Pi. Working with git from the command line.
