@@ -54,7 +54,7 @@ package Battle;
 		my $elf_count = 0;
 		my $goblin_count = 0;
 		for my $c ($self->grid->coords) {
-			my $value = substr(self->grid->get(@$c), 0, 1);
+			my $value = substr($self->grid->get(@$c), 0, 1);
 			$elf_count++ if $value eq 'E';
 			$goblin_count++ if $value eq 'G';
 		}
@@ -85,6 +85,20 @@ package Battle;
 		}
 		return @coords;
 	}
+
+	sub do_turn {
+		my ($self, $coord) = @_;
+		# The fighter whose turn it is is at $coord
+
+		# If we're not next to a target
+			# Need to find all targets
+			# Find all reachable points next to targets
+			# Find nearest point
+			# Break ties with reading order
+			# Move towards it
+		# Next to target?
+			# Attack` 
+	}	
 
 	sub draw {
 		my $self = shift;
@@ -186,7 +200,7 @@ sub parse_battle {
 							'end_turns' => $turns, 'end_hp' => $hp, 
 							'end_score' => $hp * $turns);
 	$battle->init_hp(200);
-	$battle->draw();
+	#$battle->draw();
 	return $battle;
 }
 
@@ -194,10 +208,13 @@ sub solve_part_one {
 	my $battle = shift;
 
 	while (!$battle->is_finished()) {
+		$battle->draw();
 		my @fighters = $battle->get_coords("EG");
 		for my $fighter (@fighters) {
-
+			say "Fighter at $fighter is beginning its turn.";
+			$battle->do_turn($fighter);
 		}
+		die;
 	}
 }
 
