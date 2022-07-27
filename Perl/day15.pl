@@ -86,10 +86,44 @@ package Battle;
 		return @coords;
 	}
 
+	sub get_class_at {
+		my ($self, $coord) = @_;
+		my ($r, $c) = split(',', $coord);
+		my $grid_value = $self->grid->get($r, $c);
+		return substr($grid_value, 0, 1);
+	}
+
+	sub get_attack_spaces {
+		my ($self, $attacked_class) = @_;
+		my @attack_coords;
+		my @coords = $self->get_coords($attacked_class);
+		for my $coord (@coords) {
+			my @neighbors = $self->grid->neighbor_coords(split(',', $coord));
+			for my $n (@neighbors) {
+				my $value = $self->grid->get($n->[0], $n->[1]);
+				push(@attack_coords, $n->[0] . ',' .  $n->[1]) if $value eq ".";
+			}
+		}
+		return sort {
+			my ($ar, $ac) = split(',', $a);
+			my ($br, $bc) = split(',', $b);
+			if ($ar == $br) { return $ac <=> $bc; }
+			return $ar <=> $br;
+		} @attack_coords;
+	}
+
 	sub do_turn {
 		my ($self, $coord) = @_;
 		# The fighter whose turn it is is at $coord
+		my $fighter_class = $self->get_class_at($coord);
+		die("Found $fighter_class at $coord when expecting E or G") 
+			unless $fighter_class =~ m/[EG]/;
+		my $enemy_class = ($fighter_class eq "G") ? "E" : "G";
+		my @coords_in_range = $self->get_attack_spaces($enemy_class);
 
+		for my $a_coord (@coords_in_range) {
+			say "Fighter at $coord can attack at $a_coord";
+		}
 		# If we're not next to a target
 			# Need to find all targets
 			# Find all reachable points next to targets
