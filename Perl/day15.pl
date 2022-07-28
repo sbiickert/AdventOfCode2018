@@ -112,6 +112,11 @@ package Battle;
 		} @attack_coords;
 	}
 
+	sub cost_to_reach {
+		my ($self, $from, $to) = @_;
+		return 0;
+	}
+
 	sub do_turn {
 		my ($self, $coord) = @_;
 		# The fighter whose turn it is is at $coord
@@ -119,10 +124,19 @@ package Battle;
 		die("Found $fighter_class at $coord when expecting E or G") 
 			unless $fighter_class =~ m/[EG]/;
 		my $enemy_class = ($fighter_class eq "G") ? "E" : "G";
-		my @coords_in_range = $self->get_attack_spaces($enemy_class);
+		my @attack_spaces = $self->get_attack_spaces($enemy_class);
 
-		for my $a_coord (@coords_in_range) {
+		my %costs;
+		for my $a_coord (@attack_spaces) {
 			say "Fighter at $coord can attack at $a_coord";
+			my $cost = $self->cost_to_reach($coord, $a_coord);
+			if ($cost >= 0) {
+				say "And it's reachable with cost $cost.";
+				if (!exists($costs{$cost}))
+				{
+					$costs{$cost} = $a_coord;
+				}
+			}
 		}
 		# If we're not next to a target
 			# Need to find all targets
