@@ -10,7 +10,7 @@ class Day01: AoCSolution {
 	override func solve(filename: String, index: Int) {
 		super.solve(filename: filename, index: index)
 		
-		let input = AOCUtil.readInputFile(named: filename, removingEmptyLines: false)
+		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: false)
 		
 		let frequency = solvePartOne(input)
 		print("Part One: the frequency is \(frequency)")

@@ -17,18 +17,18 @@ var solutions: [AoCSolution] {
 func inputs(for solution: AoCSolution) -> [AoCInput] {
 	var inputs = [AoCInput]()
 	// Challenge input. N = 1
-	inputs.append(AoCInput(solution: solution, fileName: AOCUtil.fileName(day: solution.day, isTest: false), index: 0))
+	inputs.append(AoCInput(solution: solution, fileName: AoCUtil.fileName(day: solution.day, isTest: false), index: 0))
 	
 	// Test input. N = 0..N
 	if solution.emptyLinesIndicateMultipleInputs {
-		let testGroups = AOCUtil.readGroupedInputFile(
-			named: AOCUtil.fileName(day: solution.day, isTest: true))
+		let testGroups = AoCUtil.readGroupedInputFile(
+			named: AoCUtil.fileName(day: solution.day, isTest: true))
 		for (i, _) in testGroups.enumerated() {
-			inputs.append(AoCInput(solution: solution, fileName: AOCUtil.fileName(day: solution.day, isTest: true), index: i))
+			inputs.append(AoCInput(solution: solution, fileName: AoCUtil.fileName(day: solution.day, isTest: true), index: i))
 		}
 	}
 	else {
-		inputs.append(AoCInput.init(solution: solution, fileName: AOCUtil.fileName(day: solution.day, isTest: true), index: 0))
+		inputs.append(AoCInput.init(solution: solution, fileName: AoCUtil.fileName(day: solution.day, isTest: true), index: 0))
 	}
 	
 	return inputs
@@ -52,7 +52,7 @@ struct AoCInput {
 	}
 }
 
-class AOCUtil {
+class AoCUtil {
 	public static let INPUT_FOLDER = "/Users/sjb/Developer/Advent of Code/2018/AdventOfCode2018/input"
 	
 	public static func fileName(day: Int, isTest: Bool) -> String {
@@ -121,5 +121,11 @@ class AOCUtil {
 			result.append(i)
 		}
 		return result
+	}
+}
+
+extension StringProtocol {
+	subscript(offset: Int) -> Character {
+		self[index(startIndex, offsetBy: offset)]
 	}
 }
