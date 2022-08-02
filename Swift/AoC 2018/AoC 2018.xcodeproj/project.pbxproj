@@ -20,6 +20,7 @@
 		374744A62899707B000DA4D9 /* InputRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374744A52899707B000DA4D9 /* InputRow.swift */; };
 		374744AA28997E71000DA4D9 /* Day03.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374744A928997E71000DA4D9 /* Day03.swift */; };
 		374744AD2899B9EB000DA4D9 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 374744AC2899B9EB000DA4D9 /* Algorithms */; };
+		374744AF2899D4C9000DA4D9 /* Day04.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374744AE2899D4C9000DA4D9 /* Day04.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		374744A32899706C000DA4D9 /* InputList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputList.swift; sourceTree = "<group>"; };
 		374744A52899707B000DA4D9 /* InputRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputRow.swift; sourceTree = "<group>"; };
 		374744A928997E71000DA4D9 /* Day03.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day03.swift; sourceTree = "<group>"; };
+		374744AE2899D4C9000DA4D9 /* Day04.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day04.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 				3747449F28996B42000DA4D9 /* Day01.swift */,
 				3747449628995CCF000DA4D9 /* Day02.swift */,
 				374744A928997E71000DA4D9 /* Day03.swift */,
+				374744AE2899D4C9000DA4D9 /* Day04.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -192,6 +195,7 @@
 				3747448928995C60000DA4D9 /* ContentView.swift in Sources */,
 				374744A42899706C000DA4D9 /* InputList.swift in Sources */,
 				3747449928995D2F000DA4D9 /* AoCUtil.swift in Sources */,
+				374744AF2899D4C9000DA4D9 /* Day04.swift in Sources */,
 				3747448728995C60000DA4D9 /* AoC_2018App.swift in Sources */,
 				3747449E289968D4000DA4D9 /* SolutionRow.swift in Sources */,
 				3747449728995CCF000DA4D9 /* Day02.swift in Sources */,
