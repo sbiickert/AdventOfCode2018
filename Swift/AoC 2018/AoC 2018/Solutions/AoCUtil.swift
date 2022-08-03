@@ -129,3 +129,36 @@ extension StringProtocol {
 		self[index(startIndex, offsetBy: offset)]
 	}
 }
+
+extension NSRegularExpression {
+	convenience init(_ pattern: String) {
+		do {
+			try self.init(pattern: pattern)
+		} catch {
+			preconditionFailure("Illegal regular expression: \(pattern).")
+		}
+	}
+}
+
+extension NSRegularExpression {
+	func matches(_ string: String) -> Bool {
+		let range = NSRange(location: 0, length: string.utf16.count)
+		return firstMatch(in: string, options: [], range: range) != nil
+	}
+}
+
+extension NSRegularExpression {
+	func positionalMatches(_ string: String) -> [String] {
+		var result = [String]()
+		let range = NSRange(location: 0, length: string.utf16.count)
+		if let match = firstMatch(in: string, range: range) {
+			for i in 1..<match.numberOfRanges {
+				let r = match.range(at: i)
+				let low = string.index(string.startIndex, offsetBy: r.lowerBound)
+				let hi = string.index(string.startIndex, offsetBy: r.upperBound)
+				result.append(String(string[low..<hi]))
+			}
+		}
+		return result
+	}
+}
