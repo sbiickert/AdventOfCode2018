@@ -7,7 +7,7 @@ class Day01: AoCSolution {
 		name = "Chronal Calibration"
 	}
 	
-	override func solve(filename: String, index: Int) {
+	override func solve(filename: String, index: Int) -> AoCResult {
 		super.solve(filename: filename, index: index)
 		
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: false)
@@ -17,6 +17,8 @@ class Day01: AoCSolution {
 		
 		let repeatedFrequency = solvePartTwo(input)
 		print("Part Two: the first repeated frequency is \(repeatedFrequency)")
+		
+		return AoCResult(part1: String(frequency), part2: String(repeatedFrequency))
 	}
 	
 	private func solvePartOne(_ input: [String]) -> Int {

@@ -38,8 +38,9 @@ class AoCSolution {
 	var day: Int = 0
 	var name: String = ""
 	var emptyLinesIndicateMultipleInputs: Bool = true
-	func solve(filename: String, index: Int) {
+	@discardableResult func solve(filename: String, index: Int) -> AoCResult {
 		print("Day \(String(format: "%02d", arguments: [day])): \(name) input: \(filename) [\(index)]");
+		return AoCResult(part1: "", part2: "")
 	}
 }
 
@@ -50,6 +51,11 @@ struct AoCInput {
 	var id: String {
 		return "\(fileName)[\(index)]"
 	}
+}
+
+struct AoCResult {
+	let part1: String?
+	let part2: String?
 }
 
 class AoCUtil {

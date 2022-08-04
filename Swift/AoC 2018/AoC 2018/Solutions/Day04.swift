@@ -7,7 +7,7 @@ class Day04: AoCSolution {
 		name = "Repose Record"
 	}
 
-	override func solve(filename: String, index: Int) {
+	override func solve(filename: String, index: Int) -> AoCResult {
 		super.solve(filename: filename, index: index)
 		
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: true)
@@ -18,6 +18,8 @@ class Day04: AoCSolution {
 		
 		let result2 = solvePartTwo(events)
 		print("Part Two: the guard id * the minute = \(result2)")
+		
+		return AoCResult(part1: String(result), part2: String(result2))
 	}
 	
 	func solvePartOne(_ events: [GuardEvent]) -> Int {

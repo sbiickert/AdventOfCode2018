@@ -8,7 +8,7 @@ class Day02: AoCSolution {
 		name = "Inventory Management System"
 	}
 	
-	override func solve(filename: String, index: Int) {
+	override func solve(filename: String, index: Int) -> AoCResult {
 		super.solve(filename: filename, index: index)
 		
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: true)
@@ -18,6 +18,8 @@ class Day02: AoCSolution {
 		
 		let commonLetters = solvePartTwo(input)
 		print("Part Two: the common letters are \(commonLetters)")
+		
+		return AoCResult(part1: String(checksum), part2: commonLetters)
 	}
 	
 	private func solvePartOne(_ input: [String]) -> Int {

@@ -11,12 +11,13 @@ struct InputRow: View {
 	var input: AoCInput
     var body: some View {
 		HStack {
-			Button("Solve") {
-				input.solution.solve(filename: input.fileName, index: input.index)
+			NavigationLink {
+				ResultView(input: input)
+			} label: {
+				Text(String(input.fileName))
+				Text("[\(input.index)]")
+				//Spacer()
 			}
-			Text(String(input.fileName))
-			Text("[\(input.index)]")
-			Spacer()
 		}
     }
 }

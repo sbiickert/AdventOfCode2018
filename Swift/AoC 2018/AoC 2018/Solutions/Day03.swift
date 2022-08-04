@@ -8,7 +8,7 @@ class Day03: AoCSolution {
 		name = "No Matter How You Slice It"
 	}
 	
-	override func solve(filename: String, index: Int) {
+	override func solve(filename: String, index: Int) -> AoCResult {
 		super.solve(filename: filename, index: index)
 		
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: true)
@@ -18,6 +18,8 @@ class Day03: AoCSolution {
 		
 		let id = solvePartTwo(input)
 		print("Part Two: the only non-overlapping claim is \(id)")
+		
+		return AoCResult(part1: String(overlapCount), part2: String(id))
 	}
 	
 	func solvePartOne(_ input: [String]) -> Int {
