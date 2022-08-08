@@ -6,47 +6,70 @@
 //
 
 import SwiftUI
+import OSLog
+
+class SolutionRunner: ObservableObject {
+	@Published var running: Bool = false
+	@Published var result: AoCResult?
+	
+	@MainActor
+	func asyncSolve(_ input: AoCInput) async {
+		result = input.solution.solve(filename: input.fileName, index: input.index)
+		running = false
+	}
+}
 
 struct ResultView: View {
 	var input: AoCInput
-	@State private var result: AoCResult?
-	@State private var running = false
+	@StateObject private var runner = SolutionRunner()
+	
+	@ViewBuilder
+	var progress: some View {
+		if runner.running {
+			ProgressView()
+		}
+		else {
+			EmptyView()
+		}
+	}
+	
     var body: some View {
 		VStack {
 			Button {
-				running = true
-				result = input.solution.solve(filename: input.fileName, index: input.index)
-				running = false
+				runner.running = true
+				Task {
+					await runner.asyncSolve(input)
+				}
 			} label: {
 				Text("Solve Day \(input.solution.day)")
 			}
-			.disabled(running)
+			.disabled(runner.running)
 			.padding()
-
-			if (running) { AnyView(ProgressView()) } else { AnyView(EmptyView())}
 			
 			VStack(alignment: .leading) {
 				Text("Part One").bold()
 				HStack {
-					Image(systemName: result?.part1 != nil ? "checkmark.seal" : "questionmark.diamond")
+					Image(systemName: runner.result?.part1 != nil ? "checkmark.seal" : "questionmark.diamond")
 						.resizable(capInsets: EdgeInsets(top: 0.0, leading: 0.0, bottom: 0.0, trailing: 0.0))
-						.foregroundColor(result?.part1 != nil ? Color.green : Color.gray)
+						.foregroundColor(runner.result?.part1 != nil ? Color.green : Color.gray)
 						.padding(.all, 5.0)
 						.frame(width: 32, height: 32, alignment: .center)
-					Text(result?.part1 ?? "No answer")
+					Text(runner.result?.part1 ?? "No answer")
 				}
 				Divider()
 				Text("Part Two").bold()
 				HStack {
-					Image(systemName: result?.part2 != nil ? "checkmark.seal" : "questionmark.diamond")
+					Image(systemName: runner.result?.part2 != nil ? "checkmark.seal" : "questionmark.diamond")
 						.resizable(capInsets: EdgeInsets(top: 0.0, leading: 0.0, bottom: 0.0, trailing: 0.0))
-						.foregroundColor(result?.part2 != nil ? Color.green : Color.gray)
+						.foregroundColor(runner.result?.part2 != nil ? Color.green : Color.gray)
 						.padding(.all, 5.0)
 						.frame(width: 32, height: 32, alignment: .center)
-					Text(result?.part2 ?? "No answer")
+					Text(runner.result?.part2 ?? "No answer")
 				}
 			}
-		}.padding()
+		}
+		.padding()
+		.overlay(progress)
    }
 }
 
