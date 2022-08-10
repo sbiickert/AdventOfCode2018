@@ -19,9 +19,7 @@ class SolutionRunner: ObservableObject {
 		elapsed = 0
 		result = input.solution.solve(filename: input.fileName, index: input.index)
 		running = false
-		let end = Date()
-		let diffComponents = Calendar.current.dateComponents([.nanosecond], from: start, to: end)
-		elapsed = (diffComponents.nanosecond ?? 0) / 1000 / 1000
+		elapsed = Int(Date().timeIntervalSince(start) * 1000)
 	}
 }
 

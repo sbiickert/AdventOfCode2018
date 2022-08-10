@@ -24,6 +24,7 @@
 		3777E7DB289C04310038FE29 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3777E7DA289C04310038FE29 /* ResultView.swift */; };
 		37D7B81728A17C6700754980 /* StopwatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D7B81628A17C6700754980 /* StopwatchView.swift */; };
 		37D7B81928A17FF200754980 /* StopwatchUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D7B81828A17FF200754980 /* StopwatchUnitView.swift */; };
+		B875313C28A4583D00B4AAD3 /* Day05.swift in Sources */ = {isa = PBXBuildFile; fileRef = B875313B28A4583D00B4AAD3 /* Day05.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		3777E7DA289C04310038FE29 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		37D7B81628A17C6700754980 /* StopwatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchView.swift; sourceTree = "<group>"; };
 		37D7B81828A17FF200754980 /* StopwatchUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchUnitView.swift; sourceTree = "<group>"; };
+		B875313B28A4583D00B4AAD3 /* Day05.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day05.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				3747449628995CCF000DA4D9 /* Day02.swift */,
 				374744A928997E71000DA4D9 /* Day03.swift */,
 				374744AE2899D4C9000DA4D9 /* Day04.swift */,
+				B875313B28A4583D00B4AAD3 /* Day05.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				3747448928995C60000DA4D9 /* ContentView.swift in Sources */,
 				374744A42899706C000DA4D9 /* InputList.swift in Sources */,
 				3747449928995D2F000DA4D9 /* AoCUtil.swift in Sources */,
+				B875313C28A4583D00B4AAD3 /* Day05.swift in Sources */,
 				37D7B81728A17C6700754980 /* StopwatchView.swift in Sources */,
 				3777E7DB289C04310038FE29 /* ResultView.swift in Sources */,
 				374744AF2899D4C9000DA4D9 /* Day04.swift in Sources */,
