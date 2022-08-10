@@ -41,14 +41,17 @@ struct ResultView: View {
 	
     var body: some View {
 		VStack {
-//			DisclosureGroup("Input") {
-//				ScrollView {
-//					HStack {
+				ScrollView {
+					HStack {
+						LazyVStack(alignment: .leading) {
+							ForEach(0..<AoCUtil.readGroupedInputFile(named: input.fileName, group: input.index).count, id: \.self) {
+								Text(AoCUtil.readGroupedInputFile(named: input.fileName, group: input.index)[$0])
+							}
+						}
 //						Text(AoCUtil.readGroupedInputFile(named: input.fileName, group: input.index).joined(separator: "\n"))
 //						Spacer()
-//					}
-//				}
-//			}
+					}
+				}
 			Button {
 				runner.running = true
 				Task {
