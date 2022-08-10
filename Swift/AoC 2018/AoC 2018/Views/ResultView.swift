@@ -15,9 +15,13 @@ class SolutionRunner: ObservableObject {
 	
 	@MainActor
 	func asyncSolve(_ input: AoCInput) async {
+		let start = Date()
 		elapsed = 0
 		result = input.solution.solve(filename: input.fileName, index: input.index)
 		running = false
+		let end = Date()
+		let diffComponents = Calendar.current.dateComponents([.nanosecond], from: start, to: end)
+		elapsed = (diffComponents.nanosecond ?? 0) / 1000 / 1000
 	}
 }
 
@@ -37,15 +41,18 @@ struct ResultView: View {
 	
     var body: some View {
 		VStack {
+//			DisclosureGroup("Input") {
+//				ScrollView {
+//					HStack {
+//						Text(AoCUtil.readGroupedInputFile(named: input.fileName, group: input.index).joined(separator: "\n"))
+//						Spacer()
+//					}
+//				}
+//			}
 			Button {
 				runner.running = true
-				let t = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
-					self.runner.elapsed += 10
-					//print(String(self.runner.elapsed))
-				}
 				Task {
 					await runner.asyncSolve(input)
-					//t.invalidate()
 				}
 			} label: {
 				Text("Solve Day \(input.solution.day)")
