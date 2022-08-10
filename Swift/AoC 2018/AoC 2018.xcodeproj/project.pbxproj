@@ -22,6 +22,8 @@
 		374744AD2899B9EB000DA4D9 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 374744AC2899B9EB000DA4D9 /* Algorithms */; };
 		374744AF2899D4C9000DA4D9 /* Day04.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374744AE2899D4C9000DA4D9 /* Day04.swift */; };
 		3777E7DB289C04310038FE29 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3777E7DA289C04310038FE29 /* ResultView.swift */; };
+		37D7B81728A17C6700754980 /* StopwatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D7B81628A17C6700754980 /* StopwatchView.swift */; };
+		37D7B81928A17FF200754980 /* StopwatchUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D7B81828A17FF200754980 /* StopwatchUnitView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +43,8 @@
 		374744A928997E71000DA4D9 /* Day03.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day03.swift; sourceTree = "<group>"; };
 		374744AE2899D4C9000DA4D9 /* Day04.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day04.swift; sourceTree = "<group>"; };
 		3777E7DA289C04310038FE29 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		37D7B81628A17C6700754980 /* StopwatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchView.swift; sourceTree = "<group>"; };
+		37D7B81828A17FF200754980 /* StopwatchUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchUnitView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,8 @@
 				374744A32899706C000DA4D9 /* InputList.swift */,
 				374744A52899707B000DA4D9 /* InputRow.swift */,
 				3777E7DA289C04310038FE29 /* ResultView.swift */,
+				37D7B81628A17C6700754980 /* StopwatchView.swift */,
+				37D7B81828A17FF200754980 /* StopwatchUnitView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -198,12 +204,14 @@
 				3747448928995C60000DA4D9 /* ContentView.swift in Sources */,
 				374744A42899706C000DA4D9 /* InputList.swift in Sources */,
 				3747449928995D2F000DA4D9 /* AoCUtil.swift in Sources */,
+				37D7B81728A17C6700754980 /* StopwatchView.swift in Sources */,
 				3777E7DB289C04310038FE29 /* ResultView.swift in Sources */,
 				374744AF2899D4C9000DA4D9 /* Day04.swift in Sources */,
 				3747448728995C60000DA4D9 /* AoC_2018App.swift in Sources */,
 				3747449E289968D4000DA4D9 /* SolutionRow.swift in Sources */,
 				3747449728995CCF000DA4D9 /* Day02.swift in Sources */,
 				374744A228996C3D000DA4D9 /* SolutionList.swift in Sources */,
+				37D7B81928A17FF200754980 /* StopwatchUnitView.swift in Sources */,
 				374744A62899707B000DA4D9 /* InputRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

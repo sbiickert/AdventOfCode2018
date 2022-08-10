@@ -11,9 +11,11 @@ import OSLog
 class SolutionRunner: ObservableObject {
 	@Published var running: Bool = false
 	@Published var result: AoCResult?
+	@Published var elapsed: Int = 0
 	
 	@MainActor
 	func asyncSolve(_ input: AoCInput) async {
+		elapsed = 0
 		result = input.solution.solve(filename: input.fileName, index: input.index)
 		running = false
 	}
@@ -37,8 +39,13 @@ struct ResultView: View {
 		VStack {
 			Button {
 				runner.running = true
+				let t = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
+					self.runner.elapsed += 10
+					//print(String(self.runner.elapsed))
+				}
 				Task {
 					await runner.asyncSolve(input)
+					//t.invalidate()
 				}
 			} label: {
 				Text("Solve Day \(input.solution.day)")
@@ -67,6 +74,7 @@ struct ResultView: View {
 					Text(runner.result?.part2 ?? "No answer")
 				}
 			}
+			StopwatchView(progressTime: $runner.elapsed)
 		}
 		.padding()
 		.overlay(progress)
