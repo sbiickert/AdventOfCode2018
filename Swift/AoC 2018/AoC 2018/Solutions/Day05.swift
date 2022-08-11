@@ -21,6 +21,11 @@ class Day05: AoCSolution {
 	}
 	
 	private func solvePartOne(_ polymer: SuitPolymer) -> SuitPolymer {
+//		return reactWindowed(polymer)
+		return reactRegex(polymer)
+	}
+	
+	func reactWindowed(_ polymer: SuitPolymer) -> SuitPolymer {
 		var newPolymer = polymer
 		while newPolymer.units.count > 2 {
 			//print(newPolymer.stringValue)
@@ -54,6 +59,33 @@ class Day05: AoCSolution {
 				break
 			}
 		}
+		return newPolymer
+	}
+	
+	func reactRegex(_ polymer: SuitPolymer) -> SuitPolymer {
+		let lc = "abcdefghijklmnopqrstuvwxyz".map( { String($0) } )
+		let uc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".map( { String($0) } )
+		
+		var reList = [NSRegularExpression]()
+		for i in 0..<lc.count {
+			let rE = try! NSRegularExpression(pattern: lc[i]+uc[i])
+			reList.append(rE)
+			let Re = try! NSRegularExpression(pattern: uc[i]+lc[i])
+			reList.append(Re)
+		}
+		
+		let pStr = NSMutableString(string: polymer.stringValue)
+		var len = 1000000
+		while pStr.length != len {
+			len = pStr.length
+			for re in reList {
+				re.replaceMatches(in: pStr, range: NSMakeRange(0, pStr.length), withTemplate: "")
+			}
+			print(pStr.length)
+		}
+		
+		let str = String(pStr)
+		let newPolymer = SuitPolymer(units: str.map( { String($0) } ))
 		return newPolymer
 	}
 }
