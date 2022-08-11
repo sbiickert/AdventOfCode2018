@@ -33,12 +33,14 @@ class Day05: AoCSolution {
 					continue
 				}
 				//print(w, w.startIndex)
-				if w[w.startIndex] != w[w.startIndex+1] && w[w.startIndex].lowercased() == w[w.startIndex+1].lowercased() {
+				let a = w[w.startIndex]
+				let b = w[w.startIndex+1]
+				if a != b && a.lowercased() == b.lowercased() {
 					//print("boom")
 					bLastWindowReacted = true
 				}
 				else {
-					resultUnits.append(w[w.startIndex])
+					resultUnits.append(a)
 					bLastWindowReacted = false
 				}
 			}

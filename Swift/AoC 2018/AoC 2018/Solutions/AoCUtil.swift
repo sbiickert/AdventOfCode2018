@@ -98,7 +98,7 @@ class AoCUtil {
 	}
 	
 	public static func readGroupedInputFile(named name: String, group: Int) -> [String] {
-		var result = [String]()
+		let result = [String]()
 		guard group >= 0 else { return result }
 		
 		let groups = readGroupedInputFile(named: name)
