@@ -12,30 +12,33 @@ class Day05: AoCSolution {
 		super.solve(filename: filename, index: index)
 		
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: true)
-		let polymer = SuitPolymer(units: input[0].map( { String($0) } ))
+		let polymer = input[0]
 		
 		let result1 = solvePartOne(polymer)
-		print("Part One: the length of the resulting polymer is \(result1.stringValue.count).")
+		print("Part One: the length of the resulting polymer is \(result1.count).")
 		
 		let result2 = solvePartTwo(polymer)
-		print("Part One: the length of the resulting polymer is \(result2.stringValue.count).")
+		print("Part One: the length of the resulting polymer is \(result2.count).")
 		
-		return AoCResult(part1: String(result1.stringValue.count), part2: String(result2.stringValue.count))
+		return AoCResult(part1: String(result1.count), part2: String(result2.count))
 	}
 	
-	private func solvePartOne(_ polymer: SuitPolymer) -> SuitPolymer {
-//		return reactWindowed(polymer)
+	private func solvePartOne(_ polymer: String) -> String {
 		return reactRegex(polymer)
 	}
 	
-	private func solvePartTwo(_ polymer: SuitPolymer) -> SuitPolymer {
+	private let ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+	
+	private func solvePartTwo(_ polymer: String) -> String {
 		var bestUnit: String? = nil
-		var bestPolymer: SuitPolymer? = nil
-		let letters = "abcdefghijklmnopqrstuvwxyz".map( { String($0) } )
+		var bestPolymer: String? = nil
+		let letters = ALPHABET.map( { String($0) } )
 
 		for letter in letters {
-			let newPolymer = reactRegex(polymer, collapseUnitRegardlessOfPolarity: letter)
-			if bestPolymer == nil || newPolymer.units.count < bestPolymer!.units.count {
+			let filtered = polymer.replacingOccurrences(of: letter.uppercased(), with: "")
+								  .replacingOccurrences(of: letter.lowercased(), with: "")
+			let newPolymer = reactRegex(filtered)
+			if bestPolymer == nil || newPolymer.count < bestPolymer!.count {
 				bestPolymer = newPolymer
 				bestUnit = letter
 			}
@@ -45,9 +48,9 @@ class Day05: AoCSolution {
 		return bestPolymer!
 	}
 	
-	func reactRegex(_ polymer: SuitPolymer, collapseUnitRegardlessOfPolarity: String? = nil) -> SuitPolymer {
-		let lc = "abcdefghijklmnopqrstuvwxyz".map( { String($0) } )
-		let uc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".map( { String($0) } )
+	func reactRegex(_ polymer: String) -> String {
+		let lc = ALPHABET.map( { String($0) } )
+		let uc = ALPHABET.uppercased().map( { String($0) } )
 		
 		var reList = [NSRegularExpression]()
 		for i in 0..<lc.count {
@@ -57,12 +60,7 @@ class Day05: AoCSolution {
 			reList.append(Re)
 		}
 
-		var pStr = NSMutableString(string: polymer.stringValue)
-		
-		if let unit = collapseUnitRegardlessOfPolarity {
-			pStr = NSMutableString(string: pStr.replacingOccurrences(of: unit.lowercased(), with: ""))
-			pStr = NSMutableString(string: pStr.replacingOccurrences(of: unit.uppercased(), with: ""))
-		}
+		let pStr = NSMutableString(string: polymer)
 
 		var len = 1000000
 		while pStr.length != len {
@@ -73,53 +71,7 @@ class Day05: AoCSolution {
 			//print(pStr.length)
 		}
 		
-		let str = String(pStr)
-		let newPolymer = SuitPolymer(units: str.map( { String($0) } ))
+		let newPolymer = String(pStr)
 		return newPolymer
-	}
-
-	func reactWindowed(_ polymer: SuitPolymer) -> SuitPolymer {
-		var newPolymer = polymer
-		while newPolymer.units.count > 2 {
-			//print(newPolymer.stringValue)
-			let windowed = newPolymer.units.windows(ofCount: 2)
-			var resultUnits = [String]()
-			var bLastWindowReacted = false
-			for w in windowed {
-				if bLastWindowReacted {
-					bLastWindowReacted = false
-					continue
-				}
-				//print(w, w.startIndex)
-				let a = w[w.startIndex]
-				let b = w[w.startIndex+1]
-				if a != b && a.lowercased() == b.lowercased() {
-					//print("boom")
-					bLastWindowReacted = true
-				}
-				else {
-					resultUnits.append(a)
-					bLastWindowReacted = false
-				}
-			}
-			if bLastWindowReacted == false { resultUnits.append(polymer.units.last!) }
-
-			if resultUnits.count != newPolymer.units.count {
-				newPolymer = SuitPolymer(units: resultUnits)
-				print(resultUnits.count)
-			}
-			else {
-				break
-			}
-		}
-		return newPolymer
-	}
-}
-
-struct SuitPolymer {
-	var units: [String]
-	
-	var stringValue: String {
-		return units.joined(separator: "")
 	}
 }
