@@ -10,7 +10,8 @@ import OSLog
 
 var solutions: [AoCSolution] {
 	get {
-		return [Day01(), Day02(), Day03(), Day04(), Day05()]
+		return [Day01(), Day02(), Day03(), Day04(), Day05(),
+				Day06()]
 	}
 }
 
