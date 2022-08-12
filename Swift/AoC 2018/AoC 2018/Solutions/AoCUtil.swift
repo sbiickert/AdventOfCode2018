@@ -7,6 +7,7 @@
 
 import Foundation
 import OSLog
+import Algorithms
 
 var solutions: [AoCSolution] {
 	get {
@@ -145,6 +146,102 @@ class AoCUtil {
 		return result
 	}
 }
+
+struct AoCCoord2D: Hashable {
+	let x: Int
+	let y: Int
+	
+	static func +(left: AoCCoord2D, right: AoCCoord2D) -> AoCCoord2D {
+		return AoCCoord2D(x: left.x + right.x, y: left.y + right.y)
+	}
+	
+	func manhattanDistance(to other: AoCCoord2D) -> Int {
+		return abs(self.x - other.x) + abs(self.y - other.y)
+	}
+}
+
+class AoCGrid2D {
+	var width: Int
+	var height: Int
+	let defaultValue: String
+	var _data = Dictionary<AoCCoord2D, String>()
+	var neighbourRule: NeighbourRule = .rook
+	
+	enum NeighbourRule {
+		case rook
+		case bishop
+		case queen
+	}
+	
+	init(width: Int, height: Int, defaultValue: String = ".") {
+		self.width = width > 0 ? width : 1
+		self.height = height > 0 ? height : 1
+		self.defaultValue = defaultValue
+	}
+	
+	func value(at coord: AoCCoord2D) -> String {
+		if let v = _data[coord] {
+			return v
+		}
+		return defaultValue
+	}
+	
+	func setValue(_ v: String, at coord: AoCCoord2D) {
+		_data[coord] = v
+	}
+	
+	var coords: [AoCCoord2D] {
+		return Array(_data.keys)
+	}
+	
+	var counts: Dictionary<String, Int> {
+		var result = Dictionary<String, Int>()
+		for (row, col) in product(0...height, 0...width) {
+			let v = value(at: AoCCoord2D(x: col, y: row))
+			if result.keys.contains(v) == false { result[v] = 0 }
+			result[v]! += 1
+		}
+		return result
+	}
+	
+	func neighbourOffsets(at coord: AoCCoord2D) -> [AoCCoord2D] {
+		var result = [AoCCoord2D]()
+		switch neighbourRule {
+		case .rook, .queen:
+			result.append(AoCCoord2D(x: -1, y:  0))
+			result.append(AoCCoord2D(x:  1, y:  0))
+			result.append(AoCCoord2D(x:  0, y: -1))
+			result.append(AoCCoord2D(x:  0, y:  1))
+		case .bishop, .queen:
+			result.append(AoCCoord2D(x: -1, y: -1))
+			result.append(AoCCoord2D(x:  1, y:  1))
+			result.append(AoCCoord2D(x:  1, y: -1))
+			result.append(AoCCoord2D(x: -1, y:  1))
+		}
+		return result
+	}
+	
+	func neighbourCoords(at coord: AoCCoord2D) -> [AoCCoord2D] {
+		var result = [AoCCoord2D]()
+		for offset in neighbourOffsets(at: coord) {
+			result.append(coord + offset)
+		}
+		return result
+	}
+	
+	func draw() {
+		for row in 0...height {
+			var values = [String]()
+			for col in 0...width {
+				values.append(value(at: AoCCoord2D(x: col, y: row)))
+			}
+			print(values.joined(separator: ""))
+		}
+		print("")
+	}
+}
+
+/* MARK: Extensions */
 
 extension StringProtocol {
 	subscript(offset: Int) -> Character {
