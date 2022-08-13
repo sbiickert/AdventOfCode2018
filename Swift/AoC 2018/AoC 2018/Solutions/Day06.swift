@@ -12,24 +12,50 @@ class Day06: AoCSolution {
 		super.solve(filename: filename, index: index)
 		
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: true)
+
+		let result1 = solvePartOne(input)
+		print("Part One: the largest non-infinite area is \(result1)")
+		
+		let limit = (input.count < 20) ? 32 : 10000
+		let result2 = solvePartTwo(input, limit: limit)
+		print("Part Two: the area with total distance less than \(limit) is \(result2)")
+
+		return AoCResult(part1: result1, part2: result2)
+	}
+	
+	private func solvePartOne(_ input: [String]) -> String {
 		let grid = parseGrid(input)
 		//grid.draw()
 		allocateGrid(grid)
 		//grid.draw()
 		var counts = grid.counts
-		print("\(counts as AnyObject)")
+		//print("\(counts as AnyObject)")
 		let edgeValues = getInfiniteValues(grid)
 		for v in edgeValues {
 			counts.removeValue(forKey: v)
 		}
-		print("\(counts as AnyObject)")
-		let result1:String = String(counts.values.sorted().last!)
+		//print("\(counts as AnyObject)")
+		let result:String = String(counts.values.sorted().last!)
 		
-		print("Part One: the largest non-infinite area is \(result1)")
-
-		return AoCResult(part1: result1, part2: nil)
+		return result
 	}
-	
+
+	private func solvePartTwo(_ input: [String], limit: Int) -> String {
+		let grid = parseGrid(input)
+		var count = 0
+		let coords = grid.coords
+		
+		for (row, col) in product(0...grid.height, 0...grid.width) {
+			let target = AoCCoord2D(x: col, y: row)
+			var sumDistance = 0
+			for coord in coords {
+				sumDistance += target.manhattanDistance(to: coord)
+			}
+			if sumDistance < limit { count += 1 }
+		}
+		return String(count)
+	}
+
 	private func getInfiniteValues(_ grid: AoCGrid2D) -> [String] {
 		var values = Set<String>()
 		for (row, col) in product(0...grid.height, 0...grid.width) {
@@ -64,9 +90,6 @@ class Day06: AoCSolution {
 			if minValue.count == 1 {
 				grid.setValue(minValue, at: target)
 			}
-//			else {
-//				print("\(target) is equidistant (\(minMD)) from \(minValue)")
-//			}
 		}
 	}
 	
