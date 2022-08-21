@@ -24,7 +24,10 @@ class Day08: AoCSolution {
 		let result1 = String(root.metadataSum)
 		print("Part One: the sum of the metadata is \(result1)")
 		
-		return AoCResult(part1: result1, part2: nil)
+		let result2 = String(root.value)
+		print("Part Two: the value of the root node is \(result2)")
+		
+		return AoCResult(part1: result1, part2: result2)
 
 	}
 }
@@ -64,5 +67,20 @@ private class Node {
 			sum += child.metadataSum
 		}
 		return sum
+	}
+	
+	var value: Int {
+		var result = 0
+		if childCount == 0 {
+			result = metadata.reduce(0, +)
+		}
+		else {
+			for index in metadata {
+				if index <= childCount {
+					result += children[index-1].value
+				}
+			}
+		}
+		return result
 	}
 }
