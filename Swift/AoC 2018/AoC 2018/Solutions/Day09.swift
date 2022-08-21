@@ -19,7 +19,9 @@ class Day09: AoCSolution {
 		
 		let result1 = solvePart(pCount: playerCount, lastValue: lastValue)
 		
-		return AoCResult(part1: String(result1), part2: nil)
+		let result2 = solvePart(pCount: playerCount, lastValue: lastValue*100)
+		
+		return AoCResult(part1: String(result1), part2: String(result2))
 	}
 	
 	private func solvePart(pCount: Int, lastValue: Int) -> Int {
@@ -64,15 +66,12 @@ class Day09: AoCSolution {
 }
 
 class Marble {
-	static var all = Dictionary<Int, Marble>()
-	
 	let value: Int
 	var cw: Marble?
 	var ccw: Marble?
 	
 	init(value: Int) {
 		self.value = value
-		Marble.all[value] = self
 	}
 
 	func insertBetween(ccwMarble: Marble, cwMarble: Marble) {
