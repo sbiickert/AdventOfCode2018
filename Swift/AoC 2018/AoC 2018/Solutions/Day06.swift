@@ -109,9 +109,9 @@ class Day06: AoCSolution {
 		
 		let grid = AoCGrid2D(width: xmax, height: ymax)
 		
-		let ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+		let UC_LC_ALPHABET = AoCUtil.ALPHABET.uppercased() + AoCUtil.ALPHABET.lowercased()
 		for i in 0..<coords.count {
-			grid.setValue(String(ALPHABET[i]), at: coords[i])
+			grid.setValue(String(UC_LC_ALPHABET[i]), at: coords[i])
 		}
 		
 		return grid

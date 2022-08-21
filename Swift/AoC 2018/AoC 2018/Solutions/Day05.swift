@@ -26,13 +26,11 @@ class Day05: AoCSolution {
 	private func solvePartOne(_ polymer: String) -> String {
 		return reactRegex(polymer)
 	}
-	
-	private let ALPHABET = "abcdefghijklmnopqrstuvwxyz"
-	
+		
 	private func solvePartTwo(_ polymer: String) -> String {
 		var bestUnit: String? = nil
 		var bestPolymer: String? = nil
-		let letters = ALPHABET.map( { String($0) } )
+		let letters = AoCUtil.ALPHABET.map( { String($0) } )
 
 		for letter in letters {
 			let filtered = polymer.replacingOccurrences(of: letter.uppercased(), with: "")
@@ -49,8 +47,8 @@ class Day05: AoCSolution {
 	}
 	
 	func reactRegex(_ polymer: String) -> String {
-		let lc = ALPHABET.map( { String($0) } )
-		let uc = ALPHABET.uppercased().map( { String($0) } )
+		let lc = AoCUtil.ALPHABET.map( { String($0) } )
+		let uc = AoCUtil.ALPHABET.uppercased().map( { String($0) } )
 		
 		var reList = [NSRegularExpression]()
 		for i in 0..<lc.count {

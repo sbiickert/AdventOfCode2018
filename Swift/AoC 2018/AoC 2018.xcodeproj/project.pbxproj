@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		372503E028A84F5E00D1EADE /* Day07.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372503DF28A84F5E00D1EADE /* Day07.swift */; };
 		3747448728995C60000DA4D9 /* AoC_2018App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3747448628995C60000DA4D9 /* AoC_2018App.swift */; };
 		3747448928995C60000DA4D9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3747448828995C60000DA4D9 /* ContentView.swift */; };
 		3747448B28995C61000DA4D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3747448A28995C61000DA4D9 /* Assets.xcassets */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		372503DF28A84F5E00D1EADE /* Day07.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day07.swift; sourceTree = "<group>"; };
 		3747448328995C60000DA4D9 /* AoC 2018.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AoC 2018.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3747448628995C60000DA4D9 /* AoC_2018App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AoC_2018App.swift; sourceTree = "<group>"; };
 		3747448828995C60000DA4D9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				374744AE2899D4C9000DA4D9 /* Day04.swift */,
 				B875313B28A4583D00B4AAD3 /* Day05.swift */,
 				B868042928A5B1680003FD5C /* Day06.swift */,
+				372503DF28A84F5E00D1EADE /* Day07.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 				3747448928995C60000DA4D9 /* ContentView.swift in Sources */,
 				374744A42899706C000DA4D9 /* InputList.swift in Sources */,
 				3747449928995D2F000DA4D9 /* AoCUtil.swift in Sources */,
+				372503E028A84F5E00D1EADE /* Day07.swift in Sources */,
 				B875313C28A4583D00B4AAD3 /* Day05.swift in Sources */,
 				37D7B81728A17C6700754980 /* StopwatchView.swift in Sources */,
 				3777E7DB289C04310038FE29 /* ResultView.swift in Sources */,

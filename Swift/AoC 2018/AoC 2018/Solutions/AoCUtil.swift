@@ -12,7 +12,7 @@ import Algorithms
 var solutions: [AoCSolution] {
 	get {
 		return [Day01(), Day02(), Day03(), Day04(), Day05(),
-				Day06()]
+				Day06(), Day07()]
 	}
 }
 
@@ -63,6 +63,7 @@ struct AoCResult {
 class AoCUtil {
 	public static let INPUT_FOLDER_MIKE = "/Users/sjb/Developer/Advent of Code/2018/AdventOfCode2018/input"
 	public static let INPUT_FOLDER_CLARIS = "/Users/sbiickert/Code/Advent of Code/2018/AdventOfCode2018/input"
+	public static let ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 
 	public static func fileName(day: Int, isTest: Bool) -> String {
 		return "\(String(format: "%02d", arguments: [day])).\(isTest ? "test" : "challenge").txt"
