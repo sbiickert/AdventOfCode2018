@@ -24,6 +24,7 @@
 		374744AF2899D4C9000DA4D9 /* Day04.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374744AE2899D4C9000DA4D9 /* Day04.swift */; };
 		3777E7DB289C04310038FE29 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3777E7DA289C04310038FE29 /* ResultView.swift */; };
 		379D001A28B2E08700AD8A80 /* Day09.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379D001928B2E08700AD8A80 /* Day09.swift */; };
+		379D001C28B2EC7900AD8A80 /* Day10.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379D001B28B2EC7900AD8A80 /* Day10.swift */; };
 		37B5F2CE28B277BE0092EC92 /* Day08.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B5F2CD28B277BE0092EC92 /* Day08.swift */; };
 		37D7B81728A17C6700754980 /* StopwatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D7B81628A17C6700754980 /* StopwatchView.swift */; };
 		37D7B81928A17FF200754980 /* StopwatchUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D7B81828A17FF200754980 /* StopwatchUnitView.swift */; };
@@ -50,6 +51,7 @@
 		374744AE2899D4C9000DA4D9 /* Day04.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day04.swift; sourceTree = "<group>"; };
 		3777E7DA289C04310038FE29 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		379D001928B2E08700AD8A80 /* Day09.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day09.swift; sourceTree = "<group>"; };
+		379D001B28B2EC7900AD8A80 /* Day10.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day10.swift; sourceTree = "<group>"; };
 		37B5F2CD28B277BE0092EC92 /* Day08.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day08.swift; sourceTree = "<group>"; };
 		37D7B81628A17C6700754980 /* StopwatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchView.swift; sourceTree = "<group>"; };
 		37D7B81828A17FF200754980 /* StopwatchUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchUnitView.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				372503DF28A84F5E00D1EADE /* Day07.swift */,
 				37B5F2CD28B277BE0092EC92 /* Day08.swift */,
 				379D001928B2E08700AD8A80 /* Day09.swift */,
+				379D001B28B2EC7900AD8A80 /* Day10.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				3747448928995C60000DA4D9 /* ContentView.swift in Sources */,
 				374744A42899706C000DA4D9 /* InputList.swift in Sources */,
 				3747449928995D2F000DA4D9 /* AoCUtil.swift in Sources */,
+				379D001C28B2EC7900AD8A80 /* Day10.swift in Sources */,
 				372503E028A84F5E00D1EADE /* Day07.swift in Sources */,
 				B875313C28A4583D00B4AAD3 /* Day05.swift in Sources */,
 				37D7B81728A17C6700754980 /* StopwatchView.swift in Sources */,
