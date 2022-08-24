@@ -12,7 +12,8 @@ import Algorithms
 var solutions: [AoCSolution] {
 	get {
 		return [Day01(), Day02(), Day03(), Day04(), Day05(),
-				Day06(), Day07(), Day08(), Day09(), Day10()]
+				Day06(), Day07(), Day08(), Day09(), Day10(),
+				Day11()]
 	}
 }
 
@@ -162,6 +163,10 @@ struct AoCCoord2D: Hashable {
 
 	func manhattanDistance(to other: AoCCoord2D) -> Int {
 		return abs(self.x - other.x) + abs(self.y - other.y)
+	}
+	
+	var description: String {
+		return "[x: \(x), y: \(y)]"
 	}
 }
 
