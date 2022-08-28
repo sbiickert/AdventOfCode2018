@@ -20,30 +20,72 @@ class Day11: AoCSolution {
 		let result = findMaxPower(grid, size: 3)
 		
 		print("Part One: the coord with the maximum power is \(result.c.description) with power \(result.p)")
+		
+		let result2 = solvePartTwo(grid)
 
-		return AoCResult(part1: result.c.description, part2: nil)
+		return AoCResult(part1: result.c.description, part2: result2)
 	}
 	
-	private func findMaxPower(_ grid: [[Int]], size: Int) -> (p: Int, c: AoCCoord2D, g: [[Int]]) {
+	private func solvePartTwo(_ grid: [[Int]]) -> String {
+		var grids = Dictionary<Int, [[Int]]>()
+		grids[1] = grid
+		
+		var maxPower = Int.min
+		var maxCoord: AoCCoord2D?
+		var maxSize = 0
+		for size in 1...Day11.GRID_SIZE {
+			print(size)
+			let f = Day11.largestFactor(size)
+			let r = findMaxPower(grids[f]!, size: size, factor: f)
+			
+			grids[size] = r.g
+
+			if r.p > maxPower {
+				maxPower = r.p
+				maxSize = size
+				maxCoord = r.c
+				print("Power \(maxPower) -> \(maxCoord!.description) @ \(maxSize)")
+			}
+		}
+
+		print("Part Two: the coord with the maximum power is \(maxCoord!.description) with power \(maxPower) at size \(maxSize)")
+
+		return "\(maxCoord!.description) @ \(maxSize)"
+	}
+	
+	private func findMaxPower(_ grid: [[Int]], size: Int, factor: Int = 1) -> (p: Int, c: AoCCoord2D, g: [[Int]]) {
 		var maxCoord: AoCCoord2D?
 		var maxPower = Int.min
-		var outGrid = [[Int]](repeating: [Int](repeating: 0, count: Day11.GRID_SIZE-(size-1)), count: Day11.GRID_SIZE-(size-1))
+		var outGrid = [[Int]](repeating: [Int](repeating: 0, count: Day11.GRID_SIZE-(size-1)),
+							  count: Day11.GRID_SIZE-(size-1))
 		
 		for (r, c) in product(0...(Day11.GRID_SIZE-size), 0...(Day11.GRID_SIZE-size)) {
 			var sumPower = 0
 			
-			for (x, y) in product(0..<size, 0..<size) {
-				sumPower += grid[r+y][c+x]
+			for x in stride(from: 0, to: size, by: factor) {
+				for y in stride(from: 0, to: size, by: factor) {
+					sumPower += grid[r+y][c+x]
+				}
 			}
 			
+			outGrid[r][c] = sumPower
+
 			if sumPower > maxPower {
-				outGrid[r][c] = sumPower
 				maxPower = sumPower
 				maxCoord = AoCCoord2D(x: c, y: r)
 			}
 		}
 		
 		return (p: maxPower, c: maxCoord!, g: outGrid)
+	}
+	
+	private static func largestFactor(_ number: Int) -> Int {
+		for f in stride(from: number-1, to: 0, by: -1) {
+			if (number % f == 0) {
+				return f
+			}
+		}
+		return 1
 	}
 	
 	private func buildGrid(serialNumber: Int) -> [[Int]] {
