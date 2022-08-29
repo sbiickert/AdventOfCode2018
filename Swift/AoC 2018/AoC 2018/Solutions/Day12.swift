@@ -24,7 +24,15 @@ class Day12: AoCSolution {
 		let result1 = process(state: parsed.state, liveRules: parsed.live, dieRules: parsed.die, iterations: 20)
 		print("Part One: the sum of the pot numbers with a plant is \(result1)")
 		
-		return AoCResult(part1: String(result1), part2: nil)
+		let firstThousandScore =  process(state: parsed.state, liveRules: parsed.live, dieRules: parsed.die, iterations: 1000)
+		let secondThousandScore = process(state: parsed.state, liveRules: parsed.live, dieRules: parsed.die, iterations: 2000)
+		let scorePerThousand = secondThousandScore - firstThousandScore
+
+		var result2 = 50000000 * scorePerThousand
+		result2 = result2 - scorePerThousand + firstThousandScore
+		print("Part Two: total score for fifty billion iterations is \(result2)")
+
+		return AoCResult(part1: String(result1), part2: String(result2))
 	}
 	
 	private func process(state original: String, liveRules: [Rule], dieRules: [Rule], iterations: Int) -> Int {
