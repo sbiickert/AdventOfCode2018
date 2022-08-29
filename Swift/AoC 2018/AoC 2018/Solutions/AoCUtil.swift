@@ -13,7 +13,7 @@ var solutions: [AoCSolution] {
 	get {
 		return [Day01(), Day02(), Day03(), Day04(), Day05(),
 				Day06(), Day07(), Day08(), Day09(), Day10(),
-				Day11(), Day12()]
+				Day11(), Day12(), Day13()]
 	}
 }
 
@@ -170,9 +170,35 @@ struct AoCCoord2D: Hashable {
 	}
 }
 
+struct AoCExtent2D: Hashable {
+	static func build(from coords: [AoCCoord2D]) -> AoCExtent2D {
+		if let (xmin, xmax) = (coords.map { $0.x }).minAndMax(),
+		   let (ymin, ymax) = (coords.map { $0.y }).minAndMax() {
+			return AoCExtent2D(min: AoCCoord2D(x: xmin, y: ymin), max: AoCCoord2D(x: xmax, y: ymax))
+		}
+		return AoCExtent2D(min: AoCCoord2D(x: 0, y: 0), max: AoCCoord2D(x: 0, y: 0))
+	}
+	
+	let min: AoCCoord2D
+	let max: AoCCoord2D
+	
+	var width: Int {
+		return max.x - min.x
+	}
+	
+	var height: Int {
+		return max.y - min.y
+	}
+}
+
+enum AoCDirection: String {
+	case up = "^"
+	case down = "v"
+	case right = ">"
+	case left = "<"
+}
+
 class AoCGrid2D {
-	var width: Int
-	var height: Int
 	let defaultValue: String
 	var _data = Dictionary<AoCCoord2D, String>()
 	var neighbourRule: NeighbourRule = .rook
@@ -183,12 +209,14 @@ class AoCGrid2D {
 		case queen
 	}
 	
-	init(width: Int, height: Int, defaultValue: String = ".") {
-		self.width = width > 0 ? width : 1
-		self.height = height > 0 ? height : 1
+	init(defaultValue: String = ".") {
 		self.defaultValue = defaultValue
 	}
 	
+	var extent: AoCExtent2D {
+		return AoCExtent2D.build(from: [AoCCoord2D](_data.keys))
+	}
+
 	func value(at coord: AoCCoord2D) -> String {
 		if let v = _data[coord] {
 			return v
@@ -206,7 +234,8 @@ class AoCGrid2D {
 	
 	var counts: Dictionary<String, Int> {
 		var result = Dictionary<String, Int>()
-		for (row, col) in product(0...height, 0...width) {
+		let ext = extent
+		for (row, col) in product(ext.min.y...ext.max.y, ext.min.x...ext.max.x) {
 			let v = value(at: AoCCoord2D(x: col, y: row))
 			if result.keys.contains(v) == false { result[v] = 0 }
 			result[v]! += 1
@@ -240,9 +269,10 @@ class AoCGrid2D {
 	}
 	
 	func draw() {
-		for row in 0...height {
+		let ext = extent
+		for row in ext.min.y...ext.max.y {
 			var values = [String]()
-			for col in 0...width {
+			for col in ext.min.x...ext.max.x {
 				values.append(value(at: AoCCoord2D(x: col, y: row)))
 			}
 			print(values.joined(separator: ""))

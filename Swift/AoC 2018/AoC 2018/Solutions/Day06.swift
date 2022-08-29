@@ -44,8 +44,9 @@ class Day06: AoCSolution {
 		let grid = parseGrid(input)
 		var count = 0
 		let coords = grid.coords
+		let ext = grid.extent
 		
-		for (row, col) in product(0...grid.height, 0...grid.width) {
+		for (row, col) in product(ext.min.y...ext.max.y, ext.min.x...ext.max.x) {
 			let target = AoCCoord2D(x: col, y: row)
 			var sumDistance = 0
 			for coord in coords {
@@ -58,8 +59,9 @@ class Day06: AoCSolution {
 
 	private func getInfiniteValues(_ grid: AoCGrid2D) -> [String] {
 		var values = Set<String>()
-		for (row, col) in product(0...grid.height, 0...grid.width) {
-			if row == 0 || row == grid.height || col == 0 || col == grid.width {
+		let ext = grid.extent
+		for (row, col) in product(ext.min.y...ext.max.y, ext.min.x...ext.max.x) {
+			if row == ext.min.y || row == ext.max.y || col == ext.min.x || col == ext.max.x {
 				values.insert(grid.value(at: AoCCoord2D(x: col, y: row)))
 			}
 		}
@@ -68,11 +70,11 @@ class Day06: AoCSolution {
 		
 	private func allocateGrid(_ grid: AoCGrid2D) {
 		let coords = grid.coords
-		
-		for (row, col) in product(0...grid.height, 0...grid.width) {
+		let ext = grid.extent
+		for (row, col) in product(ext.min.y...ext.max.y, ext.min.x...ext.max.x) {
 			let target = AoCCoord2D(x: col, y: row)
 			var minValue = ""
-			var minMD = grid.height + grid.width + 10 // Bigger MD than can be contained by grid
+			var minMD = ext.height + ext.width + 10 // Bigger MD than can be contained by grid
 			
 			for coord in coords {
 				let md = coord.manhattanDistance(to: target)
@@ -95,19 +97,15 @@ class Day06: AoCSolution {
 	
 	private func parseGrid(_ input: [String]) -> AoCGrid2D {
 		var coords = [AoCCoord2D]()
-		var xmax = 0
-		var ymax = 0
 		for var line in input {
 			line = line.replacingOccurrences(of: " ", with: "")
 			let xy = line.split(separator: ",")
 			let x = Int(xy[0])!
 			let y = Int(xy[1])!
 			coords.append(AoCCoord2D(x: x, y: y))
-			xmax = max(xmax, x)
-			ymax = max(ymax, y)
 		}
 		
-		let grid = AoCGrid2D(width: xmax, height: ymax)
+		let grid = AoCGrid2D()
 		
 		let UC_LC_ALPHABET = AoCUtil.ALPHABET.uppercased() + AoCUtil.ALPHABET.lowercased()
 		for i in 0..<coords.count {
