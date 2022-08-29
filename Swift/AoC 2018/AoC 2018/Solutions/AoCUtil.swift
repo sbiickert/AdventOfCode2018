@@ -13,7 +13,7 @@ var solutions: [AoCSolution] {
 	get {
 		return [Day01(), Day02(), Day03(), Day04(), Day05(),
 				Day06(), Day07(), Day08(), Day09(), Day10(),
-				Day11()]
+				Day11(), Day12()]
 	}
 }
 
@@ -253,9 +253,33 @@ class AoCGrid2D {
 
 /* MARK: Extensions */
 
-extension StringProtocol {
+extension String {
 	subscript(offset: Int) -> Character {
-		self[index(startIndex, offsetBy: offset)]
+		get {
+			self[index(startIndex, offsetBy: offset)]
+		}
+		set {
+			let idx = self.index(startIndex, offsetBy: offset)
+			self.replaceSubrange(idx...idx, with: [newValue])
+		}
+	}
+}
+
+extension String {
+	func indicesOf(string: String) -> [Int] {
+		var indices = [Int]()
+		var searchStartIndex = self.startIndex
+
+		while searchStartIndex < self.endIndex,
+			let range = self.range(of: string, range: searchStartIndex..<self.endIndex),
+			!range.isEmpty
+		{
+			let d = distance(from: self.startIndex, to: range.lowerBound)
+			indices.append(d)
+			searchStartIndex = self.index(after: self.index(startIndex, offsetBy: d))
+		}
+
+		return indices
 	}
 }
 
@@ -267,16 +291,12 @@ extension NSRegularExpression {
 			preconditionFailure("Illegal regular expression: \(pattern).")
 		}
 	}
-}
 
-extension NSRegularExpression {
 	func matches(_ string: String) -> Bool {
 		let range = NSRange(location: 0, length: string.utf16.count)
 		return firstMatch(in: string, options: [], range: range) != nil
 	}
-}
 
-extension NSRegularExpression {
 	func positionalMatches(_ string: String) -> [String] {
 		var result = [String]()
 		let range = NSRange(location: 0, length: string.utf16.count)
@@ -288,6 +308,23 @@ extension NSRegularExpression {
 				result.append(String(string[low..<hi]))
 			}
 		}
+		return result
+	}
+	
+	func allMatches(_ string: String) -> [String] {
+		var result = [String]()
+		var searchRange = NSRange(location: 0, length: string.utf16.count)
+		var matchRange = self.rangeOfFirstMatch(in: string, range: searchRange)
+		
+		while (matchRange.length > 0) {
+			let low = string.index(string.startIndex, offsetBy: matchRange.lowerBound)
+			let hi = string.index(string.startIndex, offsetBy: matchRange.upperBound)
+			result.append(String(string[low..<hi]))
+			searchRange = NSRange(location: matchRange.upperBound, length: searchRange.length - matchRange.upperBound)
+			if searchRange.length <= 0 { break }
+			matchRange = self.rangeOfFirstMatch(in: string, range: searchRange)
+		}
+		
 		return result
 	}
 }

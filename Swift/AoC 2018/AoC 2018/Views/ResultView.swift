@@ -42,12 +42,19 @@ struct ResultView: View {
 				ScrollView {
 					HStack {
 						LazyVStack(alignment: .leading) {
-							ForEach(0..<AoCUtil.readGroupedInputFile(named: input.fileName, group: input.index).count, id: \.self) {
-								Text(AoCUtil.readGroupedInputFile(named: input.fileName, group: input.index)[$0])
+							if (input.solution.emptyLinesIndicateMultipleInputs) {
+								ForEach(0..<AoCUtil.readGroupedInputFile(named: input.fileName, group: input.index).count, id: \.self) {
+									Text(AoCUtil.readGroupedInputFile(named: input.fileName, group: input.index)[$0])
+										.font(.custom("Menlo", fixedSize: 12))
+								}
+							}
+							else {
+								ForEach(0..<AoCUtil.readInputFile(named: input.fileName, removingEmptyLines: false).count, id: \.self) {
+									Text(AoCUtil.readInputFile(named: input.fileName, removingEmptyLines: false)[$0])
+										.font(.custom("Menlo", fixedSize: 12))
+								}
 							}
 						}
-//						Text(AoCUtil.readGroupedInputFile(named: input.fileName, group: input.index).joined(separator: "\n"))
-//						Spacer()
 					}
 				}
 			Button {
@@ -91,6 +98,6 @@ struct ResultView: View {
 
 struct ResultView_Previews: PreviewProvider {
     static var previews: some View {
-		ResultView(input: inputs(for: solutions[2])[0])
+		ResultView(input: inputs(for: solutions[11])[0])
     }
 }
