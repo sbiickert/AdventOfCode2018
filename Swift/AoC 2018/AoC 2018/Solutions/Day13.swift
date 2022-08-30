@@ -54,7 +54,47 @@ class Day13: AoCSolution {
 	}
 	
 	private func solvePartTwo(map: AoCGrid2D, carts: [MineCart]) -> AoCCoord2D {
-		return AoCCoord2D(x: 0, y: 0)
+		var carts = carts
+
+		draw(map: map, carts: carts)
+
+		while carts.count > 1 {
+			// Sort carts by position row, col
+			carts = carts.sorted {
+				$0.position.y == $1.position.y ?
+				$0.position.x < $1.position.x :
+				$0.position.y < $1.position.y
+			}
+			
+			var eliminated = Set<MineCart>()
+			var cartPositions = Dictionary<AoCCoord2D, MineCart>()
+			carts.forEach {cartPositions[$0.position] = $0}
+			
+			for cart in carts {
+				if eliminated.contains(cart) {continue}
+				
+				let oldPos = cart.position
+				cart.move(on: map.value(at: cart.position))
+				
+				if cartPositions.keys.contains(cart.position) {
+					print("A collision at \(cart.position).")
+					eliminated.insert(cart)
+					eliminated.insert(cartPositions[cart.position]!)
+					cartPositions.removeValue(forKey: oldPos)
+					cartPositions.removeValue(forKey: cart.position)
+				}
+				else {
+					cartPositions.removeValue(forKey: oldPos)
+					cartPositions[cart.position] = cart
+				}
+			}
+			
+			carts = carts.filter { !eliminated.contains($0) }
+			
+			draw(map: map, carts: carts)
+		}
+		
+		return carts.first!.position
 	}
 	
 	private func draw(map: AoCGrid2D, carts: [MineCart], mark: AoCCoord2D? = nil) {
@@ -111,7 +151,16 @@ class Day13: AoCSolution {
 	}
 }
 
-class MineCart {
+class MineCart: Hashable {
+	static func == (lhs: MineCart, rhs: MineCart) -> Bool {
+		return lhs.id == rhs.id
+	}
+	
+	func hash(into hasher: inout Hasher) {
+		id.hash(into: &hasher)
+	}
+	
+	let id = UUID()
 	var position: AoCCoord2D
 	var direction: AoCDirection
 	private var lastTurnChosen = TurnDir.right // So that the first turn will be to the left
