@@ -148,9 +148,8 @@ class AoCUtil {
 		return result
 	}
 	
-	static func numberToIntArray(_ n: Int) -> [Int] {
-		let s = String(n)
-		let arr = Array(s)
+	static func numberToIntArray(_ n: String) -> [Int] {
+		let arr = Array(n)
 		return arr.map { Int(String($0))! }
 	}
 }

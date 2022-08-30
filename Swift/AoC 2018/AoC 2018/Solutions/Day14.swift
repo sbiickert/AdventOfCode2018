@@ -20,12 +20,15 @@ class Day14: AoCSolution {
 	override func solve(filename: String, index: Int) -> AoCResult {
 		super.solve(filename: filename, index: index)
 		
-		let input = Int(AoCUtil.readGroupedInputFile(named: filename, group: index).first!)!
+		let input = AoCUtil.readGroupedInputFile(named: filename, group: index).first!
 		
-		let result1 = solvePartOne(numRecipes: input)
+		let result1 = solvePartOne(numRecipes: Int(input)!)
 		print("The scores of the next 10 recipes after \(input) are \(result1)")
 		
-		return AoCResult(part1: result1, part2: nil)
+		let result2 = solvePartTwo(search: input)
+		print("There are \(result2) digits before finding \(input)")
+		
+		return AoCResult(part1: result1, part2: result2)
 	}
 	
 	private func solvePartOne(numRecipes: Int) -> String {
@@ -45,8 +48,35 @@ class Day14: AoCSolution {
 		return result
 	}
 	
+	private func solvePartTwo(search: String) -> String {
+		var scoreboard = [3,7]
+		elf1 = 0
+		elf2 = 1
+		print("Searching for \(search)")
+
+		let searchDigits = AoCUtil.numberToIntArray(search)
+		var found = false
+		var searchFrom = 0
+		while !found {
+			let oldCount = scoreboard.count
+			makeRecipes(&scoreboard)
+			let change = scoreboard.count - oldCount // Normally 1, but can be 2
+			for c in 0..<change {
+				searchFrom = scoreboard.count - searchDigits.count - c
+				if searchFrom < 0 {continue}
+				let searchTo = searchFrom + searchDigits.count
+				found = [Int](scoreboard[searchFrom..<searchTo]) == searchDigits
+				if found {break}
+			}
+			printScoreboard(scoreboard)
+		}
+		printScoreboard(scoreboard, tailonly: true)
+
+		return String(searchFrom)
+	}
+	
 	private func makeRecipes(_ scoreboard: inout [Int]) {
-		let sum = scoreboard[elf1] + scoreboard[elf2]
+		let sum = String(scoreboard[elf1] + scoreboard[elf2])
 		scoreboard.append(contentsOf: AoCUtil.numberToIntArray(sum))
 		
 		// Move elves by the score of their current recipe + 1
@@ -60,11 +90,14 @@ class Day14: AoCSolution {
 		}
 	}
 	
-	private func printScoreboard(_ scoreboard: [Int]) {
-		guard scoreboard.count < 30 else { return }
+	private func printScoreboard(_ scoreboard: [Int], tailonly: Bool = false) {
+		guard scoreboard.count < 30 || tailonly else { return }
 		
 		var temp = [String]()
-		for i in 0..<scoreboard.count {
+		
+		let start = tailonly ? max(0, scoreboard.count - 20) : 0
+		
+		for i in start..<scoreboard.count {
 			if i == elf1 		{	temp.append("(\(scoreboard[i]))")}
 			else if i == elf2	{	temp.append("[\(scoreboard[i])]")}
 			else				{	temp.append(String(scoreboard[i]))}
