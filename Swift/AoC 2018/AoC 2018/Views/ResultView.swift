@@ -98,6 +98,6 @@ struct ResultView: View {
 
 struct ResultView_Previews: PreviewProvider {
     static var previews: some View {
-		ResultView(input: inputs(for: solutions[11])[0])
+		ResultView(input: AoCUtil.inputs(for: AoCUtil.solutions[11])[0])
     }
 }

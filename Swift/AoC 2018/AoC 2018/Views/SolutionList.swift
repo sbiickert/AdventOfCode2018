@@ -10,7 +10,7 @@ import SwiftUI
 struct SolutionList: View {
 	@State var selectedSolution: AoCSolution?
     var body: some View {
-		List(solutions, id: \.day) { solution in
+		List(AoCUtil.solutions, id: \.day) { solution in
 			NavigationLink {
 				InputList(selectedSolution: solution)
 			} label: {

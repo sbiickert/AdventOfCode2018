@@ -10,7 +10,7 @@ import SwiftUI
 struct InputList: View {
 	var selectedSolution: AoCSolution
     var body: some View {
-		List(inputs(for: selectedSolution), id: \.id) { input in
+		List(AoCUtil.inputs(for: selectedSolution), id: \.id) { input in
 			InputRow(input: input)
 		}
     }
@@ -18,6 +18,6 @@ struct InputList: View {
 
 struct InputList_Previews: PreviewProvider {
     static var previews: some View {
-		InputList(selectedSolution: solutions[0])
+		InputList(selectedSolution: AoCUtil.solutions[0])
     }
 }

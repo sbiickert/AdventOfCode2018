@@ -21,8 +21,8 @@ struct SolutionRow: View {
 struct SolutionRow_Previews: PreviewProvider {
     static var previews: some View {
 		Group {
-			SolutionRow(solution: solutions[0])
-			SolutionRow(solution: solutions[1])
+			SolutionRow(solution: AoCUtil.solutions[0])
+			SolutionRow(solution: AoCUtil.solutions[1])
 		}
 		.previewLayout(.fixed(width: 300, height: 70))
     }
