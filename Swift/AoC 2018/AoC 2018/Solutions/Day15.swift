@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Algorithms
 
 class Day15: AoCSolution {
 	override init() {
@@ -31,11 +32,14 @@ class Day15: AoCSolution {
 		var people = input.startPeople
 		var map = input.map
 		
+		print(round)
+		printMap(map, people: people)
 		while (people.filter {$0.kind == .elf}).count > 0
 				&& (people.filter {$0.kind == .goblin}).count > 0 {
 			playRound(map: map, people: &people)
 			round += 1
-			break
+			print(round)
+			printMap(map, people: people)
 		}
 		
 		let score = calcScore(numberOfRounds: round, people: people)
@@ -77,8 +81,23 @@ class Day15: AoCSolution {
 			
 			if coordsInRangeOfTargets.contains(person.position) == false {
 				// Person is not next to a target. Have to move.
-				let _ = map.findLeastCostPath(from: person.position, to: coordsInRangeOfTargets.first!,
-												 barrierValue: "#", additionalBarriers: otherPeopleCoords)
+				//print("Person at \(person.position)")
+				var coordToMoveTo: AoCCoord2D?
+				var lowestCost = Int.max
+				for coord in coordsInRangeOfTargets {
+					if let lcp = findLeastCostPath(in: map, from: person.position, to: coord,
+												   barrierValue: "#",
+												   additionalBarriers: otherPeopleCoords) {
+						if lcp.cost < lowestCost {
+							coordToMoveTo = lcp.firstMove
+							lowestCost = lcp.cost
+						}
+					}
+				}
+				if let coordToMoveTo = coordToMoveTo {
+					print("\(person.kind.rawValue) at \(person.position) moving to \(coordToMoveTo)")
+					person.position = coordToMoveTo
+				}
 			}
 			
 			if coordsInRangeOfTargets.contains(person.position) == true {
@@ -96,6 +115,90 @@ class Day15: AoCSolution {
 		people.removeAll { killed.contains($0) }
 	}
 	
+	private func findLeastCostPath(in map: AoCGrid2D,
+								   from source: AoCCoord2D,
+								   to target: AoCCoord2D,
+								   barrierValue: String,
+								   additionalBarriers: Set<AoCCoord2D>?) -> (cost: Int, firstMove: AoCCoord2D)? {
+		// Assuming constant cost for now
+		struct Node {
+			var cost = 1
+			var minTravelCost = Int.max
+			var visited = false
+			var isBarrier = false
+		}
+		// extent might not have origin at 0,0
+		// so there are corrections below to translate the grid
+		let ext = map.extent
+		var grid = [[Node]](repeating: [Node](repeating: Node(), count: ext.width), count: ext.height)
+		// Mark all barriers
+		for (r, c) in product(ext.min.y...ext.max.y, ext.min.x...ext.max.x) {
+			let coord = AoCCoord2D(x: c, y: r)
+			if map.value(at: coord) == barrierValue || (additionalBarriers != nil && additionalBarriers!.contains(coord)) {
+				grid[r - ext.min.y][c - ext.min.x].isBarrier = true
+			}
+		}
+		//print(">> Finding path with source \(source) and target \(target)")
+
+		// Going to calculate using dijkstra but STARTING at the target.
+		// That way the cost is calculated to the source and the next-least-cost squares
+		// will be next to the source. Doing it the other way (starting at source) left
+		// some low-cost dead ends next to source and it was hard to choose which way to go.
+		let endPos = AoCCoord2D(x: source.x - ext.min.x, y: source.y - ext.min.y)
+		let startPos = AoCCoord2D(x: target.x - ext.min.x, y: target.y - ext.min.y)
+		
+		var pos = startPos
+		grid[pos.y][pos.x].minTravelCost = 0
+		
+		while grid[endPos.y][endPos.x].visited == false {
+			for n in pos.getAdjacent() {
+				if ext.contains(n) && grid[n.y][n.x].visited == false && !grid[n.y][n.x].isBarrier {
+					let costToN = grid[pos.y][pos.x].minTravelCost + grid[n.y][n.x].cost
+					if grid[n.y][n.x].minTravelCost > costToN { grid[n.y][n.x].minTravelCost = costToN }
+				}
+			}
+			grid[pos.y][pos.x].visited = true
+			
+			var minCost = Int.max
+			var minCostPos: AoCCoord2D?
+			for (r,c) in product(0..<ext.height, 0..<ext.width) {
+				if grid[r][c].visited == false && grid[r][c].minTravelCost < minCost {
+					minCost = grid[r][c].minTravelCost
+					minCostPos = AoCCoord2D(x: c, y: r)
+				}
+			}
+			
+			// If the lowest cost node has minTravelCost Int.Max,
+			// then there was no path from source to target
+			if minCost == Int.max { break }
+			
+			pos = minCostPos!
+		}
+		
+		// Print for debugging
+//		for r in grid {
+//			let rTemp = r.map { $0.minTravelCost == Int.max ? "X" : String($0.minTravelCost) }
+//			print(rTemp.joined(separator: " "))
+//		}
+//		print()
+		
+		if grid[endPos.y][endPos.x].visited == false {
+			//print("No path with source \(source) and target \(target)")
+			return nil // Could not find a path
+		}
+		
+		let leastCostForTotalPath = grid[endPos.y][endPos.x].minTravelCost
+		var firstMoves = endPos.getAdjacent().filter { grid[$0.y][$0.x].visited }
+		if firstMoves.count > 1 {
+			firstMoves.sort { grid[$0.y][$0.x].minTravelCost < grid[$1.y][$1.x].minTravelCost }
+			let min = grid[firstMoves[0].y][firstMoves[0].x].minTravelCost
+			firstMoves.removeAll { grid[$0.y][$0.x].minTravelCost != min }
+			firstMoves.sort(by: AoCCoord2D.readingOrderSort(c0:c1:))
+		}
+		//print("Best first move is to \(firstMoves.first!) with cost \(grid[firstMoves.first!.y][firstMoves.first!.x].minTravelCost)")
+		return (cost: leastCostForTotalPath, firstMove: firstMoves.first!)
+	}
+
 	private func calcScore(numberOfRounds: Int, people: [Combatant]) -> Int {
 		let sum = (people.map { $0.hp }).reduce(0, +)
 		return sum * numberOfRounds
@@ -145,11 +248,24 @@ class Day15: AoCSolution {
 		}
 		
 		var result = ParseResult(map: map, startPeople: people[0])
-		map.draw()
+		
 		if people.count > 1 {
 			result.endPeople = people[1]
 		}
 		return result
+	}
+	
+	private func printMap(_ map: AoCGrid2D, people: [Combatant]) {
+		var markers = Dictionary<AoCCoord2D, String>()
+		for person in people {
+			markers[person.position] = person.kind.rawValue
+		}
+		map.draw(markers: markers)
+		for person in people.sorted(by: { p1, p2 in
+			AoCCoord2D.readingOrderSort(c0: p1.position, c1: p2.position)
+		}) {
+			print(person.description)
+		}
 	}
 }
 
@@ -183,4 +299,7 @@ private class Combatant: Hashable {
 		hasher.combine(id.hashValue)
 	}
 	
+	var description: String {
+		return "\(kind.rawValue)(\(hp))"
+	}
 }

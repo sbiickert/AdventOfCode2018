@@ -163,73 +163,22 @@ class AoCGrid2D {
 		return result
 	}
 
-	func draw() {
+	func draw(markers: Dictionary<AoCCoord2D, String>? = nil) {
 		let ext = extent
 		for row in ext.min.y...ext.max.y {
 			var values = [String]()
 			for col in ext.min.x...ext.max.x {
-				values.append(value(at: AoCCoord2D(x: col, y: row)))
+				let coord = AoCCoord2D(x: col, y: row)
+				if let markers = markers,
+				   markers.keys.contains(coord) {
+					values.append(markers[coord]!)
+				}
+				else {
+					values.append(value(at: coord))
+				}
 			}
 			print(values.joined(separator: " "))
 		}
 		print("")
-	}
-	
-	func findLeastCostPath(from source: AoCCoord2D, to target: AoCCoord2D,
-						   barrierValue: String,
-						   additionalBarriers: Set<AoCCoord2D>?) -> (cost: Int, path: [AoCCoord2D]) {
-		// Assuming constant cost for now
-		struct Node {
-			var cost = 1
-			var minTravelCost = Int.max
-			var visited = false
-			var isBarrier = false
-		}
-		// extent might not have origin at 0,0
-		// so there are corrections below to translate the grid
-		let ext = extent
-		var grid = [[Node]](repeating: [Node](repeating: Node(), count: ext.width), count: ext.height)
-		// Mark all barriers
-		for (r, c) in product(ext.min.y...ext.max.y, ext.min.x...ext.max.x) {
-			let coord = AoCCoord2D(x: c, y: r)
-			if value(at: coord) == barrierValue || (additionalBarriers != nil && additionalBarriers!.contains(coord)) {
-				grid[r - ext.min.y][c - ext.min.x].isBarrier = true
-			}
-		}
-		
-		var pos = AoCCoord2D(x: source.x - ext.min.x, y: source.y - ext.min.y)
-		grid[pos.y][pos.x].minTravelCost = 0
-		
-		while grid[target.y - ext.min.y][target.x - ext.min.x].visited == false {
-			let neighbours = pos.getAdjacent()
-			for n in neighbours {
-				if ext.contains(n) && grid[n.y][n.x].visited == false && !grid[n.y][n.x].isBarrier {
-					let costToN = grid[pos.y][pos.x].minTravelCost + grid[n.y][n.x].cost
-					if grid[n.y][n.x].minTravelCost > costToN { grid[n.y][n.x].minTravelCost = costToN }
-				}
-			}
-			grid[pos.y][pos.x].visited = true
-			
-			var minCost = Int.max
-			var minCostPos: AoCCoord2D?
-			for (r,c) in product(0..<ext.height, 0..<ext.width) {
-				if grid[r][c].visited == false && grid[r][c].minTravelCost < minCost {
-					minCost = grid[r][c].minTravelCost
-					minCostPos = AoCCoord2D(x: c, y: r)
-				}
-			}
-			
-			// If the lowest cost node has minTravelCost Int.Max,
-			// then there was no path from source to target
-			if minCost == Int.max { break }
-			
-			pos = minCostPos!
-		}
-		
-		for r in grid {
-			print((r.map { String($0.minTravelCost == Int.max ? 0 : $0.minTravelCost) }).joined(separator: " "))
-		}
-
-		return (cost: -1, path: [AoCCoord2D]())
 	}
 }
