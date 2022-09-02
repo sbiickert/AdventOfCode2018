@@ -74,7 +74,7 @@ extension NSRegularExpression {
 			let low = string.index(string.startIndex, offsetBy: matchRange.lowerBound)
 			let hi = string.index(string.startIndex, offsetBy: matchRange.upperBound)
 			result.append(String(string[low..<hi]))
-			searchRange = NSRange(location: matchRange.upperBound, length: searchRange.length - matchRange.upperBound)
+			searchRange = NSRange(location: matchRange.upperBound, length: string.utf16.count - matchRange.upperBound)
 			if searchRange.length <= 0 { break }
 			matchRange = self.rangeOfFirstMatch(in: string, range: searchRange)
 		}
