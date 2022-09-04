@@ -84,7 +84,7 @@ class Day15: AoCSolution {
 				//print("Person at \(person.position)")
 				var coordToMoveTo: AoCCoord2D?
 				var lowestCost = Int.max
-				for coord in coordsInRangeOfTargets {
+				for coord in coordsInRangeOfTargets.sorted(by: AoCCoord2D.readingOrderSort(c0:c1:)) {
 					if let lcp = findLeastCostPath(in: map, from: person.position, to: coord,
 												   barrierValue: "#",
 												   additionalBarriers: otherPeopleCoords) {

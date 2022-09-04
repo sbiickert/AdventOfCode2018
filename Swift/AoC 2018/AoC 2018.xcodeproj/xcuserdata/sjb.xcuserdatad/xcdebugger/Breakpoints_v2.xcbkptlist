@@ -15,25 +15,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "233"
-            endingLineNumber = "233"
-            landmarkName = "findLeastCostPath(from:to:barrierValue:additionalBarriers:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "C1E21DE1-4B4D-4279-A0FC-5402FED9A7B8"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AoC 2018/Solutions/Day15.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
-            landmarkName = "playRound(map:people:)"
-            landmarkType = "9">
+            endingLineNumber = "233">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
