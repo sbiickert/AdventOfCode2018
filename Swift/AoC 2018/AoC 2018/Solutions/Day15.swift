@@ -20,6 +20,7 @@ class Day15: AoCSolution {
 		
 		let input = AoCUtil.readGroupedInputFile(named: filename, group: index)
 		let parsed = parseInput(input)
+		Combatant.elfAttackPowerBoost = 0
 		
 		let result1 = solvePartOne(parsed)
 		print("Part One: the outcome score is \(result1)")
@@ -43,14 +44,13 @@ class Day15: AoCSolution {
 		printMap(map, people: people)
 		while (people.filter {$0.kind == .elf}).count > 0
 				&& (people.filter {$0.kind == .goblin}).count > 0 {
-			playRound(map: map, people: &people)
-			round += 1
-			print(round)
+			let fullRound = playRound(map: map, people: &people)
+			if fullRound {
+				round += 1
+				print(round)
+			}
 			printMap(map, people: people)
 		}
-		
-		// "the number of full rounds that were completed (not counting the round in which combat ends)"
-		round -= 1
 		
 		let score = calcScore(numberOfRounds: round, people: people)
 		
@@ -83,19 +83,16 @@ class Day15: AoCSolution {
 			var goblinCount = (people.filter {$0.kind == .goblin}).count
 
 			while elfCount == startingElfCount && goblinCount > 0 {
-				playRound(map: input.map, people: &people)
+				let fullRound = playRound(map: input.map, people: &people)
 				elfCount = (people.filter {$0.kind == .elf}).count
 				goblinCount = (people.filter {$0.kind == .goblin}).count
-				round += 1
-				//print(round)
+				if fullRound { round += 1 }
 			}
 			
 			printMap(input.map, people: people)
 			
 			if startingElfCount == elfCount {
 				// Have eliminated goblins without losing an elf
-				// "the number of full rounds that were completed (not counting the round in which combat ends)"
-				round -= 1
 				return calcScore(numberOfRounds: round, people: people)
 			}
 			
@@ -103,8 +100,9 @@ class Day15: AoCSolution {
 		}
 	}
 	
-	private func playRound(map: AoCGrid2D, people: inout [Combatant]) {
+	private func playRound(map: AoCGrid2D, people: inout [Combatant]) -> Bool {
 		var killed = Set<Combatant>()
+		var fullRound = true
 		
 		// Sort people into reading order (top to bottom, left to right)
 		people.sort(by: Combatant.readingOrderSort(c0:c1:))
@@ -115,6 +113,7 @@ class Day15: AoCSolution {
 			
 			// Find targets
 			let allTargets = alivePeople.filter { $0.kind != person.kind }
+			if allTargets.count == 0 { fullRound = false }
 			
 			// Get open squares next to targets
 			var coordsInRangeOfTargets = Set<AoCCoord2D>()
@@ -174,6 +173,7 @@ class Day15: AoCSolution {
 		}
 		
 		people.removeAll { killed.contains($0) }
+		return fullRound
 	}
 	
 	private func findLeastCostPath(in map: AoCGrid2D,
