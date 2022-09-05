@@ -24,13 +24,20 @@ class Day15: AoCSolution {
 		let result1 = solvePartOne(parsed)
 		print("Part One: the outcome score is \(result1)")
 		
-		return AoCResult(part1: String(result1), part2: nil)
+		let result2 = solvePartTwo(parsed)
+		// Score is somewhere between 53430 (39*1370) and 54800 (40*1370)
+		print("Part Two: the minimum attack score with no elf deaths is \(result2)")
+		
+		return AoCResult(part1: String(result1), part2: String(result2))
 	}
 	
 	private func solvePartOne(_ input: ParseResult) -> Int {
 		var round = 0
-		var people = input.startPeople
-		var map = input.map
+		var people = [Combatant]()
+		for person in input.startPeople {
+			people.append(Combatant(person.kind, position: person.position))
+		}
+		let map = input.map
 		
 		print(round)
 		printMap(map, people: people)
@@ -42,6 +49,9 @@ class Day15: AoCSolution {
 			printMap(map, people: people)
 		}
 		
+		// "the number of full rounds that were completed (not counting the round in which combat ends)"
+		round -= 1
+		
 		let score = calcScore(numberOfRounds: round, people: people)
 		
 		if let check = input.endPeople {
@@ -51,6 +61,46 @@ class Day15: AoCSolution {
 			}
 		}
 		return score
+	}
+	
+	private func solvePartTwo(_ input: ParseResult) -> Int {
+		if input.endPeople == nil {
+			// Jumping ahead for the challenge
+			Combatant.elfAttackPowerBoost = 15
+		}
+		
+		while true {
+			print("Elf attack bonus \(Combatant.elfAttackPowerBoost)")
+			var people = [Combatant]()
+			for person in input.startPeople {
+				people.append(Combatant(person.kind, position: person.position))
+			}
+			let startingElfCount = (people.filter {$0.kind == .elf}).count
+			var round = 0
+			//print(round)
+
+			var elfCount = startingElfCount
+			var goblinCount = (people.filter {$0.kind == .goblin}).count
+
+			while elfCount == startingElfCount && goblinCount > 0 {
+				playRound(map: input.map, people: &people)
+				elfCount = (people.filter {$0.kind == .elf}).count
+				goblinCount = (people.filter {$0.kind == .goblin}).count
+				round += 1
+				//print(round)
+			}
+			
+			printMap(input.map, people: people)
+			
+			if startingElfCount == elfCount {
+				// Have eliminated goblins without losing an elf
+				// "the number of full rounds that were completed (not counting the round in which combat ends)"
+				round -= 1
+				return calcScore(numberOfRounds: round, people: people)
+			}
+			
+			Combatant.elfAttackPowerBoost += 1
+		}
 	}
 	
 	private func playRound(map: AoCGrid2D, people: inout [Combatant]) {
@@ -84,13 +134,23 @@ class Day15: AoCSolution {
 				//print("Person at \(person.position)")
 				var coordToMoveTo: AoCCoord2D?
 				var lowestCost = Int.max
-				for coord in coordsInRangeOfTargets.sorted(by: AoCCoord2D.readingOrderSort(c0:c1:)) {
+				let coordsSortedByMD = coordsInRangeOfTargets.sorted {
+					$0.manhattanDistance(to: person.position) < $1.manhattanDistance(to: person.position)
+				}
+				for coord in coordsSortedByMD {
+					if coord.manhattanDistance(to: person.position) > lowestCost {
+						// There is no way for the rest of the coords to have a cost less than lowestCost
+						break
+					}
 					if let lcp = findLeastCostPath(in: map, from: person.position, to: coord,
 												   barrierValue: "#",
 												   additionalBarriers: otherPeopleCoords) {
 						if lcp.cost < lowestCost {
 							coordToMoveTo = lcp.firstMove
 							lowestCost = lcp.cost
+						}
+						else if lcp.cost == lowestCost {
+							coordToMoveTo = [lcp.firstMove, coordToMoveTo!].sorted(by: AoCCoord2D.readingOrderSort(c0:c1:)).first!
 						}
 					}
 				}
@@ -105,9 +165,10 @@ class Day15: AoCSolution {
 				var targetsInRange = allTargets.filter { $0.position.isAdjacent(to: person.position) }
 				targetsInRange.sort { $0.hp < $1.hp }
 				let weakestTarget = targetsInRange.first!
-				weakestTarget.hp -= Combatant.ATTACK_POWER
+				weakestTarget.hp -= person.attackPower
 				if weakestTarget.hp <= 0 {
 					killed.insert(weakestTarget)
+					print("\(weakestTarget.kind) killed at \(weakestTarget.position)")
 				}
 			}
 		}
@@ -201,6 +262,7 @@ class Day15: AoCSolution {
 
 	private func calcScore(numberOfRounds: Int, people: [Combatant]) -> Int {
 		let sum = (people.map { $0.hp }).reduce(0, +)
+		print("Score: \(sum * numberOfRounds). \(numberOfRounds) rounds, \(sum) hit points remaining.")
 		return sum * numberOfRounds
 	}
 	
@@ -213,7 +275,7 @@ class Day15: AoCSolution {
 	private func parseInput(_ input: [String]) -> ParseResult {
 		let groupSplittingRegex = NSRegularExpression("(\\S+)")
 		let hpRegex = NSRegularExpression("(\\d+)")
-		var map = AoCGrid2D()
+		let map = AoCGrid2D()
 		var people = [[Combatant]]()
 		let speciesStrings = Combatant.Species.allCases.map { $0.rawValue }
 		
@@ -270,7 +332,8 @@ class Day15: AoCSolution {
 }
 
 private class Combatant: Hashable {
-	static let ATTACK_POWER = 3
+	static let BASE_ATTACK_POWER = 3
+	static var elfAttackPowerBoost = 0
 	
 	static func == (lhs: Combatant, rhs: Combatant) -> Bool {
 		return lhs.id == rhs.id
@@ -301,5 +364,14 @@ private class Combatant: Hashable {
 	
 	var description: String {
 		return "\(kind.rawValue)(\(hp))"
+	}
+	
+	var attackPower: Int {
+		switch kind {
+		case .elf:
+			return Combatant.BASE_ATTACK_POWER + Combatant.elfAttackPowerBoost
+		case .goblin:
+			return Combatant.BASE_ATTACK_POWER
+		}
 	}
 }
