@@ -26,8 +26,7 @@ class Day15: AoCSolution {
 		print("Part One: the outcome score is \(result1)")
 		
 		let result2 = solvePartTwo(parsed)
-		// Score is somewhere between 53430 (39*1370) and 54800 (40*1370)
-		print("Part Two: the minimum attack score with no elf deaths is \(result2)")
+		print("Part Two: the outcome score with no elf deaths is \(result2)")
 		
 		return AoCResult(part1: String(result1), part2: String(result2))
 	}
@@ -65,8 +64,8 @@ class Day15: AoCSolution {
 	
 	private func solvePartTwo(_ input: ParseResult) -> Int {
 		if input.endPeople == nil {
-			// Jumping ahead for the challenge
-			Combatant.elfAttackPowerBoost = 15
+			// Jumping ahead for the challenge. This is the actual amount
+			Combatant.elfAttackPowerBoost = 17
 		}
 		
 		while true {
@@ -133,13 +132,11 @@ class Day15: AoCSolution {
 				//print("Person at \(person.position)")
 				var coordToMoveTo: AoCCoord2D?
 				var lowestCost = Int.max
-				let coordsSortedByMD = coordsInRangeOfTargets.sorted {
-					$0.manhattanDistance(to: person.position) < $1.manhattanDistance(to: person.position)
-				}
-				for coord in coordsSortedByMD {
+				let coordsSortedByReadingOrder = coordsInRangeOfTargets.sorted(by: AoCCoord2D.readingOrderSort(c0:c1:))
+				for coord in coordsSortedByReadingOrder {
 					if coord.manhattanDistance(to: person.position) > lowestCost {
-						// There is no way for the rest of the coords to have a cost less than lowestCost
-						break
+						// There is no way for the coord to have a cost less than lowestCost
+						continue
 					}
 					if let lcp = findLeastCostPath(in: map, from: person.position, to: coord,
 												   barrierValue: "#",
@@ -147,9 +144,6 @@ class Day15: AoCSolution {
 						if lcp.cost < lowestCost {
 							coordToMoveTo = lcp.firstMove
 							lowestCost = lcp.cost
-						}
-						else if lcp.cost == lowestCost {
-							coordToMoveTo = [lcp.firstMove, coordToMoveTo!].sorted(by: AoCCoord2D.readingOrderSort(c0:c1:)).first!
 						}
 					}
 				}
