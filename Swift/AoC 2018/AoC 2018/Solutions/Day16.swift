@@ -24,12 +24,58 @@ class Day16: AoCSolution {
 		let result1 = solvePartOne(samples)
 		print("Part One: the number of samples that behave like three or more opcodes is \(result1)")
 		
-		return AoCResult(part1: String(result1), part2: nil)
+		Instruction.codex = matchOpCodesToIDs(samples)
+		
+		let result2 = solvePartTwo(program: input.last!)
+		print("Part Two: the number in register 0 after running the program is \(result2)")
+
+		return AoCResult(part1: String(result1), part2: String(result2))
 	}
 	
 	private func solvePartOne(_ samples: [Sample]) -> Int {
 		let threeOrMore = samples.filter { $0.possibleOpCodes.count >= 3 }
 		return threeOrMore.count
+	}
+	
+	private func solvePartTwo(program input: [String]) -> Int {
+		var program = input
+		let regex = NSRegularExpression("(\\d+)")
+		var registers = [0,0,0,0]
+		
+		for line in program {
+			let instruction = Instruction(regex.allMatches(line).map { Int($0)! })
+			registers = instruction.compute(input: registers)
+		}
+		
+		return registers[0]  // 446 is too high
+	}
+	
+	private func matchOpCodesToIDs(_ samples: [Sample]) -> Dictionary<Int, OpCodeType> {
+		var working = Dictionary<Int, Set<OpCodeType> >()
+		for code in 0...15 { working[code] = Set<OpCodeType>(OpCodeType.allCases) }
+		
+		for sample in samples {
+			let possibleSet = Set<OpCodeType>(sample.possibleOpCodes)
+			working[sample.instruction.opCode] = working[sample.instruction.opCode]!.intersection(possibleSet)
+		}
+		
+		var result = Dictionary<Int, OpCodeType>()
+		while working.count > 0 {
+			for code in working.keys {
+				if let values = working[code],
+				   values.count == 1 {
+					let opcValue = values.first!
+					result[code] = opcValue
+					working.removeValue(forKey: code)
+					for other in working.keys {
+						working[other]!.remove(opcValue)
+					}
+					continue
+				}
+			}
+		}
+		
+		return result
 	}
 	
 	private func parseSamples(_ input: [[String]]) -> [Sample] {
@@ -62,7 +108,7 @@ private struct Sample {
 			for oct in OpCodeType.allCases {
 				let output = instruction.compute(opCodeType: oct, input: before)
 				if output == after {
-					print("\(before) --> \(oct) --> \(after) is valid.")
+					//print("\(before) --> \(oct) --> \(after) is valid.")
 					result.append(oct)
 				}
 			}
@@ -73,16 +119,26 @@ private struct Sample {
 }
 
 private struct Instruction {
+	static var codex = Dictionary<Int, OpCodeType>()
+	
 	let opCode: Int
 	let A: Int
 	let B: Int
 	let C: Int
+	
+	var opcType: OpCodeType {
+		return Instruction.codex[opCode]!
+	}
 	
 	init(_ values: [Int]) {
 		opCode = values[0]
 		A = values[1]
 		B = values[2]
 		C = values[3]
+	}
+	
+	func compute(input register: [Int]) -> [Int] {
+		self.compute(opCodeType: self.opcType, input: register)
 	}
 	
 	func compute(opCodeType: OpCodeType, input register: [Int]) -> [Int] {
