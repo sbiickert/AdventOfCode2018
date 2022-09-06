@@ -66,6 +66,10 @@ struct AoCCoord2D: Hashable {
 		}
 	}
 	
+	func coord(offsetByX x: Int, y: Int) -> AoCCoord2D {
+		return AoCCoord2D(x: self.x+x, y: self.y+y)
+	}
+	
 	var description: String {
 		return "[x: \(x), y: \(y)]"
 	}
@@ -136,6 +140,11 @@ class AoCGrid2D {
 	
 	var coords: [AoCCoord2D] {
 		return Array(_data.keys)
+	}
+	
+	func getCoords(withValue v: String) -> [AoCCoord2D] {
+		let result = _data.filter { $0.value == v }
+		return Array(result.keys)
 	}
 	
 	var counts: Dictionary<String, Int> {

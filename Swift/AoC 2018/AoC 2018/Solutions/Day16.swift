@@ -47,7 +47,7 @@ class Day16: AoCSolution {
 			registers = instruction.compute(input: registers)
 		}
 		
-		return registers[0]  // 446 is too high
+		return registers[0]
 	}
 	
 	private func matchOpCodesToIDs(_ samples: [Sample]) -> Dictionary<Int, OpCodeType> {
