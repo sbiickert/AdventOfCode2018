@@ -29,26 +29,85 @@ class Day17: AoCSolution {
 	private func solvePartOne(_ scan: AoCGrid2D) -> Int {
 		let ext = scan.extent
 		let wellPosition = scan.getCoords(withValue: "+").first!
-		var cursor = Cursor(state: .falling, position: wellPosition)
+		var cursor = wellPosition.coord(offsetByX: 0, y: 1)
 		
-		while !(cursor.state == .falling && cursor.position.y > ext.max.y) {
-			switch cursor.state {
-			case .falling:
-				let nextPos = cursor.position.coord(offsetByX: 0, y: 1)
-				let content = scan.value(at: nextPos)
-				if content == "#" || content == "~" {
-					// Blocked. Start flooding
-					
+		var backtrackPositions = [AoCCoord2D]()
+		
+		while cursor.y <= ext.max.y || backtrackPositions.count > 0 {
+			if cursor.y > ext.max.y { cursor = backtrackPositions.removeFirst() }
+			
+			let below = HydroState(rawValue: scan.value(at: cursor.coord(offsetByX: 0, y: 1)))
+			
+			switch below {
+			case .empty:
+				scan.setValue(HydroState.falling.rawValue, at: cursor)
+				cursor = cursor.coord(offsetByX: 0, y: 1)
+			case .barrier, .flooded:
+				// Blocked. Start flooding
+				var leftPos = cursor.coord(offsetByX: -1, y: 0)
+				var leftVal = scan.value(at: leftPos)
+				var leftBelowVal = scan.value(at: leftPos.coord(offsetByX: 0, y: 1))
+				while leftVal != HydroState.barrier.rawValue &&
+						(leftBelowVal == HydroState.barrier.rawValue || leftBelowVal == HydroState.flooded.rawValue) {
+					leftPos = leftPos.coord(offsetByX: -1, y: 0)
+					leftVal = scan.value(at: leftPos)
+					leftBelowVal = scan.value(at: leftPos.coord(offsetByX: 0, y: 1))
+				}
+				var rightPos = cursor.coord(offsetByX: 1, y: 0)
+				var rightVal = scan.value(at: rightPos)
+				var rightBelowVal = scan.value(at: rightPos.coord(offsetByX: 0, y: 1))
+				while rightVal != HydroState.barrier.rawValue &&
+						(rightBelowVal == HydroState.barrier.rawValue || rightBelowVal == HydroState.flooded.rawValue) {
+					rightPos = rightPos.coord(offsetByX: 1, y: 0)
+					rightVal = scan.value(at: rightPos)
+					rightBelowVal = scan.value(at: rightPos.coord(offsetByX: 0, y: 1))
+				}
+				if leftVal == HydroState.barrier.rawValue && rightVal == HydroState.barrier.rawValue {
+					// Flood row and move up
+					for x in leftPos.x+1..<rightPos.x {
+						scan.setValue(HydroState.flooded.rawValue, at: AoCCoord2D(x: x, y: cursor.y))
+					}
+					cursor = cursor.coord(offsetByX: 0, y: -1)
+				}
+				else if leftVal == HydroState.barrier.rawValue && rightBelowVal == HydroState.empty.rawValue {
+					// Flowing right and move to right
+					for x in leftPos.x+1..<rightPos.x {
+						scan.setValue(HydroState.flowingRight.rawValue, at: AoCCoord2D(x: x, y: cursor.y))
+					}
+					cursor = rightPos
+				}
+				else if leftBelowVal == HydroState.empty.rawValue && rightVal == HydroState.barrier.rawValue {
+					// Flowing left and move to left
+					for x in leftPos.x+1..<rightPos.x {
+						scan.setValue(HydroState.flowingLeft.rawValue, at: AoCCoord2D(x: x, y: cursor.y))
+					}
+					cursor = leftPos
+				}
+				else if leftBelowVal == HydroState.empty.rawValue && rightBelowVal == HydroState.empty.rawValue {
+					// Flowing left and right
+					for x in leftPos.x+1..<rightPos.x {
+						scan.setValue(HydroState.falling.rawValue, at: AoCCoord2D(x: x, y: cursor.y))
+					}
+					cursor = leftPos
+					backtrackPositions.append(rightPos)
 				}
 				else {
-					scan.setValue("|", at: nextPos)
-					cursor.position = nextPos
-				}
+					print("leftVal \(leftVal), leftBelowVal \(leftBelowVal), rightVal \(rightVal), rightBelowVal \(rightBelowVal), shouldn't happen.")
+					var m = Dictionary<AoCCoord2D, String>()
+					m[cursor] = "X"
+					for bt in backtrackPositions { m[bt] = "O" }
+					scan.draw(markers: m)				}
+			default:
+				print("below is \(below) and that shouldn't happen")
 			}
 		}
+		scan.draw()
 		
-		let sum = scan.getCoords(withValue: "~").count + scan.getCoords(withValue: "|").count
-		
+		let sum = scan.getCoords(withValue: HydroState.flooded.rawValue).count
+			+ scan.getCoords(withValue: HydroState.falling.rawValue).count
+			+ scan.getCoords(withValue: HydroState.flowingLeft.rawValue).count
+			+ scan.getCoords(withValue: HydroState.flowingRight.rawValue).count
+
 		return sum
 	}
 	
@@ -80,14 +139,12 @@ class Day17: AoCSolution {
 	}
 }
 
-enum CursorState {
-	case falling
-	case flooded
-	case flowingLeft
-	case flowingRight
+enum HydroState: String {
+	case falling = "|"
+	case flooded = "~"
+	case flowingLeft = "<"
+	case flowingRight = ">"
+	case barrier = "#"
+	case empty = "."
 }
 
-struct Cursor {
-	var state: CursorState
-	var position: AoCCoord2D
-}
