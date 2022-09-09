@@ -20,13 +20,14 @@ class Day17: AoCSolution {
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: true)
 		let scan = parseScan(input)
 		
-		let result1 = solvePartOne(scan) // 40800 is too low 40881 is too high
-		print("Part One: the number of squares filled with water is \(result1)")
-		
-		return AoCResult(part1: String(result1), part2: nil)
+		let result = solvePart(scan)
+		print("Part One: the number of squares filled with water is \(result.sum)")
+		print("Part Two: the number of filled squares after the spring is dry is \(result.flooded)")
+
+		return AoCResult(part1: String(result.sum), part2: String(result.flooded))
 	}
 	
-	private func solvePartOne(_ scan: AoCGrid2D) -> Int {
+	private func solvePart(_ scan: AoCGrid2D) -> (sum: Int, flooded: Int) {
 		let ext = scan.extent // measuring the extent of the scan before putting the spring on
 		let springPosition = AoCCoord2D(x: 500, y: 0)
 		scan.setValue("+", at: springPosition)
@@ -140,7 +141,7 @@ class Day17: AoCSolution {
 		let flowRight = scan.getCoords(withValue: HydroState.flowingRight.rawValue).count
 		let sum = flooded + falling + flowLeft + flowRight
 
-		return sum
+		return (sum: sum, flooded: flooded)
 	}
 	
 	

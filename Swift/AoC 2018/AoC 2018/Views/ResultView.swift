@@ -77,6 +77,7 @@ struct ResultView: View {
 						.padding(.all, 5.0)
 						.frame(width: 32, height: 32, alignment: .center)
 					Text(runner.result?.part1 ?? "No answer")
+						.textSelection(.enabled)
 				}
 				Divider()
 				Text("Part Two").bold()
@@ -87,6 +88,7 @@ struct ResultView: View {
 						.padding(.all, 5.0)
 						.frame(width: 32, height: 32, alignment: .center)
 					Text(runner.result?.part2 ?? "No answer")
+						.textSelection(.enabled)
 				}
 			}
 			StopwatchView(progressTime: $runner.elapsed)
