@@ -95,6 +95,10 @@ struct AoCExtent2D: Hashable {
 		return max.y - min.y + 1
 	}
 	
+	var area: Int {
+		return width * height
+	}
+	
 	func contains(_ coord: AoCCoord2D) -> Bool {
 		return min.x <= coord.x && coord.x <= max.x &&
 			   min.y <= coord.y && coord.y <= max.y

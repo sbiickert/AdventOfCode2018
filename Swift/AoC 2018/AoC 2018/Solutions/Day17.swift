@@ -20,21 +20,35 @@ class Day17: AoCSolution {
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: true)
 		let scan = parseScan(input)
 		
-		let result1 = solvePartOne(scan)
+		let result1 = solvePartOne(scan) // 40800 is too low 40881 is too high
 		print("Part One: the number of squares filled with water is \(result1)")
 		
 		return AoCResult(part1: String(result1), part2: nil)
 	}
 	
 	private func solvePartOne(_ scan: AoCGrid2D) -> Int {
-		let ext = scan.extent
-		let wellPosition = scan.getCoords(withValue: "+").first!
-		var cursor = wellPosition.coord(offsetByX: 0, y: 1)
+		let ext = scan.extent // measuring the extent of the scan before putting the spring on
+		let springPosition = AoCCoord2D(x: 500, y: 0)
+		scan.setValue("+", at: springPosition)
+		var cursor = springPosition.coord(offsetByX: 0, y: ext.min.y) // start at the minimum y value of clay
+		// Just to double-check that we never overwrite any clay values by accident
+		let startClayCount = scan.getCoords(withValue: HydroState.barrier.rawValue).count
 		
+		//scan.draw()
+
 		var backtrackPositions = [AoCCoord2D]()
+		var backtrackedPositions = [AoCCoord2D]()
 		
 		while cursor.y <= ext.max.y || backtrackPositions.count > 0 {
-			if cursor.y > ext.max.y { cursor = backtrackPositions.removeFirst() }
+			if cursor.y > ext.max.y {
+				let bt = backtrackPositions.removeFirst()
+				backtrackedPositions.append(bt)
+				if scan.value(at: bt) == HydroState.flooded.rawValue {
+					//debugDrawScan(markAt: bt)
+					continue
+				}
+				cursor = bt
+			}
 			
 			let below = HydroState(rawValue: scan.value(at: cursor.coord(offsetByX: 0, y: 1)))
 			
@@ -93,20 +107,38 @@ class Day17: AoCSolution {
 				}
 				else {
 					print("leftVal \(leftVal), leftBelowVal \(leftBelowVal), rightVal \(rightVal), rightBelowVal \(rightBelowVal), shouldn't happen.")
-					var m = Dictionary<AoCCoord2D, String>()
-					m[cursor] = "X"
-					for bt in backtrackPositions { m[bt] = "O" }
-					scan.draw(markers: m)				}
+					//debugDrawScan(markAt: nil)
+				}
+			case .falling, .flowingLeft, .flowingRight:
+				// Falling onto overflowing. Set cursor to "off the bottom" to trigger backtracking
+				scan.setValue(HydroState.falling.rawValue, at: cursor)
+				cursor = cursor.coord(offsetByX: 0, y: ext.max.y)
 			default:
-				print("below is \(below) and that shouldn't happen")
+				print("below is \(String(describing: below)) and that shouldn't happen")
+				debugDrawScan(markAt: nil)
 			}
 		}
-		scan.draw()
+
+		func debugDrawScan(markAt coord: AoCCoord2D?) {
+			var m = Dictionary<AoCCoord2D, String>()
+			m[cursor] = "X"
+			for bt in backtrackPositions { m[bt] = "O" }
+			if let coord = coord {
+				m[coord] = "*"
+			}
+			scan.draw(markers: m)
+		}
 		
-		let sum = scan.getCoords(withValue: HydroState.flooded.rawValue).count
-			+ scan.getCoords(withValue: HydroState.falling.rawValue).count
-			+ scan.getCoords(withValue: HydroState.flowingLeft.rawValue).count
-			+ scan.getCoords(withValue: HydroState.flowingRight.rawValue).count
+		//backtrackPositions = backtrackedPositions
+		//debugDrawScan(markAt: nil)
+		
+		assert(scan.getCoords(withValue: HydroState.barrier.rawValue).count == startClayCount)
+		
+		let flooded = scan.getCoords(withValue: HydroState.flooded.rawValue).count
+		let falling = scan.getCoords(withValue: HydroState.falling.rawValue).count
+		let flowLeft = scan.getCoords(withValue: HydroState.flowingLeft.rawValue).count
+		let flowRight = scan.getCoords(withValue: HydroState.flowingRight.rawValue).count
+		let sum = flooded + falling + flowLeft + flowRight
 
 		return sum
 	}
@@ -115,7 +147,11 @@ class Day17: AoCSolution {
 	
 	private func parseScan(_ input: [String]) -> AoCGrid2D {
 		let scan = AoCGrid2D()
-		scan.setValue("+", at: AoCCoord2D(x: 500, y: 0))
+		// This was the reason I was failing.
+		// "ignore tiles with a y coordinate smaller than the smallest y coordinate in your scan data"
+		// The smallest y value was 3, and I was counting from y=1.
+		// Easiest fix: add the spring later after getting the extent of the clay.
+		//scan.setValue("+", at: AoCCoord2D(x: 500, y: 0))
 		
 		let regex = NSRegularExpression("([xy])=(\\d+), ([xy])=(\\d+)\\.\\.(\\d+)")
 		
