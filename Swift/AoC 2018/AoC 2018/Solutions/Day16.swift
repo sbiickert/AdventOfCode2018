@@ -38,11 +38,10 @@ class Day16: AoCSolution {
 	}
 	
 	private func solvePartTwo(program input: [String]) -> Int {
-		var program = input
 		let regex = NSRegularExpression("(\\d+)")
 		var registers = [0,0,0,0]
 		
-		for line in program {
+		for line in input {
 			let instruction = Instruction(regex.allMatches(line).map { Int($0)! })
 			registers = instruction.compute(input: registers)
 		}

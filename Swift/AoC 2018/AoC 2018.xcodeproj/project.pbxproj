@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		372503E028A84F5E00D1EADE /* Day07.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372503DF28A84F5E00D1EADE /* Day07.swift */; };
+		372DF19028CE203A00F18885 /* Day19.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372DF18F28CE203A00F18885 /* Day19.swift */; };
 		3747448728995C60000DA4D9 /* AoC_2018App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3747448628995C60000DA4D9 /* AoC_2018App.swift */; };
 		3747448928995C60000DA4D9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3747448828995C60000DA4D9 /* ContentView.swift */; };
 		3747448B28995C61000DA4D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3747448A28995C61000DA4D9 /* Assets.xcassets */; };
@@ -44,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		372503DF28A84F5E00D1EADE /* Day07.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day07.swift; sourceTree = "<group>"; };
+		372DF18F28CE203A00F18885 /* Day19.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day19.swift; sourceTree = "<group>"; };
 		3747448328995C60000DA4D9 /* AoC 2018.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AoC 2018.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3747448628995C60000DA4D9 /* AoC_2018App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AoC_2018App.swift; sourceTree = "<group>"; };
 		3747448828995C60000DA4D9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				B8654A1828C7919B00D93FAD /* Day16.swift */,
 				B8ABB36728C7FA82007E64DC /* Day17.swift */,
 				3784C4FD28CB9A960091EAF7 /* Day18.swift */,
+				372DF18F28CE203A00F18885 /* Day19.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -248,6 +251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				374744AA28997E71000DA4D9 /* Day03.swift in Sources */,
+				372DF19028CE203A00F18885 /* Day19.swift in Sources */,
 				374744A028996B42000DA4D9 /* Day01.swift in Sources */,
 				3747448928995C60000DA4D9 /* ContentView.swift in Sources */,
 				B8654A1928C7919B00D93FAD /* Day16.swift in Sources */,

@@ -123,7 +123,7 @@ class Day13: AoCSolution {
 	}
 
 	private func parseMap(_ input: [String]) -> (map: AoCGrid2D, carts: [MineCart]) {
-		var map = AoCGrid2D(defaultValue: " ")
+		let  map = AoCGrid2D(defaultValue: " ")
 		var carts = [MineCart]()
 		let TRACK_PARTS: Set = ["+", "|", "-", "/", "\\"]
 		
