@@ -32,7 +32,7 @@ class Day19: AoCSolution {
 		var register = [Int](repeating: 0, count: 6)
 		register[0] = registerZeroValue
 		var ip = 0
-		var countIterations = 0
+		print("[\(register.map({String($0)}).joined(separator: ","))]")
 		
 		while 0 <= ip && ip < program.instructions.count {
 			let instruction = program.instructions[ip]
@@ -41,25 +41,51 @@ class Day19: AoCSolution {
 			// to that register just before each instruction is executed
 			register[program.ipRegister] = ip
 			
+			// Short circuit of the tight inner loop
+			// https://www.reddit.com/r/adventofcode/comments/a7j9zc/2018_day_19_solutions/
+			/*
+			 11: seti 2 6 1  			Set IP to 2
+			 [0,2,0,2,10551358,1]
+			 3: mulr 5 3 2				Set R2 to R5 * R3
+			 [0,3,2,2,10551358,1]
+			 4: eqrr 2 4 2				Set R2 to (1:0) R2 eq R4
+			 [0,4,0,2,10551358,1]
+			 5: addr 2 1 1				Set IP to R2 + IP. i.e. If R3*R5=R4 then instruction 7 increments R0 by R5
+			 [0,5,0,2,10551358,1]
+			 6: addi 1 1 1				Set IP to IP + 1
+			 [0,7,0,2,10551358,1]
+			 8: addi 3 1 3				Set R3 to R3 + 1
+			 [0,8,0,3,10551358,1]
+			 9: gtrr 3 4 2				Set R2 to (1:0) R3 eq R4 // R3 has reached the number we're factoring
+			 [0,9,0,3,10551358,1]
+			 10: addr 1 2 1				Set IP to IP + R2  // If R2 is not zero, then will not loop to 11
+			 [0,10,0,3,10551358,1]
+			 */
+			if ip == 11 {
+				// Need to get the sum of factors of the number in register[4]
+				while register[5] <= register[4] {
+					let product = register[3] * register[5]
+					if product == register[4] {
+						register[0] += register[5]
+					}
+					if product >= register[4] {
+						register[3] = 0
+						register[5] += 1
+					}
+					register[3] += 1
+				}
+				break
+			}
+			
 			instruction.computeInplace(register: &register)
 
 			// and the value of that register is written back to the instruction pointer
 			// immediately after each instruction finishes execution
 			ip = register[program.ipRegister]
 			
-//			if ip + 1 < 0 || program.instructions.count < ip + 1 {
-//				print("ip=\(ip) [\(register.map({String($0)}).joined(separator: ","))] \(instruction) [\(result.map({String($0)}).joined(separator: ","))]")
-//			}
-			
 			// Afterward, move to the next instruction by adding one to the instruction pointer,
 			// even if the value in the instruction pointer was just updated by an instruction
 			ip += 1
-
-			//register = result
-			countIterations += 1
-			if countIterations % 100000 == 0 {
-				print(countIterations)
-			}
 		}
 		
 		return register[0]
