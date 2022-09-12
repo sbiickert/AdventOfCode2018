@@ -19,15 +19,20 @@ class Day19: AoCSolution {
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: true)
 		
 		let program = parseProgram(input)
-		let result1 = solvePartOne(program)
-		print("Part One: the value in register 0 is \(result1)")
+		let result1 = solvePart(program, registerZeroValue: 0)
+		print("Part One: the final value in register 0 is \(result1)")
 		
-		return AoCResult(part1: String(result1), part2: nil)
+		let result2 = solvePart(program, registerZeroValue: 1)
+		print("Part Two: the final value in register 0 is \(result2)")
+
+		return AoCResult(part1: String(result1), part2: String(result2))
 	}
 	
-	private func solvePartOne(_ program: Program) -> Int {
+	private func solvePart(_ program: Program, registerZeroValue: Int) -> Int {
 		var register = [Int](repeating: 0, count: 6)
+		register[0] = registerZeroValue
 		var ip = 0
+		var countIterations = 0
 		
 		while 0 <= ip && ip < program.instructions.count {
 			let instruction = program.instructions[ip]
@@ -36,19 +41,25 @@ class Day19: AoCSolution {
 			// to that register just before each instruction is executed
 			register[program.ipRegister] = ip
 			
-			let result = instruction.compute(input: register)
+			instruction.computeInplace(register: &register)
 
 			// and the value of that register is written back to the instruction pointer
 			// immediately after each instruction finishes execution
-			ip = result[program.ipRegister]
+			ip = register[program.ipRegister]
 			
-			print("ip=\(ip) [\(register.map({String($0)}).joined(separator: ","))] \(instruction) [\(result.map({String($0)}).joined(separator: ","))]")
+//			if ip + 1 < 0 || program.instructions.count < ip + 1 {
+//				print("ip=\(ip) [\(register.map({String($0)}).joined(separator: ","))] \(instruction) [\(result.map({String($0)}).joined(separator: ","))]")
+//			}
 			
 			// Afterward, move to the next instruction by adding one to the instruction pointer,
 			// even if the value in the instruction pointer was just updated by an instruction
 			ip += 1
 
-			register = result
+			//register = result
+			countIterations += 1
+			if countIterations % 100000 == 0 {
+				print(countIterations)
+			}
 		}
 		
 		return register[0]
@@ -97,44 +108,47 @@ private struct Instruction: CustomDebugStringConvertible {
 		return "\(opCode) \(A) \(B) \(C)"
 	}
 	
+	func computeInplace(register: inout [Int]) {
+		switch opCode {
+		case .addr:
+			register[C] = register[A] + register[B]
+		case .addi:
+			register[C] = register[A] + B
+		case .mulr:
+			register[C] = register[A] * register[B]
+		case .muli:
+			register[C] = register[A] * B
+		case .banr:
+			register[C] = register[A] & register[B]
+		case .bani:
+			register[C] = register[A] & B
+		case .borr:
+			register[C] = register[A] | register[B]
+		case .bori:
+			register[C] = register[A] | B
+		case .setr:
+			register[C] = register[A]
+		case .seti:
+			register[C] = A
+		case .gtir:
+			register[C] = (A > register[B]) ? 1 : 0
+		case .gtri:
+			register[C] = (register[A] > B) ? 1 : 0
+		case .gtrr:
+			register[C] = (register[A] > register[B]) ? 1 : 0
+		case .eqir:
+			register[C] = (A == register[B]) ? 1 : 0
+		case .eqri:
+			register[C] = (register[A] == B) ? 1 : 0
+		case .eqrr:
+			register[C] = (register[A] == register[B]) ? 1 : 0
+		}
+	}
+	
 	func compute(input register: [Int]) -> [Int] {
 		var output = register // Default, no-op
 		
-		switch opCode {
-		case .addr:
-			output[C] = register[A] + register[B]
-		case .addi:
-			output[C] = register[A] + B
-		case .mulr:
-			output[C] = register[A] * register[B]
-		case .muli:
-			output[C] = register[A] * B
-		case .banr:
-			output[C] = register[A] & register[B]
-		case .bani:
-			output[C] = register[A] & B
-		case .borr:
-			output[C] = register[A] | register[B]
-		case .bori:
-			output[C] = register[A] | B
-		case .setr:
-			output[C] = register[A]
-		case .seti:
-			output[C] = A
-		case .gtir:
-			output[C] = (A > register[B]) ? 1 : 0
-		case .gtri:
-			output[C] = (register[A] > B) ? 1 : 0
-		case .gtrr:
-			output[C] = (register[A] > register[B]) ? 1 : 0
-		case .eqir:
-			output[C] = (A == register[B]) ? 1 : 0
-		case .eqri:
-			output[C] = (register[A] == B) ? 1 : 0
-		case .eqrr:
-			output[C] = (register[A] == register[B]) ? 1 : 0
-		}
-		
+		computeInplace(register: &output)
 		return output
 	}
 }
