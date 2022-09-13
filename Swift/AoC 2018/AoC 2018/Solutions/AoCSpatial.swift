@@ -112,6 +112,13 @@ enum AoCDirection: String {
 	case left = "<"
 }
 
+enum AoCMapDirection: String {
+	case north = "N"
+	case south = "S"
+	case east = "E"
+	case west = "W"
+}
+
 enum AoCAdjacencyRule {
 	case rook
 	case bishop
