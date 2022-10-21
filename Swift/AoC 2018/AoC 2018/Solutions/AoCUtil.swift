@@ -34,8 +34,7 @@ struct AoCResult {
 }
 
 class AoCUtil {
-	public static let INPUT_FOLDER_MIKE = "/Users/sjb/Developer/Advent of Code/2018/AdventOfCode2018/input"
-	public static let INPUT_FOLDER_CLARIS = "/Users/sbiickert/Code/Advent of Code/2018/AdventOfCode2018/input"
+	public static let INPUT_FOLDER = "~/Developer/Advent of Code/2018/AdventOfCode2018/input"
 	public static let ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 
 	public static var solutions: [AoCSolution] {
@@ -72,11 +71,8 @@ class AoCUtil {
 	}
 	
 	public static func inputPath(for fileName: String) -> URL {
-		var isDir: ObjCBool = true
-		var folderPath = URL(fileURLWithPath: INPUT_FOLDER_MIKE, isDirectory: true)
-		if FileManager.default.fileExists(atPath: folderPath.path, isDirectory: &isDir) == false {
-			folderPath = URL(fileURLWithPath: INPUT_FOLDER_CLARIS, isDirectory: true)
-		}
+		let input_folder = NSString(string: INPUT_FOLDER).expandingTildeInPath
+		var folderPath = URL(fileURLWithPath: input_folder, isDirectory: true)
 		let filePath = folderPath.appendingPathComponent(fileName)
 		//print(filePath)
 		return filePath
