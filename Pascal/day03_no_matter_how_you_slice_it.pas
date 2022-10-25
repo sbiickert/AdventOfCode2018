@@ -17,16 +17,15 @@ Type
 	End;
 	ClaimArray = Array of Claim;
 
-Procedure SolvePart1(claims: ClaimArray);
+Function SolvePart1(claims: ClaimArray): Grid2D;
 Var
     i, j: Integer;
     coords: Coord2DArray;
     c: Coord2D;
-    cloth: Grid2D;
     idStr: String;
 Begin
     WriteLn('Part 1: Find the area claimed by two or more');
-    cloth := Grid2D.Create(NO_CLAIM);
+    result := Grid2D.Create(NO_CLAIM);
     coords := [];
     
     For i := 0 To Length(claims)-1 Do
@@ -39,20 +38,20 @@ Begin
     	Begin
     		c := coords[j];
     		idStr := IntToStr(claims[i].id);
-    		If cloth.GetValue(c) = NO_CLAIM Then
-    			cloth.SetValue(idStr, c)
+    		If result.GetValue(c) = NO_CLAIM Then
+    			result.SetValue(idStr, c)
     		Else
-    			cloth.SetValue(MULTI, c);
+    			result.SetValue(MULTI, c);
     	End;
-    	//cloth.Print;
+    	//result.Print;
     End;
     
-    coords := cloth.GetCoords(MULTI);
+    coords := result.GetCoords(MULTI);
     
     WriteLn(Format('Part One Solution: %d', [Length(coords)]));
 End;
 
-Procedure SolvePart2(claims: ClaimArray);
+Procedure SolvePart2(claims: ClaimArray; cloth: Grid2D);
 Var
     a, b, c: Integer;
 Begin
@@ -95,9 +94,10 @@ End;
 Var
     input: TStringList;
     claims: ClaimArray;
+    cloth: Grid2D;
 Begin
     input := ReadInput(IN_FILE);
     claims := ParseInput(input);
-    SolvePart1(claims);
-    //SolvePart2(claims);
+    cloth := SolvePart1(claims);
+    SolvePart2(claims, cloth);
 End.
