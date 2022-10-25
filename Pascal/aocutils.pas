@@ -23,6 +23,9 @@ Function StrListToIntArray(input: TStringList): AoCIntArray;
 Function StrArrayToIntArray(var input: AoCStringArray): AoCIntArray;
 Function SumIntArray(var input: AoCIntArray): Integer;
 
+Procedure PrintAoCStringMap(map: AoCStringMap);
+Procedure PrintAoCIntegerMap(map: AoCIntegerMap);
+
 
 Implementation
 
@@ -92,6 +95,28 @@ Begin
 	result := 0;
 	For i := 0 To Length(input)-1 Do
 		result := result + input[i];
+End;
+
+Procedure PrintAoCStringMap(map: AoCStringMap);
+Var
+	i: Integer;
+Begin
+	WriteLn('AoCStringMap (', map.Count, ' entries');
+	For i := 0 To map.Count-1 Do
+	Begin
+		WriteLn(#9, i, ' ["', map.Keys[i], '"] --> "', map[map.Keys[i]], '"');
+	End;
+End;
+
+Procedure PrintAoCIntegerMap(map: AoCIntegerMap);
+Var
+	i: Integer;
+Begin
+	WriteLn('AoCIntegerMap (', map.Count, ' entries');
+	For i := 0 To map.Count-1 Do
+	Begin
+		WriteLn(#9, i, ' ["', map.Keys[i], '"] --> ', map[map.Keys[i]]);
+	End;
 End;
 
 End.

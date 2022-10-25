@@ -74,6 +74,7 @@ Type
     		Function GetExtent(): Extent2D;
     		Function GetCoords(): Coord2DArray;
     		Function GetCoords(withValue: String): Coord2DArray;
+    		Function GetHistogram(): AoCIntegerMap;
     		Function GetNeighbourOffsets(): Coord2DArray;
     		Function GetNeighbourCoords(fromCoord: Coord2D): Coord2DArray;
     		Procedure Print();
@@ -393,6 +394,25 @@ Begin
 			PushCoord(c, result);
     	End;
     End;
+End;
+
+Function Grid2D.GetHistogram(): AoCIntegerMap;
+Var
+	idx: Integer;
+	key: String;
+	strPtr: AoCStrPtr;
+	val: String;
+Begin
+	result := AoCIntegerMap.Create;
+    For idx := 0 To _data.Count-1 Do
+    Begin
+    	key := _data.NameOfIndex(idx);
+    	strPtr := _data[idx];
+    	val := strPtr^;
+    	If (result.IndexOf(val) = -1) Then
+    		result[val] := 0;
+    	result[val] := result[val] + 1;
+	End;	
 End;
 
 Function Grid2D.GetNeighbourOffsets(): Coord2DArray;

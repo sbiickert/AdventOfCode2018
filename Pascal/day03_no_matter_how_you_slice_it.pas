@@ -53,10 +53,32 @@ End;
 
 Procedure SolvePart2(claims: ClaimArray; cloth: Grid2D);
 Var
-    a, b, c: Integer;
+    i, area, count: Integer;
+    hist: AoCIntegerMap;
+    id: String;
 Begin
-    WriteLn('Part 2: DESCRIPTION');
-    WriteLn(Format('Part Two Solution: %d', [13]));
+    WriteLn('Part 2: Which claim does not overlap?');
+    
+    hist := cloth.GetHistogram;
+    //PrintAoCIntegerMap(hist);
+    
+    For i := 0 To Length(claims)-1 Do
+    Begin
+    	id := IntToStr(claims[i].id);
+    	If (i mod 25 = 0) Then
+	    	WriteLn(id);
+	    
+	    area := claims[i].ext.GetArea;
+	    If hist.IndexOf(id) = -1 Then
+	    	count := 0
+	    Else
+	    	count := hist[id];
+	    
+	    If (area = count) Then
+	    	Break;
+    End;
+    
+    WriteLn(Format('Part Two Solution: %s', [id]));
 End;
 
 Function ParseInput(values: TStringList): ClaimArray;
