@@ -19,10 +19,73 @@ Type
 	
 Procedure SolvePart1(events: GuardEventArray);
 Var
-    x: Integer;
+    i, mostHours, m, freq, sleepiestGuardID: Integer;
+    map, hist: AoCIntegerMap;
+    diff: Integer;
+    key, mStr: String;
 Begin
-    WriteLn('Part 1: DESCRIPTION');
-    WriteLn(Format('Part One Solution: %d', [13]));
+    WriteLn('Part 1: Find the guard who slept the most and when he slept the most');
+    
+    map := AoCIntegerMap.Create;
+    
+    For i := 0 To Length(events) Do
+    	If events[i].eType = sleep Then
+    	Begin
+			diff := MinuteOf(events[i+1].time) - MinuteOf(events[i].time);
+			
+			key := IntToStr(events[i].guardID);
+			If map.IndexOf(key) = -1 Then
+				map[key] := 0;
+			map[key] := map[key] + diff;
+		End;
+		
+	PrintAoCIntegerMap(map);
+	
+	mostHours := 0;
+	For i := 0 To map.Count-1 Do
+		If map[map.Keys[i]] > mostHours Then
+		Begin
+			key := map.Keys[i];
+			mostHours := map[key];
+		End;
+	
+    map.Free;
+	
+	// key is the id of the sleepiest guard
+	sleepiestGuardID := StrToInt(key);
+	WriteLn('Guard #', key, ' is the sleepiest.');
+	
+	hist := AoCIntegerMap.Create;
+	
+	For i := 0 To Length(events)-1 Do
+	Begin
+		If (events[i].eType = sleep) And (events[i].guardID = sleepiestGuardID) Then
+		Begin
+			For m := MinuteOf(events[i].time) To MinuteOf(events[i+1].time)-1 Do
+			Begin
+				mStr := IntToStr(m);
+				If hist.IndexOf(mStr) = -1 Then
+					hist[mStr] := 0;
+				hist[mStr] := hist[mStr] + 1;
+			End;
+		End;
+	End;
+	
+	PrintAoCIntegerMap(hist);
+	
+	freq := 0;
+	For i := 0 To hist.Count-1 Do
+		If hist[hist.Keys[i]] > freq Then
+		Begin
+			key := hist.Keys[i];
+			freq := hist[key];
+		End;
+		
+	WriteLn('The guard slept most at minute ', key);
+	
+	hist.Free;
+    
+    WriteLn(Format('Part One Solution: %d', [StrToInt(key) * sleepiestGuardID]));
 End;
 
 Procedure SolvePart2(events: GuardEventArray);
@@ -109,12 +172,14 @@ Begin
 			
 		If result[i].eType = start Then
 		Begin
+			// The next event (sleep) will be on the right date
 			result[i].time := result[i+1].time;
+			// Zero out the hour & minute (midnight)
 			result[i].time := RecodeHour(result[i].time, 0);
 			result[i].time := RecodeMinute(result[i].time, 0);
 		End;
 		
-		PrintGuardEvent(result[i]);
+		//PrintGuardEvent(result[i]);
 	End;
 End;
 
