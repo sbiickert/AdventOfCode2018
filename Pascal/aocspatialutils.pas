@@ -66,7 +66,6 @@ Type
     		_defaultValue: String;
     		_aRule: Adjacency;
     		_data: TFPHashList;
-    		_addedValues: AoCStringArray;
     	Public
     		Constructor Create(default: String; adjacency: Adjacency = rook);
     		Function GetValue(coord: Coord2D): String;
@@ -307,7 +306,6 @@ Begin
 	_defaultValue := default;
 	_aRule := adjacency;
 	_data := TFPHashList.Create;
-	_addedValues := [];
 End;
 
 Function Grid2D.GetValue(coord: Coord2D): String;
