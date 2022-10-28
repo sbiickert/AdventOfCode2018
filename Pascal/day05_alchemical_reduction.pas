@@ -7,34 +7,56 @@ Uses SysUtils, StrUtils, AoCUtils, Classes, RegExpr;
 
 Const
     //IN_FILE = '../Input/05.test.txt';
+    //LETTERS = 'abcd';
     IN_FILE = '../Input/05.challenge.txt';
+    LETTERS = 'abcdefghijklmnopqrstuvwxyz';
 
-Procedure SolvePart1(polymer: String);
+Function ReactPolymer(polymer: String; unitIgnoringPolarity: String): String;
 Var
 	i, len: Integer;
-	letters: String;
     re: array of String;
+    letter: String;
+    rrOpts: TRegexReplaceOptions;
 Begin
-    WriteLn('Part 1: Fully react polymer. How many units remain?');
+    SetLength(re, Length(LETTERS)*2); // 26 letters, lc and uc
     
-    SetLength(re, 52); // 26 letters, lc and uc
-    letters := 'abcdefghijklmnopqrstuvwxyz';
-    
-    For i := 0 To 25 Do
+    For i := 0 To Length(LETTERS)-1 Do
     Begin
-    	re[i*2]   := letters[i+1] + UpperCase(letters[i+1]);
-    	re[i*2+1] := UpperCase(letters[i+1]) + letters[i+1];
+    	letter := LETTERS[i+1];
+    	re[i*2]   := letter + UpperCase(letter);
+    	re[i*2+1] := UpperCase(letter) + letter;
+    End;
+    
+    If unitIgnoringPolarity <> '' Then
+    Begin
+    	rrOpts := [rroModifierI];
+    	polymer := ReplaceRegExpr(unitIgnoringPolarity, polymer, '', rrOpts);
     End;
     
     len := 100000; // Just a big number
     While (len <> Length(polymer)) Do
     Begin
     	len := Length(polymer);
-    	For i := 0 To Length(re)-1 Do
+    	For i := 0 To Length(LETTERS)-1 Do
     	Begin
-    		polymer := ReplaceRegExpr(re[i], polymer, '', True);
+    		letter := LETTERS[i+1];
+    		If letter <> unitIgnoringPolarity Then
+    		Begin
+    			polymer := ReplaceRegExpr(re[i*2], polymer, '', True);
+    			polymer := ReplaceRegExpr(re[i*2+1], polymer, '', True);
+    		End;
     	End;
     End;
+    
+    //WriteLn(polymer);
+    result := polymer;
+End;
+
+Procedure SolvePart1(polymer: String);
+Begin
+    WriteLn('Part 1: Fully react polymer. How many units remain?');
+    
+    polymer := ReactPolymer(polymer, '');
     
     WriteLn(Format('Part One Solution: %d', [Length(polymer)]));
 End;
@@ -42,9 +64,22 @@ End;
 Procedure SolvePart2(polymer: String);
 Var
 	i: Integer;
+	letter, reacted, shortest: String;
 Begin
-    WriteLn('Part 2: DESCRIPTION');
-    WriteLn(Format('Part Two Solution: %d', [13]));
+    WriteLn('Part 2: Fully react polymer, trying polarity-ignoring.');
+
+	shortest := polymer;
+	
+	For i := 0 To Length(LETTERS)-1 Do
+	Begin
+		letter := LETTERS[i+1];
+		reacted := ReactPolymer(polymer, letter);
+		If Length(reacted) < Length(shortest) Then
+			shortest := reacted;
+		WriteLn(letter, ' --> ', Length(reacted));
+	End;
+
+    WriteLn(Format('Part Two Solution: %d', [Length(shortest)]));
 End;
 
 Var
