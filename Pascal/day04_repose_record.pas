@@ -17,7 +17,7 @@ Type
 	End;
 	GuardEventArray = Array of GuardEvent;
 	
-Procedure SolvePart1(events: GuardEventArray);
+Function SolvePart1(events: GuardEventArray): TStringList;
 Var
     i, mostHours, m, freq, sleepiestGuardID: Integer;
     map, hist: AoCIntegerMap;
@@ -42,23 +42,25 @@ Begin
 	PrintAoCIntegerMap(map);
 	
 	mostHours := 0;
+	result := TStringList.Create;
 	For i := 0 To map.Count-1 Do
-		If map[map.Keys[i]] > mostHours Then
+	Begin
+		key := map.Keys[i];
+		If map[key] > mostHours Then
 		Begin
-			key := map.Keys[i];
+			sleepiestGuardID := StrToInt(key);
 			mostHours := map[key];
 		End;
+		result.Add(key);
+	End;
 	
     map.Free;
 	
-	// key is the id of the sleepiest guard
-	sleepiestGuardID := StrToInt(key);
-	WriteLn('Guard #', key, ' is the sleepiest.');
+	WriteLn('Guard #', sleepiestGuardID, ' is the sleepiest.');
 	
 	hist := AoCIntegerMap.Create;
 	
 	For i := 0 To Length(events)-1 Do
-	Begin
 		If (events[i].eType = sleep) And (events[i].guardID = sleepiestGuardID) Then
 		Begin
 			For m := MinuteOf(events[i].time) To MinuteOf(events[i+1].time)-1 Do
@@ -69,10 +71,7 @@ Begin
 				hist[mStr] := hist[mStr] + 1;
 			End;
 		End;
-	End;
-	
-	PrintAoCIntegerMap(hist);
-	
+		
 	freq := 0;
 	For i := 0 To hist.Count-1 Do
 		If hist[hist.Keys[i]] > freq Then
@@ -88,12 +87,48 @@ Begin
     WriteLn(Format('Part One Solution: %d', [StrToInt(key) * sleepiestGuardID]));
 End;
 
-Procedure SolvePart2(events: GuardEventArray);
+Procedure SolvePart2(events: GuardEventArray; idList: TStringList);
 Var
-    a, b, c: Integer;
+    id, mStr: String;
+    resultID, resultMinute, resultCount: Integer;
+    i,j, m: Integer;
+	hist: AoCIntegerMap;
 Begin
-    WriteLn('Part 2: DESCRIPTION');
-    WriteLn(Format('Part Two Solution: %d', [13]));
+    WriteLn('Part 2: Find the guard who spent what minute asleep the most.');
+    
+    resultID := -1;
+    resultMinute := -1;
+    resultCount := 0;
+    
+    For j := 0 To idList.Count-1 Do
+    Begin
+    	id := idList[j];
+    	hist := AoCIntegerMap.Create;
+    	
+    	For i := 0 To Length(events)-1 Do
+			If (events[i].eType = sleep) And (events[i].guardID = StrToInt(id)) Then
+			Begin
+				For m := MinuteOf(events[i].time) To MinuteOf(events[i+1].time)-1 Do
+				Begin
+					mStr := IntToStr(m);
+					If hist.IndexOf(mStr) = -1 Then
+						hist[mStr] := 0;
+					hist[mStr] := hist[mStr] + 1;
+				End;
+			End;
+			
+		For i := 0 To hist.Count-1 Do
+			If hist[hist.Keys[i]] > resultCount Then
+			Begin
+				resultID := StrToInt(id);
+				resultMinute := StrToInt(hist.Keys[i]);
+				resultCount := hist[hist.Keys[i]];
+			End;
+   	
+    	hist.Free;
+    End;
+    
+    WriteLn(Format('Part Two Solution: %d', [resultID * resultMinute]));
 End;
 
 Procedure PrintGuardEvent(g: GuardEvent);
@@ -186,9 +221,10 @@ End;
 Var
     input: TStringList;
     events: GuardEventArray;
+    guardIdList: TStringList;
 Begin
     input := ReadInput(IN_FILE);
     events := ParseInput(input);
-    SolvePart1(events);
-    SolvePart2(events);
+    guardIdList := SolvePart1(events);
+    SolvePart2(events, guardIdList);
 End.
