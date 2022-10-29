@@ -333,7 +333,6 @@ End;
 Procedure Grid2D.SetValue(v: String; coord: Coord2D);
 Var
 	key: String;
-	idx: Integer;
 	ptr: ^String;
 Begin
 	// https://www.tutorialspoint.com/pascal/pascal_memory.htm
@@ -421,14 +420,12 @@ End;
 Function Grid2D.GetHistogram(): AoCIntegerMap;
 Var
 	idx: Integer;
-	key: String;
 	strPtr: AoCStrPtr;
 	val: String;
 Begin
 	result := AoCIntegerMap.Create;
     For idx := 0 To _data.Count-1 Do
     Begin
-    	key := _data.NameOfIndex(idx);
     	strPtr := _data[idx];
     	val := strPtr^;
     	If (result.IndexOf(val) = -1) Then
