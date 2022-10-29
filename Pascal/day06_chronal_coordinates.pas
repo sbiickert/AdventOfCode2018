@@ -7,6 +7,8 @@ Uses SysUtils, StrUtils, AoCUtils, AoCSpatialUtils, Classes, RegExpr;
 Const
     //IN_FILE = '../Input/06.test.txt';
     IN_FILE = '../Input/06.challenge.txt';
+    //LIMIT = 32;
+    LIMIT = 10000;
     LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 Procedure SolvePart1(coords: Coord2DArray);
@@ -111,12 +113,49 @@ Begin
     WriteLn(Format('Part One Solution: %d', [greatestArea]));
 End;
 
-Procedure SolvePart2(values: TStringList);
+Procedure SolvePart2(coords: Coord2DArray);
 Var
-    a, b, c: Integer;
+    i, r, c, sum, dist: Integer;
+    grid: Grid2D;
+    ext: Extent2D;
+    coord: Coord2D;
+    coordsInLimit: Coord2DArray;
 Begin
-    WriteLn('Part 2: DESCRIPTION');
-    WriteLn(Format('Part Two Solution: %d', [13]));
+    WriteLn('Part 2: Find the area where the sum of M distances is less than ', LIMIT);
+    
+    grid := Grid2D.Create('.', rook);
+    For i:= 0 To Length(coords)-1 Do
+    	grid.SetValue(LETTERS[i+1], coords[i]);
+    
+    //grid.Print;
+    ext := grid.GetExtent;
+    //ext.Print;
+    
+    For r := ext.GetMin.Y To ext.GetMax.Y Do
+    	For c := ext.GetMin.X To ext.GetMax.X Do
+    	Begin
+    		coord := Coord2D.Create(c, r);
+    		sum := 0;
+    		
+    		For i := 0 To Length(coords)-1 Do
+    		Begin
+    			dist := coords[i].MDistanceTo(coord);
+    			sum := sum + dist;
+    			If sum >= LIMIT Then
+    				Break;
+    		End;
+    		
+    		If sum < LIMIT Then
+    			grid.SetValue('#', coord);
+    		
+    		coord.Free;
+    	End;
+    
+    //grid.Print;
+    
+    coordsInLimit := grid.GetCoords('#');
+    
+    WriteLn(Format('Part Two Solution: %d', [Length(coordsInLimit)]));
 End;
 
 Function ParseInput(input: TStringList): Coord2DArray;
@@ -144,5 +183,5 @@ Begin
     input := ReadInput(IN_FILE);
     coords := ParseInput(input);
     SolvePart1(coords);
-    SolvePart2(input);
+    SolvePart2(coords);
 End.
