@@ -8,6 +8,8 @@ Interface
 
 Uses SysUtils, StrUtils, fgl, Classes;
 
+Const
+	LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 Type
     AoCStringArray =     array Of String;
@@ -101,7 +103,7 @@ Procedure PrintAoCStringMap(map: AoCStringMap);
 Var
 	i: Integer;
 Begin
-	WriteLn('AoCStringMap (', map.Count, ' entries');
+	WriteLn('AoCStringMap (', map.Count, ' entries)');
 	For i := 0 To map.Count-1 Do
 	Begin
 		WriteLn(#9, i, ' ["', map.Keys[i], '"] --> "', map[map.Keys[i]], '"');
@@ -112,7 +114,7 @@ Procedure PrintAoCIntegerMap(map: AoCIntegerMap);
 Var
 	i: Integer;
 Begin
-	WriteLn('AoCIntegerMap (', map.Count, ' entries');
+	WriteLn('AoCIntegerMap (', map.Count, ' entries)');
 	For i := 0 To map.Count-1 Do
 	Begin
 		WriteLn(#9, i, ' ["', map.Keys[i], '"] --> ', map[map.Keys[i]]);
