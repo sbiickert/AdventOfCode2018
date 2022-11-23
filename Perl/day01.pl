@@ -2,9 +2,11 @@
 BEGIN {
     use Cwd;
     our $directory = cwd;
+	our $local_lib = $ENV{"HOME"} . '/perl5/lib/perl5';
 }
 
 use lib $directory;
+use lib $local_lib;
 
 package main;
 
@@ -62,20 +64,23 @@ sub solve_part_two {
 	my $value = 0;
 	my %frequencies = ($value => 1);
 	my $i = 0;
+	my $iter = 1;
 	
 	while (1) {
 		if ($i > $#input) {
 			$i = 0;
+			$iter++;
+			say "Iteration $iter";
 		}
 		my $drift = $input[$i];
 		$drift =~ s/\+//;
 		$value += int($drift);
-		say "$value";
+		#say "$value";
 		if (exists($frequencies{$value})) {
 			last;
 		}
 		$frequencies{$value} += 1;
-		$i++
+		$i++;
 	}
 	say "Part Two: The first frequency found twice is $value.";
 }
