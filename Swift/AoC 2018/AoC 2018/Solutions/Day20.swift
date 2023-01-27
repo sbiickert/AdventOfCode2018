@@ -22,14 +22,14 @@ class Day20: AoCSolution {
 		input.removeLast()
 		print(input)
 		
-		var chars = Array(input).map { String($0) }
+		let chars = Array(input).map { String($0) }
 		let map = makeMap(chars)
 		
 		return AoCResult(part1: input, part2: nil)
 	}
 	
 	private func makeMap(_ input: [String]) -> AoCGrid2D {
-		var pos = AoCCoord2D(x: 10000, y: 10000)
+		let pos = AoCCoord2D(x: 10000, y: 10000)
 		let map = AoCGrid2D(defaultValue: "#")
 		map.setValue("X", at: pos)
 				

@@ -47,6 +47,6 @@ class Day01: AoCSolution {
 				}
 			}
 		}
-		return -9999
+		//return -9999
 	}
 }

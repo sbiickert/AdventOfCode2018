@@ -72,7 +72,7 @@ class AoCUtil {
 	
 	public static func inputPath(for fileName: String) -> URL {
 		let input_folder = NSString(string: INPUT_FOLDER).expandingTildeInPath
-		var folderPath = URL(fileURLWithPath: input_folder, isDirectory: true)
+		let folderPath = URL(fileURLWithPath: input_folder, isDirectory: true)
 		let filePath = folderPath.appendingPathComponent(fileName)
 		//print(filePath)
 		return filePath
