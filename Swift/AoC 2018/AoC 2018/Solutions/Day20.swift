@@ -25,17 +25,18 @@ class Day20: AoCSolution {
 		let chars = Array(input).map { String($0) }
 		let map = makeMap(chars)
 		
-		let part1 = solvePartOne(map: map)
+		let (part1, part2) = solvePart(map: map)
 		
-		return AoCResult(part1: String(part1), part2: nil)
+		return AoCResult(part1: String(part1), part2: String(part2))
 	}
 	
-	private func solvePartOne(map: AoCGrid2D) -> Int {
+	private func solvePart(map: AoCGrid2D) -> (Int, Int) {
 		let start = map.getCoords(withValue: "X")[0]
 		
 		var doorCount = 0
 		var isDoor = true
 		var visited = Set<AoCCoord2D>();
+		var visitedBeyondThousand = 0 // 17011 too high, 8507 too low
 		visited.insert(start);
 		var toVisit = Set<AoCCoord2D>(map.neighbourCoords(at: start, withValue: "D"))
 		while (true) {
@@ -48,6 +49,9 @@ class Day20: AoCSolution {
 					}
 				}
 				visited.insert(step)
+				if !isDoor && doorCount >= 1000 {
+					visitedBeyondThousand += 1
+				}
 			}
 			if isDoor {
 				doorCount += 1
@@ -59,7 +63,8 @@ class Day20: AoCSolution {
 				break
 			}
 		}
-		return doorCount
+		//let roomCount = map.getCoords(withValue: ".").count
+		return (doorCount, visitedBeyondThousand)
 	}
 	
 	private func makeMap(_ input: [String]) -> AoCGrid2D {
@@ -118,21 +123,18 @@ class Day20: AoCSolution {
 			if letter == "$" { break }
 			var dx: Int = 0
 			var dy: Int = 0
-			var door = "D"
 			switch AoCMapDirection(rawValue: letter)! {
 				case .north:
 					dy = -1
-					//door = "-"
 				case .south:
 					dy = 1
-					//door = "-"
 				case .east:
 					dx = 1
 				case .west:
 					dx = -1
 			}
 			let doorPos = pos.coord(offsetByX: dx, y: dy)
-			map.setValue(door, at: doorPos)
+			map.setValue("D", at: doorPos)
 			let roomPos = doorPos.coord(offsetByX: dx, y: dy)
 			map.setValue(".", at: roomPos)
 			
