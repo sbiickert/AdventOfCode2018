@@ -20,12 +20,46 @@ class Day20: AoCSolution {
 		var input = AoCUtil.readGroupedInputFile(named: filename, group: index).first!
 		input.removeFirst()
 		input.removeLast()
-		print(input)
+		//print(input)
 		
 		let chars = Array(input).map { String($0) }
 		let map = makeMap(chars)
 		
-		return AoCResult(part1: input, part2: nil)
+		let part1 = solvePartOne(map: map)
+		
+		return AoCResult(part1: String(part1), part2: nil)
+	}
+	
+	private func solvePartOne(map: AoCGrid2D) -> Int {
+		let start = map.getCoords(withValue: "X")[0]
+		
+		var doorCount = 0
+		var isDoor = true
+		var visited = Set<AoCCoord2D>();
+		visited.insert(start);
+		var toVisit = Set<AoCCoord2D>(map.neighbourCoords(at: start, withValue: "D"))
+		while (true) {
+			var nextSteps = Set<AoCCoord2D>();
+			for step in toVisit {
+				let neighbors = map.neighbourCoords(at: step, withValue: isDoor ? "." : "D")
+				for n in neighbors {
+					if !visited.contains(n) {
+						nextSteps.insert(n)
+					}
+				}
+				visited.insert(step)
+			}
+			if isDoor {
+				doorCount += 1
+			}
+			isDoor = !isDoor
+			
+			toVisit = nextSteps
+			if toVisit.count == 0 {
+				break
+			}
+		}
+		return doorCount
 	}
 	
 	private func makeMap(_ input: [String]) -> AoCGrid2D {
@@ -84,14 +118,14 @@ class Day20: AoCSolution {
 			if letter == "$" { break }
 			var dx: Int = 0
 			var dy: Int = 0
-			var door = "|"
+			var door = "D"
 			switch AoCMapDirection(rawValue: letter)! {
 				case .north:
 					dy = -1
-					door = "-"
+					//door = "-"
 				case .south:
 					dy = 1
-					door = "-"
+					//door = "-"
 				case .east:
 					dx = 1
 				case .west:
