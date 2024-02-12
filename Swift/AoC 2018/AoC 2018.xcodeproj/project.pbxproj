@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		372503E028A84F5E00D1EADE /* Day07.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372503DF28A84F5E00D1EADE /* Day07.swift */; };
 		372DF19028CE203A00F18885 /* Day19.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372DF18F28CE203A00F18885 /* Day19.swift */; };
+		37464F8729BBA5F60049E159 /* Day21.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37464F8629BBA5F60049E159 /* Day21.swift */; };
 		3747448728995C60000DA4D9 /* AoC_2018App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3747448628995C60000DA4D9 /* AoC_2018App.swift */; };
 		3747448928995C60000DA4D9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3747448828995C60000DA4D9 /* ContentView.swift */; };
 		3747448B28995C61000DA4D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3747448A28995C61000DA4D9 /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		372503DF28A84F5E00D1EADE /* Day07.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day07.swift; sourceTree = "<group>"; };
 		372DF18F28CE203A00F18885 /* Day19.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day19.swift; sourceTree = "<group>"; };
+		37464F8629BBA5F60049E159 /* Day21.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day21.swift; sourceTree = "<group>"; };
 		3747448328995C60000DA4D9 /* AoC 2018.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AoC 2018.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3747448628995C60000DA4D9 /* AoC_2018App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AoC_2018App.swift; sourceTree = "<group>"; };
 		3747448828995C60000DA4D9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				3784C4FD28CB9A960091EAF7 /* Day18.swift */,
 				372DF18F28CE203A00F18885 /* Day19.swift */,
 				37DB4D7A28CFDCBC00F4BC43 /* Day20.swift */,
+				37464F8629BBA5F60049E159 /* Day21.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 				B8ABB36828C7FA82007E64DC /* Day17.swift in Sources */,
 				372503E028A84F5E00D1EADE /* Day07.swift in Sources */,
 				B875313C28A4583D00B4AAD3 /* Day05.swift in Sources */,
+				37464F8729BBA5F60049E159 /* Day21.swift in Sources */,
 				37D7B81728A17C6700754980 /* StopwatchView.swift in Sources */,
 				37A2F83028BE4AD400B9C3B9 /* AoCSpatial.swift in Sources */,
 				37C1820528BBC9E700620E4D /* Day12.swift in Sources */,
