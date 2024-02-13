@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		373DDF0C2B7BD2B2009A6A91 /* AOCDay01.m in Sources */ = {isa = PBXBuildFile; fileRef = 373DDF0B2B7BD2B2009A6A91 /* AOCDay01.m */; };
+		374000472B7BFBCF000945DF /* AOCDay02.m in Sources */ = {isa = PBXBuildFile; fileRef = 374000462B7BFBCF000945DF /* AOCDay02.m */; };
 		375055B12B717E38005FCD98 /* AOCInputTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 375055B02B717E38005FCD98 /* AOCInputTests.m */; };
 		375055C52B717E47005FCD98 /* AOCSpatial.m in Sources */ = {isa = PBXBuildFile; fileRef = 375055B52B717E46005FCD98 /* AOCSpatial.m */; };
 		375055C62B717E47005FCD98 /* AOCSpatial.m in Sources */ = {isa = PBXBuildFile; fileRef = 375055B52B717E46005FCD98 /* AOCSpatial.m */; };
@@ -49,6 +50,7 @@
 
 /* Begin PBXFileReference section */
 		373DDF0B2B7BD2B2009A6A91 /* AOCDay01.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCDay01.m; sourceTree = "<group>"; };
+		374000462B7BFBCF000945DF /* AOCDay02.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCDay02.m; sourceTree = "<group>"; };
 		375055AE2B717E38005FCD98 /* AoC2018Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AoC2018Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		375055B02B717E38005FCD98 /* AOCInputTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCInputTests.m; sourceTree = "<group>"; };
 		375055B52B717E46005FCD98 /* AOCSpatial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AOCSpatial.m; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				375055D62B717ED6005FCD98 /* AOCDay.h */,
 				37D4D21A2B71977B0094ACCF /* AOCDay00.m */,
 				373DDF0B2B7BD2B2009A6A91 /* AOCDay01.m */,
+				374000462B7BFBCF000945DF /* AOCDay02.m */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -168,10 +171,10 @@
 		37F20D312B705B0000113864 /* AoC2018 */ = {
 			isa = PBXGroup;
 			children = (
+				37F20D322B705B0000113864 /* main.m */,
 				37D4D21D2B7199A50094ACCF /* Solutions */,
 				375055D52B717E9D005FCD98 /* AoC2018.entitlements */,
 				375055A92B717DD2005FCD98 /* Utility */,
-				37F20D322B705B0000113864 /* main.m */,
 			);
 			path = AoC2018;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				375055CB2B717E47005FCD98 /* AOCInput.m in Sources */,
 				37D4D21F2B71A87B0094ACCF /* AOCMath.m in Sources */,
 				37E4AC3A2B75833700064CF7 /* AOCSpatial3D.m in Sources */,
+				374000472B7BFBCF000945DF /* AOCDay02.m in Sources */,
 				375055C92B717E47005FCD98 /* AOCStrings.m in Sources */,
 				37F20D332B705B0000113864 /* main.m in Sources */,
 				375055D12B717E47005FCD98 /* AOCArrays.m in Sources */,

@@ -12,7 +12,9 @@
 @implementation AOCSolution
 
 + (NSArray<AOCSolution *> *)allSolutions {
-	NSArray<AOCSolution *> *solutions = @[ [[AOCDay00 alloc] init], [[AOCDay01 alloc] init] ];
+	NSArray<AOCSolution *> *solutions = @[ [[AOCDay00 alloc] init],
+										   [[AOCDay01 alloc] init],
+										   [[AOCDay02 alloc] init]];
 	return [[solutions reverseObjectEnumerator] allObjects];
 }
 
