@@ -33,6 +33,7 @@
 - (NSArray<AOCCoord *> *)coords;
 - (NSArray<AOCCoord *> *)coordsWithValue:(NSObject *)value;
 - (NSDictionary<NSString *, NSNumber *> *)histogram;
+- (NSDictionary<NSString *, NSNumber *> *)histogramIncludingDefaults;
 
 - (NSArray<AOCCoord *> *)adjacentTo:(AOCCoord *)coord;
 - (NSArray<AOCCoord *> *)adjacentTo:(AOCCoord *)coord withValue:(NSObject *)value;

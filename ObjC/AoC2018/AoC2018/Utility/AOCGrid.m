@@ -48,10 +48,19 @@
 
 - (NSObject *)objectAtCoord:(AOCCoord *)coord
 {
-	if (coord == nil || [_data objectForKey:coord] == nil) {
+	AOCCoord *c = coord;
+	if (self.isTiledInfinitely && self.extent != nil && ![_extent contains:coord]) {
+		NSInteger x = coord.x; NSInteger y = coord.y;
+		while (x < _extent.min.x) { x += _extent.width; }
+		while (y < _extent.min.y) { y += _extent.height; }
+		while (x > _extent.max.x) { x -= _extent.width; }
+		while (y > _extent.max.y) { y -= _extent.height; }
+		c = [AOCCoord x:x y:y];
+	}
+	if (c == nil || [_data objectForKey:c] == nil) {
 		return self.defaultValue;
 	}
-	return [_data objectForKey:coord];
+	return [_data objectForKey:c];
 }
 
 - (NSInteger)integerAtCoord:(AOCCoord *)coord
@@ -107,6 +116,7 @@
 
 - (AOCExtent *)extent
 {
+	if (!_extent) { return nil; }
 	return [AOCExtent copyOf:_extent];
 }
 
@@ -127,6 +137,20 @@
 }
 
 - (NSDictionary<NSString *, NSNumber *> *)histogram {
+	NSMutableDictionary<NSString *, NSNumber *> *result = [NSMutableDictionary dictionary];
+	
+	for (AOCCoord *c in self.coords) {
+		NSString *value = [self stringAtCoord:c];
+		if (![result objectForKey:value]) {
+			result[value] = @0;
+		}
+		result[value] = [NSNumber numberWithInteger:[result[value] integerValue] + 1];
+	}
+	
+	return result;
+}
+
+- (NSDictionary<NSString *, NSNumber *> *)histogramIncludingDefaults {
 	NSMutableDictionary<NSString *, NSNumber *> *result = [NSMutableDictionary dictionary];
 	
 	AOCExtent *ext = self.extent;
@@ -208,7 +232,7 @@
 		
 	for (NSInteger row = ext.min.y; row <= ext.max.y; row++) {
 		NSMutableString *line = [NSMutableString string];
-		for (NSInteger col = _extent.min.x; col <= _extent.max.x; col++) {
+		for (NSInteger col = ext.min.x; col <= ext.max.x; col++) {
 			AOCCoord *c = [AOCCoord x:col y:row];
 			NSString *s = [self stringAtCoord:c];
 			
@@ -218,7 +242,7 @@
 			
 			[line appendString:s];
 		}
-		[str appendFormat:@"%@\\n", line];
+		[str appendFormat:@"%@\n", line];
 	}
 
 	return str;
