@@ -27,6 +27,7 @@
 		379CE2B42B73DFE70000A642 /* AOCArraysTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 379CE2B32B73DFE70000A642 /* AOCArraysTests.m */; };
 		379CE2B62B73DFEA0000A642 /* AOCMathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 379CE2B52B73DFEA0000A642 /* AOCMathTests.m */; };
 		379CE2B82B73E06A0000A642 /* AOCStringsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 379CE2B72B73E06A0000A642 /* AOCStringsTests.m */; };
+		37C287942B7C321F007D4725 /* AOCDay04.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C287932B7C321F007D4725 /* AOCDay04.m */; };
 		37D4D21B2B71977B0094ACCF /* AOCDay00.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D4D21A2B71977B0094ACCF /* AOCDay00.m */; };
 		37D4D21C2B71977B0094ACCF /* AOCDay00.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D4D21A2B71977B0094ACCF /* AOCDay00.m */; };
 		37D4D21F2B71A87B0094ACCF /* AOCMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D4D21E2B71A87B0094ACCF /* AOCMath.m */; };
@@ -74,6 +75,7 @@
 		379CE2B32B73DFE70000A642 /* AOCArraysTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCArraysTests.m; sourceTree = "<group>"; };
 		379CE2B52B73DFEA0000A642 /* AOCMathTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCMathTests.m; sourceTree = "<group>"; };
 		379CE2B72B73E06A0000A642 /* AOCStringsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCStringsTests.m; sourceTree = "<group>"; };
+		37C287932B7C321F007D4725 /* AOCDay04.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCDay04.m; sourceTree = "<group>"; };
 		37D4D21A2B71977B0094ACCF /* AOCDay00.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCDay00.m; sourceTree = "<group>"; };
 		37D4D21E2B71A87B0094ACCF /* AOCMath.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCMath.m; sourceTree = "<group>"; };
 		37D4D2212B71A8930094ACCF /* AOCMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AOCMath.h; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				373DDF0B2B7BD2B2009A6A91 /* AOCDay01.m */,
 				374000462B7BFBCF000945DF /* AOCDay02.m */,
 				374000482B7C05BE000945DF /* AOCDay03.m */,
+				37C287932B7C321F007D4725 /* AOCDay04.m */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -292,6 +295,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37C287942B7C321F007D4725 /* AOCDay04.m in Sources */,
 				37D4D21B2B71977B0094ACCF /* AOCDay00.m in Sources */,
 				374000492B7C05BE000945DF /* AOCDay03.m in Sources */,
 				375055CB2B717E47005FCD98 /* AOCInput.m in Sources */,

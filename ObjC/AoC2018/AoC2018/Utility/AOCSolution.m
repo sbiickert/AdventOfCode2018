@@ -16,7 +16,7 @@
 										   [[AOCDay01 alloc] init],
 										   [[AOCDay02 alloc] init],
 										   [[AOCDay03 alloc] init],
-//										   [[AOCDay04 alloc] init],
+										   [[AOCDay04 alloc] init],
 //										   [[AOCDay05 alloc] init],
 //										   [[AOCDay06 alloc] init],
 //										   [[AOCDay07 alloc] init],

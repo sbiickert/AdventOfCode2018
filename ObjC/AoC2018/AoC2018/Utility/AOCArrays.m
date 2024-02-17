@@ -39,4 +39,17 @@
 	return result;
 }
 
++ (void)increment:(NSMutableArray<NSNumber *> *)array at:(NSInteger)index {
+	if (array == nil || index < 0 || index >= array.count) { return; }
+	
+	array[index] = [NSNumber numberWithInteger:([array[index] integerValue] + 1)];
+}
+
++ (void)decrement:(NSMutableArray<NSNumber *> *)array at:(NSInteger)index {
+	if (array == nil || index < 0 || index >= array.count) { return; }
+	
+	array[index] = [NSNumber numberWithInteger:([array[index] integerValue] - 1)];
+}
+
+
 @end
