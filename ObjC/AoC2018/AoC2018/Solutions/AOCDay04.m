@@ -33,26 +33,15 @@
 	NSArray<NSString *> *input = [AOCInput readGroupedInputFile:filename atIndex:index];
 	
 	NSArray<ReposeMsg *> *messages = [self sortInputByTime:input];
+	NSDictionary<NSString *, NSMutableArray<NSDateInterval*> *> *guardSleeps = [self buildSleepIntervals:messages];
 	
-	result.part1 = [self solvePartOne: messages];
-	result.part2 = [self solvePartTwo: input];
+	result.part1 = [self solvePartOne: guardSleeps];
+	result.part2 = [self solvePartTwo: guardSleeps];
 	
 	return result;
 }
 
-- (NSString *)solvePartOne:(NSArray<ReposeMsg *> *)messages {
-	NSMutableDictionary<NSString *, NSMutableArray<NSDateInterval*> *> *guardSleeps = [NSMutableDictionary dictionary];
-	for (NSInteger i = 0; i < messages.count; i++) {
-		if (guardSleeps[messages[i].guard] == nil) {
-			guardSleeps[messages[i].guard] = [NSMutableArray array];
-		}
-		if ([messages[i].message containsString:@"wakes"]) {
-			NSDateInterval *interval = [[NSDateInterval alloc] initWithStartDate:messages[i-1].timestamp
-																		 endDate:messages[i].timestamp];
-			[guardSleeps[messages[i].guard] addObject:interval];
-		}
-	}
-	
+- (NSString *)solvePartOne:(NSDictionary<NSString *, NSMutableArray<NSDateInterval*> *> *)guardSleeps {
 	NSInteger mostSleep = 0;
 	NSString *sleepiestGuard = nil;
 	for (NSString *guard in guardSleeps.allKeys) {
@@ -61,26 +50,14 @@
 			sum += interval.duration;
 		}
 		sum /= 60;
-		NSLog(@"Guard %@ slept for %ld minutes", guard, sum);
+		//NSLog(@"Guard %@ slept for %ld minutes", guard, sum);
 		if (sum > mostSleep) {
 			mostSleep = sum;
 			sleepiestGuard = guard;
 		}
 	}
 	
-	NSCalendar *cal = [NSCalendar currentCalendar];
-	NSMutableArray<NSNumber *> *counts = [NSMutableArray array];
-	for (int i = 0; i < 60; i++) { [counts addObject:@0]; }
-	
-	for (NSDateInterval *di in guardSleeps[sleepiestGuard]) {
-		NSDateComponents *dcStart = [cal components:(NSCalendarUnitMinute) fromDate:di.startDate];
-		NSInteger startMin = dcStart.minute;
-		NSDateComponents *dcEnd = [cal components:(NSCalendarUnitMinute) fromDate:di.endDate];
-		NSInteger endMin = dcEnd.minute;
-		for (NSInteger i = startMin; i < endMin; i++) {
-			[AOCArrayUtil increment:counts at:i];
-		}
-	}
+	NSArray<NSNumber *> *counts = [self buildSleepHistogram:guardSleeps[sleepiestGuard]];
 	
 	NSInteger maxMinute = 0;
 	NSInteger maxSleepCount = 0;
@@ -98,9 +75,27 @@
 	return [NSString stringWithFormat: @"The sleepiest guard was %@, asleep most at minute %ld for a result of %ld", sleepiestGuard, maxMinute, result];
 }
 
-- (NSString *)solvePartTwo:(NSArray<NSString *> *)input {
+- (NSString *)solvePartTwo:(NSDictionary<NSString *, NSMutableArray<NSDateInterval*> *> *)guardSleeps {
+	NSInteger maxMinute = 0;
+	NSInteger maxSleepCount = 0;
+	NSString *chosenGuard = nil;
+
+	for (NSString *guard in guardSleeps.allKeys) {
+		NSArray<NSNumber *> *counts = [self buildSleepHistogram:guardSleeps[guard]];
+		for (NSInteger i = 0; i < counts.count; i++) {
+			NSInteger count = [counts[i] integerValue];
+			if (count > maxSleepCount) {
+				maxMinute = i;
+				maxSleepCount = count;
+				chosenGuard = guard;
+			}
+		}
+	}
 	
-	return [NSString stringWithFormat: @"World"];
+	NSInteger result = [chosenGuard integerValue] * maxMinute;
+	
+	return [NSString stringWithFormat: @"The chosen guard was %@, asleep %ld times at minute %ld for a result of %ld",
+			chosenGuard, maxSleepCount, maxMinute, result];
 }
 
 - (NSArray<ReposeMsg *> *)sortInputByTime:(NSArray<NSString *> *)input {
@@ -132,6 +127,38 @@
 	}
 	
 	return messages;
+}
+
+- (NSDictionary<NSString *, NSMutableArray<NSDateInterval*> *> *)buildSleepIntervals:(NSArray<ReposeMsg *> *)messages {
+	NSMutableDictionary<NSString *, NSMutableArray<NSDateInterval*> *> *guardSleeps = [NSMutableDictionary dictionary];
+	for (NSInteger i = 0; i < messages.count; i++) {
+		if (guardSleeps[messages[i].guard] == nil) {
+			guardSleeps[messages[i].guard] = [NSMutableArray array];
+		}
+		if ([messages[i].message containsString:@"wakes"]) {
+			NSDateInterval *interval = [[NSDateInterval alloc] initWithStartDate:messages[i-1].timestamp
+																		 endDate:messages[i].timestamp];
+			[guardSleeps[messages[i].guard] addObject:interval];
+		}
+	}
+	return guardSleeps;
+}
+
+- (NSArray<NSNumber*> *)buildSleepHistogram:(NSArray<NSDateInterval*> *)intervals {
+	NSCalendar *cal = [NSCalendar currentCalendar];
+	NSMutableArray<NSNumber *> *counts = [NSMutableArray array];
+	for (int i = 0; i < 60; i++) { [counts addObject:@0]; }
+	
+	for (NSDateInterval *di in intervals) {
+		NSDateComponents *dcStart = [cal components:(NSCalendarUnitMinute) fromDate:di.startDate];
+		NSInteger startMin = dcStart.minute;
+		NSDateComponents *dcEnd = [cal components:(NSCalendarUnitMinute) fromDate:di.endDate];
+		NSInteger endMin = dcEnd.minute;
+		for (NSInteger i = startMin; i < endMin; i++) {
+			[AOCArrayUtil increment:counts at:i];
+		}
+	}
+	return counts;
 }
 
 @end

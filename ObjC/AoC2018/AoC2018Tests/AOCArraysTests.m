@@ -51,4 +51,20 @@
 	XCTAssert([mNumbers isEqualToArray:descCheck]);
 }
 
+- (void)testIncrementDecremen {
+	NSMutableArray<NSNumber *>*numbers = [@[@1, @2, @3, @3.5] mutableCopy];
+	
+	[AOCArrayUtil increment:numbers at:0];
+	XCTAssert([numbers[0] isEqualToNumber:@2]);
+	[AOCArrayUtil increment:numbers at:3];
+	XCTAssert([numbers[3] isEqualToNumber:@4]);
+	
+	[AOCArrayUtil decrement:numbers at:1];
+	XCTAssert([numbers[1] isEqualToNumber:@1]);
+	
+	NSArray<NSNumber *> *copy = [[NSArray alloc] initWithArray:numbers copyItems:YES];
+	[AOCArrayUtil increment:numbers at:10];
+	XCTAssert([numbers isEqualToArray:copy]);
+}
+
 @end

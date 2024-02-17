@@ -23,6 +23,10 @@
 		375055D02B717E47005FCD98 /* AOCSolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 375055C12B717E46005FCD98 /* AOCSolution.m */; };
 		375055D12B717E47005FCD98 /* AOCArrays.m in Sources */ = {isa = PBXBuildFile; fileRef = 375055C22B717E46005FCD98 /* AOCArrays.m */; };
 		375055D22B717E47005FCD98 /* AOCArrays.m in Sources */ = {isa = PBXBuildFile; fileRef = 375055C22B717E46005FCD98 /* AOCArrays.m */; };
+		376037652B814FBC0061BF64 /* AOCDay01.m in Sources */ = {isa = PBXBuildFile; fileRef = 373DDF0B2B7BD2B2009A6A91 /* AOCDay01.m */; };
+		376037662B814FBC0061BF64 /* AOCDay02.m in Sources */ = {isa = PBXBuildFile; fileRef = 374000462B7BFBCF000945DF /* AOCDay02.m */; };
+		376037672B814FBC0061BF64 /* AOCDay03.m in Sources */ = {isa = PBXBuildFile; fileRef = 374000482B7C05BE000945DF /* AOCDay03.m */; };
+		376037682B814FBC0061BF64 /* AOCDay04.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C287932B7C321F007D4725 /* AOCDay04.m */; };
 		379CE2B22B73D4660000A642 /* AOCSolutionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 379CE2B12B73D4660000A642 /* AOCSolutionTests.m */; };
 		379CE2B42B73DFE70000A642 /* AOCArraysTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 379CE2B32B73DFE70000A642 /* AOCArraysTests.m */; };
 		379CE2B62B73DFEA0000A642 /* AOCMathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 379CE2B52B73DFEA0000A642 /* AOCMathTests.m */; };
@@ -273,6 +277,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				376037652B814FBC0061BF64 /* AOCDay01.m in Sources */,
+				376037662B814FBC0061BF64 /* AOCDay02.m in Sources */,
+				376037672B814FBC0061BF64 /* AOCDay03.m in Sources */,
+				376037682B814FBC0061BF64 /* AOCDay04.m in Sources */,
 				379CE2B22B73D4660000A642 /* AOCSolutionTests.m in Sources */,
 				37D4D21C2B71977B0094ACCF /* AOCDay00.m in Sources */,
 				375055CC2B717E47005FCD98 /* AOCInput.m in Sources */,
