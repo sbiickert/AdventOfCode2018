@@ -105,7 +105,7 @@
 	NSMutableArray<ReposeMsg *> *messages = [NSMutableArray array];
 	
 	for (NSString *line in input) {
-		NSArray<NSString *> *m = [line matchPattern:@"\\[15([^]]+)\\] (.+)"];
+		NSArray<NSString *> *m = [line matchPattern:@"\\[15([^]]+)\\] (.+)" caseSensitive:YES];
 		NSDate *date = [df dateFromString:m[1]];
 		//NSLog(@"%@ --> %@", m[1], date);
 		ReposeMsg *rm = [[ReposeMsg alloc] init:date message:m[2]];
@@ -118,7 +118,7 @@
 
 	NSString *currentGuard = nil;
 	for (ReposeMsg *msg in messages) {
-		NSArray<NSString *> *m = [msg.message matchPattern:@"Guard #(\\d+)"];
+		NSArray<NSString *> *m = [msg.message matchPattern:@"Guard #(\\d+)" caseSensitive:NO];
 		if (m) {
 			currentGuard = m[1];
 		}

@@ -76,7 +76,7 @@
 - (NSArray<AOCExtent *> *)parseExtents:(NSArray<NSString *> *)input {
 	NSMutableArray<AOCExtent *> *extents = [NSMutableArray array];
 	for (NSString *line in input) {
-		NSMutableArray<NSString *> *m = [[line matchPattern:@"(\\d+),(\\d+): (\\d+)x(\\d+)"] mutableCopy];
+		NSMutableArray<NSString *> *m = [[line matchPattern:@"(\\d+),(\\d+): (\\d+)x(\\d+)" caseSensitive:YES] mutableCopy];
 		[m removeObjectAtIndex:0];
 		NSArray<NSNumber *> *numbers = [AOCArrayUtil stringArrayToNumbers:m];
 		AOCExtent *ext = [AOCExtent xMin:[numbers[0] integerValue]

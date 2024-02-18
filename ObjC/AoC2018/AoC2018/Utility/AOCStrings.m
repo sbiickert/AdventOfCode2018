@@ -73,9 +73,11 @@ NSString * const ALPHABET = @"abcdefghijklmnopqrstuvwxyz";
 	return numbers;
 }
 
-- (NSArray<NSString *> *)matchPattern:(NSString *)pattern {
+- (NSArray<NSString *> *)matchPattern:(NSString *)pattern caseSensitive:(BOOL)isCaseSensitive {
 	NSError *err;
-	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&err];
+	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern 
+																		   options:isCaseSensitive ? 0 : NSRegularExpressionCaseInsensitive
+																			 error:&err];
 	NSArray<NSString *> *result = nil;
 	if (err == noErr) {
 		result = [self match:regex];
@@ -104,17 +106,22 @@ NSString * const ALPHABET = @"abcdefghijklmnopqrstuvwxyz";
 	return result == nil ? nil : [NSArray arrayWithArray:result];
 }
 
-- (NSString *)replaceMatching:(NSString *)pattern with:(NSString *)newString {
+- (NSString *)replaceMatching:(NSString *)pattern with:(NSString *)newString caseSensitive:(BOOL)isCaseSensitive {
 	NSError *err;
 	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern
-																		   options:NSRegularExpressionCaseInsensitive
+																		   options:isCaseSensitive ? 0 : NSRegularExpressionCaseInsensitive
 																			 error:&err];
 	if (err != noErr) { return nil; }
+	return [self replaceMatching:regex with:newString];
+}
+
+- (NSString *)replaceMatching:(NSRegularExpression *)regex with:(NSString *)newString {
 	return [regex stringByReplacingMatchesInString:self
 										   options:0
 											 range:NSMakeRange(0, self.length)
 									  withTemplate:newString];
 }
+
 
 - (NSDictionary<NSString *, NSNumber *> *)histogram {
 	NSDictionary<NSString *, NSNumber *> *result = [NSMutableDictionary dictionary];
