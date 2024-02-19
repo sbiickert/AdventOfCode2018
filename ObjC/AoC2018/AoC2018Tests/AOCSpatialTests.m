@@ -199,6 +199,8 @@
 	XCTAssert(inset.min.x == 2 && inset.min.y == 2 &&
 			  inset.max.x == 8 && inset.max.y == 3);
 	XCTAssertNil([e1 inset: 3]);
+	AOCExtent *expanded = [e1 inset:-1];
+	XCTAssert(expanded.min.x == -1 && expanded.max.x == 11 && expanded.max.y == 6);
 }
 
 - (void)testExtentCoords {
@@ -207,6 +209,9 @@
 	XCTAssertEqual(coords.count, e1.area);
 	XCTAssert([coords[0] isEqualToCoord:[AOCCoord origin]]);
 	XCTAssert([coords.lastObject isEqualToCoord:[AOCCoord x:5 y:6]]);
+	
+	coords = e1.edgeCoords;
+	XCTAssertEqual(coords.count, 22);
 }
 
 - (void)testExtentRelations {

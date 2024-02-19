@@ -144,6 +144,7 @@ extern NSString * const CCW;
 - (void)expandToFit:(AOCCoord *)coord;
 - (AOCExtent *)expandedToFit:(AOCCoord *)coord;
 - (NSArray<AOCCoord *> *)allCoords;
+- (NSArray<AOCCoord *> *)edgeCoords;
 - (NSArray<AOCCoord *> *)coordsInColumn:(NSInteger)column;
 - (NSArray<AOCCoord *> *)coordsInRow:(NSInteger)row;
 - (AOCExtent *)inset:(NSInteger)amount;

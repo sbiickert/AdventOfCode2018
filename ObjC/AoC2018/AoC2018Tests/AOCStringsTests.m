@@ -66,7 +66,7 @@
 - (void)testMatching {
 	NSString *test = @"The red car is moving west at 5 km per hour.";
 	NSString *pattern = @"The (\\w+) car [\\w\\s]+ (\\d+) km";
-	NSArray<NSString *> *matches = [test matchPattern:pattern];
+	NSArray<NSString *> *matches = [test matchPattern:pattern caseSensitive:YES];
 	XCTAssert(matches.count == 3);
 	XCTAssert([matches[1] isEqualToString:@"red"]);
 	XCTAssert([matches[2] isEqualToString:@"5"]);
@@ -75,7 +75,7 @@
 - (void)testMatchAndReplace {
 	NSString *test = @"The red rated car is moving west at 5 km per hour.";
 	NSString *pattern1 = @"\\br\\w+d\\b";
-	NSString *result = [test replaceMatching:pattern1 with:@"awesome"];
+	NSString *result = [test replaceMatching:pattern1 with:@"awesome" caseSensitive:YES];
 	XCTAssert([result isEqualToString:@"The awesome awesome car is moving west at 5 km per hour."]);
 }
 

@@ -484,6 +484,18 @@ static NSDictionary<NSString *, NSString*> *_aliases = nil;
 	return coords;
 }
 
+- (NSArray<AOCCoord *> *)edgeCoords {
+	NSMutableArray<AOCCoord *> *coords = [NSMutableArray array];
+	for (NSInteger x = self.min.x; x <= self.max.x; x++) {
+		for (NSInteger y = self.min.y; y <= self.max.y; y++) {
+			if (x == self.min.x || x == self.max.x || y == self.min.y || y == self.max.y) {
+				[coords addObject:[AOCCoord x:x y:y]];
+			}
+		}
+	}
+	return coords;
+}
+
 - (NSArray<AOCCoord *> *)coordsInColumn:(NSInteger)column {
 	NSMutableArray<AOCCoord *> *coords = [NSMutableArray array];
 	for (NSInteger y = self.min.y; y <= self.max.y; y++) {

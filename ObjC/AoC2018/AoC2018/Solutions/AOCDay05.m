@@ -24,6 +24,7 @@
 	NSString *polymer = input[0];
 	
 	result.part1 = [self solvePartOne: polymer];
+	[@"end part one." println];
 //	result.part2 = [self solvePartTwo: polymer];
 	result.part2 = [self solvePartTwoGCD: polymer];
 
@@ -41,12 +42,14 @@
 	NSString *removedCharacter = nil;
 	
 	for (NSString *l in ALPHABET.allCharacters) {
+		[l println];
 		NSString *polymer = [input replaceMatching:l with:@"" caseSensitive:NO];
 		polymer = [self react:polymer];
 		if (polymer.length < shortest) {
 			shortest = polymer.length;
 			removedCharacter = l;
 		}
+		[[l stringByAppendingFormat:@": %ld", polymer.length] println];
 	}
 	
 	return [NSString stringWithFormat: @"Removing %@ resulted in a polymer with %ld units", removedCharacter, shortest];
@@ -61,9 +64,12 @@
 	
 	for (NSString *l in ALPHABET.allCharacters) {
 		dispatch_block_t block = dispatch_block_create(0, ^{
+			[l println];
 			NSString *polymer = [input replaceMatching:l with:@"" caseSensitive:NO];
 			polymer = [weakSelf react:polymer];
 			[lengths addObject:[NSNumber numberWithInteger:polymer.length]];
+			[[l stringByAppendingFormat:@": %ld", polymer.length] println];
+			
 		});
 		dispatch_group_async(workItems, queue, block);
 	}
