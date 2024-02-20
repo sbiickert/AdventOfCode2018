@@ -9,7 +9,6 @@
 #import "AOCDay.h"
 #import "AOCSpatial.h"
 #import "AOCGrid.h"
-#import "AOCStrings.h"
 #import "AOCArrays.h"
 
 @implementation AOCDay06
@@ -26,7 +25,7 @@
 	NSArray<AOCCoord *> *coords = [self parseCoordinates:input];
 	
 	result.part1 = [self solvePartOne: coords];
-	result.part2 = [self solvePartTwo: input];
+	result.part2 = [self solvePartTwo: coords];
 	
 	return result;
 }
@@ -69,9 +68,26 @@
 	return [NSString stringWithFormat: @"The largest non-infinite area is %@", countsAsc.lastObject];
 }
 
-- (NSString *)solvePartTwo:(NSArray<NSString *> *)input {
+- (NSString *)solvePartTwo:(NSArray<AOCCoord *> *)coords {
+	AOCGrid *grid = [AOCGrid grid];
+	AOCExtent *ext = [[AOCExtent alloc] initFrom:coords];
 	
-	return [NSString stringWithFormat: @"World"];
+	NSInteger limit = (coords.count > 10) ? 10000 : 32;
+	
+	for (AOCCoord *loc in ext.allCoords) {
+		NSInteger sumDistance = 0;
+		for (AOCCoord *c in coords) {
+			sumDistance += [loc manhattanDistanceTo:c];
+			if (sumDistance >= limit) {break;}
+		}
+		if (sumDistance < limit) {
+			[grid setObject:[NSNumber numberWithInteger:sumDistance] atCoord:loc];
+		}
+	}
+	
+	NSInteger numberOfLocationsLessThanLimit = grid.coords.count;
+
+	return [NSString stringWithFormat: @"The number of locations at less than %ld distance is %ld", limit, numberOfLocationsLessThanLimit];
 }
 
 - (NSArray<AOCCoord *> *)parseCoordinates:(NSArray<NSString *> *)input {
