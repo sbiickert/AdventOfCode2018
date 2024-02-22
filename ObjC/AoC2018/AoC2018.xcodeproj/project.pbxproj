@@ -44,6 +44,11 @@
 		37E4AC352B75736800064CF7 /* AOCGridTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E4AC342B75736800064CF7 /* AOCGridTests.m */; };
 		37E4AC3A2B75833700064CF7 /* AOCSpatial3D.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E4AC392B75833700064CF7 /* AOCSpatial3D.m */; };
 		37F20D332B705B0000113864 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F20D322B705B0000113864 /* main.m */; };
+		37F8644F2B866B26002474B0 /* AOCDay21.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F8644E2B866B26002474B0 /* AOCDay21.m */; };
+		37F864512B866BF1002474B0 /* AOCDay16.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F864502B866BF1002474B0 /* AOCDay16.m */; };
+		37F864522B866BF1002474B0 /* AOCDay16.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F864502B866BF1002474B0 /* AOCDay16.m */; };
+		37F864542B866C01002474B0 /* AOCDay19.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F864532B866C01002474B0 /* AOCDay19.m */; };
+		37F864552B866C01002474B0 /* AOCDay19.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F864532B866C01002474B0 /* AOCDay19.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -95,6 +100,9 @@
 		37E4AC392B75833700064CF7 /* AOCSpatial3D.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCSpatial3D.m; sourceTree = "<group>"; };
 		37F20D2F2B705B0000113864 /* AoC2018 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AoC2018; sourceTree = BUILT_PRODUCTS_DIR; };
 		37F20D322B705B0000113864 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		37F8644E2B866B26002474B0 /* AOCDay21.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCDay21.m; sourceTree = "<group>"; };
+		37F864502B866BF1002474B0 /* AOCDay16.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCDay16.m; sourceTree = "<group>"; };
+		37F864532B866C01002474B0 /* AOCDay19.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCDay19.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +171,9 @@
 				37C287932B7C321F007D4725 /* AOCDay04.m */,
 				375B51572B8257B40021AD37 /* AOCDay05.m */,
 				37B8D95D2B83A3A900DEC00C /* AOCDay06.m */,
+				37F864502B866BF1002474B0 /* AOCDay16.m */,
+				37F864532B866C01002474B0 /* AOCDay19.m */,
+				37F8644E2B866B26002474B0 /* AOCDay21.m */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -298,6 +309,7 @@
 				379CE2B62B73DFEA0000A642 /* AOCMathTests.m in Sources */,
 				37D4D2202B71A87B0094ACCF /* AOCMath.m in Sources */,
 				375055CA2B717E47005FCD98 /* AOCStrings.m in Sources */,
+				37F864552B866C01002474B0 /* AOCDay19.m in Sources */,
 				375055B12B717E38005FCD98 /* AOCInputTests.m in Sources */,
 				375055D22B717E47005FCD98 /* AOCArrays.m in Sources */,
 				375055C62B717E47005FCD98 /* AOCSpatial.m in Sources */,
@@ -306,6 +318,7 @@
 				37E4AC352B75736800064CF7 /* AOCGridTests.m in Sources */,
 				379CE2B82B73E06A0000A642 /* AOCStringsTests.m in Sources */,
 				379CE2B42B73DFE70000A642 /* AOCArraysTests.m in Sources */,
+				37F864522B866BF1002474B0 /* AOCDay16.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,10 +328,13 @@
 			files = (
 				37C287942B7C321F007D4725 /* AOCDay04.m in Sources */,
 				37D4D21B2B71977B0094ACCF /* AOCDay00.m in Sources */,
+				37F8644F2B866B26002474B0 /* AOCDay21.m in Sources */,
 				374000492B7C05BE000945DF /* AOCDay03.m in Sources */,
+				37F864542B866C01002474B0 /* AOCDay19.m in Sources */,
 				375055CB2B717E47005FCD98 /* AOCInput.m in Sources */,
 				37D4D21F2B71A87B0094ACCF /* AOCMath.m in Sources */,
 				37E4AC3A2B75833700064CF7 /* AOCSpatial3D.m in Sources */,
+				37F864512B866BF1002474B0 /* AOCDay16.m in Sources */,
 				374000472B7BFBCF000945DF /* AOCDay02.m in Sources */,
 				375055C92B717E47005FCD98 /* AOCStrings.m in Sources */,
 				37F20D332B705B0000113864 /* main.m in Sources */,
