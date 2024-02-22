@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "AOCDay.h"
 #import "AOCStrings.h"
+#import "AOCArrays.h"
 
 
 @interface ChronalCase : NSObject
@@ -59,23 +60,38 @@
 	NSArray<NSArray<NSString *> *> *input = [AOCInput readGroupedInputFile:filename];
 	
 	NSMutableArray<ChronalCase *> *cases = [NSMutableArray array];
+	NSArray<NSString *> *program;
+	
 	for (NSArray<NSString *> *group in input) {
-		if (group.count == 0) {break;}
+		if (group.count == 0) {continue;}
+		if (group.count > 3) {
+			program = group;
+			break;
+		}
 		[cases addObject:[[ChronalCase alloc] initWithRaw:group]];
 	}
 
-	result.part1 = [self solvePartOne: cases];
-	result.part2 = [self solvePartTwo: cases];
+	NSDictionary<NSNumber *, NSString *> *opcodeLookup = nil;
+	
+	result.part1 = [self solvePartOne: cases outLookup:&opcodeLookup];
+	
+	NSArray<ChronalInstruction *> *instructions = [self convert:program lookup:opcodeLookup];
+	result.part2 = [self solvePartTwo: instructions];
 	
 	return result;
 }
 
-- (NSString *)solvePartOne:(NSArray<ChronalCase *> *)input {
+- (NSString *)solvePartOne:(NSArray<ChronalCase *> *)input outLookup:(NSDictionary<NSNumber *, NSString *> **)dict {
 	NSInteger threeCount = 0;
 	NSArray<NSString *> *opcodes = @[@"addr", @"addi", @"mulr", @"muli",
 									 @"banr", @"bani", @"borr", @"bori",
 									 @"setr", @"seti", @"gtir", @"gtri", @"gtrr",
 									 @"eqir", @"eqri", @"eqrr"];
+	
+	NSMutableDictionary<NSNumber *, NSMutableSet<NSString *> *> *lookup = [NSMutableDictionary dictionary];
+	for (NSInteger i = 0; i < 16; i++) {
+		[lookup setObject:[NSMutableSet setWithArray:opcodes] forKey:[NSNumber numberWithInteger:i]];
+	}
 	
 	ChronalComputer *computer = [[ChronalComputer alloc] init];
 	for (ChronalCase *cc in input) {
@@ -97,16 +113,58 @@
 //				  [cc.after componentsJoinedByString:@","]] println];
 				count++;
 			}
+			else {
+				[lookup[cc.instruction[0]] removeObject:opcode];
+			}
 		}
 		if (count >= 3) { threeCount++; }
 	}
 	
+	NSMutableDictionary<NSNumber *, NSString *> *outLookup = [NSMutableDictionary dictionary];
+	while (lookup.count > 0) {
+		for (NSNumber *code in lookup.allKeys) {
+			NSMutableSet *values = lookup[code];
+			if (values.count == 1) {
+				NSString *opcodeValue = values.allObjects.firstObject;
+				outLookup[code] = opcodeValue;
+				[lookup removeObjectForKey:code];
+				for (NSNumber *other in lookup.allKeys) {
+					[lookup[other] removeObject:opcodeValue];
+				}
+				continue;
+			}
+		}
+	}
+
+	*dict = outLookup;
+	
 	return [NSString stringWithFormat: @"%ld samples behave like 3 or more opcodes", threeCount];
 }
 
-- (NSString *)solvePartTwo:(NSArray<ChronalCase *> *)input {
+- (NSString *)solvePartTwo:(NSArray<ChronalInstruction *> *)program {
+	ChronalComputer *computer = [[ChronalComputer alloc] init];
+
+	for (ChronalInstruction *ci in program) {
+		[computer apply:ci commit:YES];
+	}
 	
-	return [NSString stringWithFormat: @"World"];
+	return [NSString stringWithFormat: @"The value in register 0 is %@", computer.registers[0]];
+}
+
+- (NSArray<ChronalInstruction *> *)convert:(NSArray<NSString *> *)program lookup:(NSDictionary<NSNumber *, NSString *> *)dict {
+	NSMutableArray<ChronalInstruction *> *result = [NSMutableArray array];
+	
+	for (NSString * line in program) {
+		NSArray<NSString *> *components = [line componentsSeparatedByString:@" "];
+		NSArray<NSNumber *> *n = [AOCArrayUtil stringArrayToNumbers:components];
+		ChronalInstruction *ci = [[ChronalInstruction alloc] init:dict[n[0]]
+														   inputA:n[1].integerValue
+														   inputB:n[2].integerValue
+														  outputC:n[3].integerValue];
+		[result addObject:ci];
+	}
+	
+	return result;
 }
 
 @end
