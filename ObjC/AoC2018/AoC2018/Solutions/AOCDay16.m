@@ -22,26 +22,26 @@
 @end
 
 
-@interface ChronalInstruction : NSObject
+@interface ChronalInstruction16 : NSObject
 
 @property (readonly) NSString *opcode;
 @property (readonly) NSInteger a;
 @property (readonly) NSInteger b;
 @property (readonly) NSInteger c;
 
-- (ChronalInstruction *)init:(NSString *)opcode inputA:(NSInteger)a inputB:(NSInteger)b outputC:(NSInteger)c;
+- (ChronalInstruction16 *)init:(NSString *)opcode inputA:(NSInteger)a inputB:(NSInteger)b outputC:(NSInteger)c;
 
 @end
 
 
-@interface ChronalComputer : NSObject
+@interface ChronalComputer16 : NSObject
 
 @property (readonly) NSArray<NSNumber *> *registers;
 
-- (ChronalComputer *)init;
+- (ChronalComputer16 *)init;
 
 - (void)setRegisterValues:(NSInteger)r0 r1:(NSInteger)r1 r2:(NSInteger)r2 r3:(NSInteger)r3;
-- (NSArray<NSNumber *> *)apply:(ChronalInstruction *)instr commit:(BOOL)commit;
+- (NSArray<NSNumber *> *)apply:(ChronalInstruction16 *)instr commit:(BOOL)commit;
 
 @end
 
@@ -75,7 +75,7 @@
 	
 	result.part1 = [self solvePartOne: cases outLookup:&opcodeLookup];
 	
-	NSArray<ChronalInstruction *> *instructions = [self convert:program lookup:opcodeLookup];
+	NSArray<ChronalInstruction16 *> *instructions = [self convert:program lookup:opcodeLookup];
 	result.part2 = [self solvePartTwo: instructions];
 	
 	return result;
@@ -93,11 +93,11 @@
 		[lookup setObject:[NSMutableSet setWithArray:opcodes] forKey:[NSNumber numberWithInteger:i]];
 	}
 	
-	ChronalComputer *computer = [[ChronalComputer alloc] init];
+	ChronalComputer16 *computer = [[ChronalComputer16 alloc] init];
 	for (ChronalCase *cc in input) {
 		NSInteger count = 0;
 		for (NSString *opcode in opcodes) {
-			ChronalInstruction *ci = [[ChronalInstruction alloc] init:opcode
+			ChronalInstruction16 *ci = [[ChronalInstruction16 alloc] init:opcode
 															   inputA:cc.instruction[1].integerValue
 															   inputB:cc.instruction[2].integerValue
 															  outputC:cc.instruction[3].integerValue];
@@ -141,23 +141,23 @@
 	return [NSString stringWithFormat: @"%ld samples behave like 3 or more opcodes", threeCount];
 }
 
-- (NSString *)solvePartTwo:(NSArray<ChronalInstruction *> *)program {
-	ChronalComputer *computer = [[ChronalComputer alloc] init];
+- (NSString *)solvePartTwo:(NSArray<ChronalInstruction16 *> *)program {
+	ChronalComputer16 *computer = [[ChronalComputer16 alloc] init];
 
-	for (ChronalInstruction *ci in program) {
+	for (ChronalInstruction16 *ci in program) {
 		[computer apply:ci commit:YES];
 	}
 	
 	return [NSString stringWithFormat: @"The value in register 0 is %@", computer.registers[0]];
 }
 
-- (NSArray<ChronalInstruction *> *)convert:(NSArray<NSString *> *)program lookup:(NSDictionary<NSNumber *, NSString *> *)dict {
-	NSMutableArray<ChronalInstruction *> *result = [NSMutableArray array];
+- (NSArray<ChronalInstruction16 *> *)convert:(NSArray<NSString *> *)program lookup:(NSDictionary<NSNumber *, NSString *> *)dict {
+	NSMutableArray<ChronalInstruction16 *> *result = [NSMutableArray array];
 	
 	for (NSString * line in program) {
 		NSArray<NSString *> *components = [line componentsSeparatedByString:@" "];
 		NSArray<NSNumber *> *n = [AOCArrayUtil stringArrayToNumbers:components];
-		ChronalInstruction *ci = [[ChronalInstruction alloc] init:dict[n[0]]
+		ChronalInstruction16 *ci = [[ChronalInstruction16 alloc] init:dict[n[0]]
 														   inputA:n[1].integerValue
 														   inputB:n[2].integerValue
 														  outputC:n[3].integerValue];
@@ -199,9 +199,9 @@
 
 
 
-@implementation ChronalInstruction
+@implementation ChronalInstruction16
 
-- (ChronalInstruction *)init:(NSString *)opcode inputA:(NSInteger)a inputB:(NSInteger)b outputC:(NSInteger)c {
+- (ChronalInstruction16 *)init:(NSString *)opcode inputA:(NSInteger)a inputB:(NSInteger)b outputC:(NSInteger)c {
 	self = [super init];
 	_opcode = opcode;
 	_a = a;
@@ -213,9 +213,9 @@
 @end
 
 
-@implementation ChronalComputer
+@implementation ChronalComputer16
 
-- (ChronalComputer *)init {
+- (ChronalComputer16 *)init {
 	self = [super init];
 	_registers = @[@0, @0, @0, @0];
 	return self;
@@ -226,7 +226,7 @@
 				   [NSNumber numberWithInteger:r2], [NSNumber numberWithInteger:r3]];
 }
 
-- (NSArray<NSNumber *> *)apply:(ChronalInstruction *)instr commit:(BOOL)commit {
+- (NSArray<NSNumber *> *)apply:(ChronalInstruction16 *)instr commit:(BOOL)commit {
 	NSMutableArray<NSNumber *> *newReg = [NSMutableArray arrayWithArray:self.registers];
 	
 	NSInteger c = -1;
