@@ -50,19 +50,18 @@
 @property (readonly) AOCCoord *coord;
 @property (readonly) NSInteger totalCost;
 
-@property CaveMove *next; // For linked list of moves
-
 @end
 
 
 
 @interface CaveMoveQ : NSObject
 
-@property CaveMove *q;
+@property NSMutableArray<CaveMove *> *q;
 
 - (void)insert:(CaveMove *)move;
 - (CaveMove *)next;
 - (BOOL)isEmpty;
+- (void)updateOrder;
 
 @end
 
@@ -132,6 +131,7 @@ static const int TOOL_CLIMB = 2;
 	[self possibleNextMovesFrom:start inMap:map costGrid:costGrid withTool:TOOL_TORCH queue:moves];
 	
 	while (moves.isEmpty == NO) {
+		[moves updateOrder];
 		CaveMove *cm = moves.next;
 		if ([cm.coord isEqualToCoord:target]) {
 			if (cm.tool == TOOL_TORCH) {
@@ -325,49 +325,23 @@ static NSInteger _depth = 1;
 
 - (CaveMoveQ *)init {
 	self = [super init];
-	self.q = nil;
+	self.q = [NSMutableArray array];
 	return self;
 }
 - (CaveMove *)next {
-	CaveMove *last = self.q;
-	self.q = self.q.next;
+	CaveMove *last = self.q.lastObject;
+	[self.q removeLastObject];
 	//[self print];
 	return last;
 }
 
 - (void)insert:(CaveMove *)move {
-	if (self.isEmpty) {
-		self.q = move;
-//		[self print];
-		return;
-	}
-	
-	CaveMove *ptr = self.q;
-	CaveMove *prev = nil;
-	while (ptr != nil) {
-		if (ptr.totalCost >= move.totalCost) {
-			// Insert here
-			if (prev == nil) {
-				// Front of the list
-				self.q = move;
-				move.next = ptr;
-				break;
-			}
-			move.next = ptr;
-			prev.next = move;
-			break;
-		}
-		prev = ptr;
-		ptr = ptr.next;
-	}
-	if (ptr == nil) {
-		prev.next = move;
-	}
+	[self.q addObject:move];
 //	[self print];
 }
 
 - (BOOL)isEmpty {
-	return self.q == nil;
+	return self.q.count == 0;
 }
 
 //- (void)print {
@@ -378,5 +352,10 @@ static NSInteger _depth = 1;
 //		ptr = ptr.next;
 //	}
 //}
+
+- (void)updateOrder {
+	NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"self.totalCost" ascending:NO];
+	[self.q sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+}
 
 @end
