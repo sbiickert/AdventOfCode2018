@@ -10,6 +10,7 @@
 #import "AOCSpatial.h"
 #import "AOCGrid.h"
 #import "AOCStrings.h"
+#import "AOCArrays.h"
 
 @interface CaveBlock : NSObject <AOCGridRepresentable>
 
@@ -56,12 +57,11 @@
 
 @interface CaveMoveQ : NSObject
 
-@property NSMutableArray<CaveMove *> *q;
+@property NSMutableDictionary<NSNumber *, NSMutableArray<CaveMove *> *> *q;
 
 - (void)insert:(CaveMove *)move;
 - (CaveMove *)next;
 - (BOOL)isEmpty;
-- (void)updateOrder;
 
 @end
 
@@ -131,7 +131,6 @@ static const int TOOL_CLIMB = 2;
 	[self possibleNextMovesFrom:start inMap:map costGrid:costGrid withTool:TOOL_TORCH queue:moves];
 	
 	while (moves.isEmpty == NO) {
-		[moves updateOrder];
 		CaveMove *cm = moves.next;
 		if ([cm.coord isEqualToCoord:target]) {
 			if (cm.tool == TOOL_TORCH) {
@@ -325,18 +324,30 @@ static NSInteger _depth = 1;
 
 - (CaveMoveQ *)init {
 	self = [super init];
-	self.q = [NSMutableArray array];
+	self.q = [NSMutableDictionary dictionary];
 	return self;
 }
 - (CaveMove *)next {
-	CaveMove *last = self.q.lastObject;
-	[self.q removeLastObject];
+	NSNumber *cost = [AOCArrayUtil sortedNumbers:self.q.allKeys ascending:YES].firstObject;
+	if (!cost) { return nil; }
+	NSMutableArray<CaveMove *> *movesWithCost = self.q[cost];
+	CaveMove *last = movesWithCost.lastObject;
+	[movesWithCost removeLastObject];
+	
+	if (movesWithCost.count == 0) {
+		[self.q removeObjectForKey:cost];
+	}
+	
 	//[self print];
 	return last;
 }
 
 - (void)insert:(CaveMove *)move {
-	[self.q addObject:move];
+	NSNumber *cost = [NSNumber numberWithInteger:move.totalCost];
+	if (!self.q[cost]) {
+		self.q[cost] = [NSMutableArray array];
+	}
+	[self.q[cost] addObject:move];
 //	[self print];
 }
 
@@ -352,10 +363,5 @@ static NSInteger _depth = 1;
 //		ptr = ptr.next;
 //	}
 //}
-
-- (void)updateOrder {
-	NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"self.totalCost" ascending:NO];
-	[self.q sortUsingDescriptors:[NSArray arrayWithObject:sd]];
-}
 
 @end
