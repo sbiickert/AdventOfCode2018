@@ -14,26 +14,42 @@
             filePath = "AoC2018/Solutions/AOCDay22.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "335"
-            endingLineNumber = "335"
-            landmarkName = "LLContainer"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "026F588E-AB52-4166-95A3-E265B8426E4F"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AoC2018/Solutions/AOCDay22.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
-            landmarkName = "-findLeastCostPathFrom:to:inMap:costGrid:"
+            startingLineNumber = "345"
+            endingLineNumber = "345"
+            landmarkName = "-next"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "93DF8DC8-6B22-4CE1-ACF9-2C2DD45411F1 - a238f33a5666b715"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[CaveMoveQ next]"
+                  moduleName = "AoC2018"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sjb/Developer/Advent%20of%20Code/2018/AdventOfCode2018/ObjC/AoC2018/AoC2018/Solutions/AOCDay22.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "359"
+                  endingLineNumber = "359"
+                  offsetFromSymbolStart = "160">
+               </Location>
+               <Location
+                  uuid = "93DF8DC8-6B22-4CE1-ACF9-2C2DD45411F1 - a238f33a5666882d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[CaveMoveQ next]"
+                  moduleName = "AoC2018"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sjb/Developer/Advent%20of%20Code/2018/AdventOfCode2018/ObjC/AoC2018/AoC2018/Solutions/AOCDay22.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "335"
+                  endingLineNumber = "335"
+                  offsetFromSymbolStart = "124">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

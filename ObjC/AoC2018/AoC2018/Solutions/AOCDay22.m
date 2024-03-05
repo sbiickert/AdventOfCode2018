@@ -119,8 +119,9 @@ static const int TOOL_CLIMB = 2;
 	AOCCoord *start = [AOCCoord origin];
 	
 	NSInteger leastCost = [self findLeastCostPathFrom:start to:target inMap:map costGrid:costGrid];
-	
-	return [NSString stringWithFormat: @"The least time to reach person is %ld", leastCost];
+//	NSInteger leastCost = [self findLeastCostPathFrom:target to:start inMap:map costGrid:costGrid];
+
+	return [NSString stringWithFormat: @"The least time to reach person is not %ld", leastCost];
 }
 
 - (NSInteger)findLeastCostPathFrom:(AOCCoord *)start to:(AOCCoord *)target inMap:(AOCGrid *)map costGrid:(AOCGrid *)costGrid {
@@ -134,7 +135,9 @@ static const int TOOL_CLIMB = 2;
 		CaveMove *cm = moves.next;
 		if ([cm.coord isEqualToCoord:target]) {
 			if (cm.tool == TOOL_TORCH) {
-				return cm.totalCost; // 984 too low
+				//NSLog(@"%ld", cm.totalCost);
+				//continue; Evidently I have some sort of off-by-one error, as I was off by 6??? One more switch, one less move.
+				return cm.totalCost; // 984 too low, 992,996 too high  985,986,987,988,989 wrong
 			}
 		}
 		if ([costGrid cost:cm.coord forTool:cm.tool] > cm.totalCost) {
