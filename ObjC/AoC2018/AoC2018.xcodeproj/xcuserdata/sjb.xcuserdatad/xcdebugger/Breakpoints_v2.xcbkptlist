@@ -18,38 +18,6 @@
             endingLineNumber = "345"
             landmarkName = "-next"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "93DF8DC8-6B22-4CE1-ACF9-2C2DD45411F1 - a238f33a5666b715"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[CaveMoveQ next]"
-                  moduleName = "AoC2018"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sjb/Developer/Advent%20of%20Code/2018/AdventOfCode2018/ObjC/AoC2018/AoC2018/Solutions/AOCDay22.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "359"
-                  endingLineNumber = "359"
-                  offsetFromSymbolStart = "160">
-               </Location>
-               <Location
-                  uuid = "93DF8DC8-6B22-4CE1-ACF9-2C2DD45411F1 - a238f33a5666882d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[CaveMoveQ next]"
-                  moduleName = "AoC2018"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sjb/Developer/Advent%20of%20Code/2018/AdventOfCode2018/ObjC/AoC2018/AoC2018/Solutions/AOCDay22.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "335"
-                  endingLineNumber = "335"
-                  offsetFromSymbolStart = "124">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -62,183 +30,26 @@
             filePath = "AoC2018/Solutions/AOCDay23.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
             landmarkName = "-solvePartTwo:"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "6BD691A1-B9B7-47FE-AC1E-950DF1C8C8A9 - 6264c2e6a6551bcd"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[AOCDay23 solvePartTwo:]"
-                  moduleName = "AoC2018"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sjb/Developer/Advent%20of%20Code/2018/AdventOfCode2018/ObjC/AoC2018/AoC2018/Solutions/AOCDay23.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "122"
-                  endingLineNumber = "122"
-                  offsetFromSymbolStart = "2828">
-               </Location>
-               <Location
-                  uuid = "6BD691A1-B9B7-47FE-AC1E-950DF1C8C8A9 - 6264c2e6a6551866"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[AOCDay23 solvePartTwo:]"
-                  moduleName = "AoC2018"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sjb/Developer/Advent%20of%20Code/2018/AdventOfCode2018/ObjC/AoC2018/AoC2018/Solutions/AOCDay23.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "133"
-                  endingLineNumber = "133"
-                  offsetFromSymbolStart = "3420">
-               </Location>
-               <Location
-                  uuid = "6BD691A1-B9B7-47FE-AC1E-950DF1C8C8A9 - 6264c2e6a6551866"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[AOCDay23 solvePartTwo:]"
-                  moduleName = "AoC2018"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sjb/Developer/Advent%20of%20Code/2018/AdventOfCode2018/ObjC/AoC2018/AoC2018/Solutions/AOCDay23.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "133"
-                  endingLineNumber = "133"
-                  offsetFromSymbolStart = "3156">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9283203E-6CE4-4E54-AAD6-C40CA7524A18"
+            uuid = "12ADF0C6-F54D-4667-A734-F073DB206316"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AoC2018/Solutions/AOCDay23.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "103"
-            endingLineNumber = "103"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
             landmarkName = "-solvePartTwo:"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "9283203E-6CE4-4E54-AAD6-C40CA7524A18 - 6264c2e6a6551402"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[AOCDay23 solvePartTwo:]"
-                  moduleName = "AoC2018"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sjb/Developer/Advent%20of%20Code/2018/AdventOfCode2018/ObjC/AoC2018/AoC2018/Solutions/AOCDay23.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "105"
-                  endingLineNumber = "105"
-                  offsetFromSymbolStart = "1976">
-               </Location>
-               <Location
-                  uuid = "9283203E-6CE4-4E54-AAD6-C40CA7524A18 - 6264c2e6a6551440"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[AOCDay23 solvePartTwo:]"
-                  moduleName = "AoC2018"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sjb/Developer/Advent%20of%20Code/2018/AdventOfCode2018/ObjC/AoC2018/AoC2018/Solutions/AOCDay23.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103"
-                  offsetFromSymbolStart = "1976">
-               </Location>
-               <Location
-                  uuid = "9283203E-6CE4-4E54-AAD6-C40CA7524A18 - 6264c2e6a6551440"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[AOCDay23 solvePartTwo:]"
-                  moduleName = "AoC2018"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sjb/Developer/Advent%20of%20Code/2018/AdventOfCode2018/ObjC/AoC2018/AoC2018/Solutions/AOCDay23.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103"
-                  offsetFromSymbolStart = "1712">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8B25B85F-EBE4-4BBA-8543-2A9BF4C4C63A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AoC2018/Solutions/AOCDay23.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
-            landmarkName = "-solvePartTwo:"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "8B25B85F-EBE4-4BBA-8543-2A9BF4C4C63A - 6264c2e6a6551748"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[AOCDay23 solvePartTwo:]"
-                  moduleName = "AoC2018"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sjb/Developer/Advent%20of%20Code/2018/AdventOfCode2018/ObjC/AoC2018/AoC2018/Solutions/AOCDay23.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "95"
-                  endingLineNumber = "95"
-                  offsetFromSymbolStart = "1468">
-               </Location>
-               <Location
-                  uuid = "8B25B85F-EBE4-4BBA-8543-2A9BF4C4C63A - 6264c2e6a655178e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[AOCDay23 solvePartTwo:]"
-                  moduleName = "AoC2018"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sjb/Developer/Advent%20of%20Code/2018/AdventOfCode2018/ObjC/AoC2018/AoC2018/Solutions/AOCDay23.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "93"
-                  endingLineNumber = "93"
-                  offsetFromSymbolStart = "1468">
-               </Location>
-               <Location
-                  uuid = "8B25B85F-EBE4-4BBA-8543-2A9BF4C4C63A - 6264c2e6a655178e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[AOCDay23 solvePartTwo:]"
-                  moduleName = "AoC2018"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sjb/Developer/Advent%20of%20Code/2018/AdventOfCode2018/ObjC/AoC2018/AoC2018/Solutions/AOCDay23.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "93"
-                  endingLineNumber = "93"
-                  offsetFromSymbolStart = "1204">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -29,3 +29,32 @@
 - (NSInteger)manhattanDistanceTo:(AOCCoord3D *)other;
 
 @end
+
+@interface AOCExtent3D : NSObject <NSCopying>
+
++ (AOCExtent3D *)xMin:(NSInteger)xmin yMin:(NSInteger)ymin zMin:(NSInteger)zmin xMax:(NSInteger)xmax yMax:(NSInteger)ymax zMax:(NSInteger)zmax;
++ (AOCExtent3D *)min:(AOCCoord3D *)min max:(AOCCoord3D *)max;
++ (AOCExtent3D *)copyOf:(AOCExtent3D *)other;
+
+- (AOCExtent3D *)initXMin:(NSInteger)xmin yMin:(NSInteger)ymin  zMin:(NSInteger)zmin xMax:(NSInteger)xmax yMax:(NSInteger)ymax zMax:(NSInteger)zmax;
+- (AOCExtent3D *)initMin:(AOCCoord3D *)min max:(AOCCoord3D *)max;
+- (AOCExtent3D *)initFrom:(NSArray<AOCCoord3D *> *)array;
+
+@property (readonly) AOCCoord3D *min;
+@property (readonly) AOCCoord3D *max;
+
+- (NSInteger)width;
+- (NSInteger)height;
+- (NSInteger)depth;
+- (NSInteger)volume;
+
+- (void)expandToFit:(AOCCoord3D *)coord;
+- (AOCExtent3D *)expandedToFit:(AOCCoord3D *)coord;
+- (NSArray<AOCCoord3D *> *)allCoords;
+- (AOCExtent3D *)inset:(NSInteger)amount;
+
+- (BOOL)isEqualToExtent:(AOCExtent3D *)other;
+- (BOOL)contains:(AOCCoord3D *)coord;
+- (AOCExtent3D *)intersectWith:(AOCExtent3D *)other;
+
+@end
