@@ -149,33 +149,6 @@
 	return [NSString stringWithFormat: @"The closest point is at distance %ld.", [workBox.box distanceTo:[AOCCoord3D origin]]];
 }
 
-- (NSInteger)searchVolume:(AOCExtent3D *)volume bots:(NSArray<NanoBot *> *)bots {
-	NSInteger mostInRadius = 0;
-	AOCCoord3D *closestToOrigin = nil;
-	NSInteger closestMD = NSIntegerMax;
-	AOCCoord3D *origin = [AOCCoord3D origin];
-	
-	for (AOCCoord3D *coord in volume.allCoords) {
-		NSInteger count = 0;
-		for (NanoBot *bot in bots) {
-			if ([coord manhattanDistanceTo:bot.location] <= bot.radius) { count++; }
-		}
-		if (count > mostInRadius) {
-			mostInRadius = count;
-			closestToOrigin = coord;
-			closestMD = [coord manhattanDistanceTo:origin];
-		}
-		else if (count == mostInRadius) {
-			NSInteger mdToOrigin = [coord manhattanDistanceTo:origin];
-			if (mdToOrigin < closestMD) {
-				closestToOrigin = coord;
-			}
-		}
-	}
-	NSLog(@"%@", closestToOrigin);
-	return closestMD;
-}
-
 @end
 
 
