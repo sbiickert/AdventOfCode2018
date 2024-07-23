@@ -179,7 +179,9 @@
 	return self.max.z - self.min.z + 1;
 }
 - (NSInteger)volume {
-	return self.width * self.height * self.depth;
+	NSInteger v = self.width * self.height * self.depth;
+	if (v < 0) { return NSIntegerMax; }
+	return v;
 }
 
 - (void)expandToFit:(AOCCoord3D *)coord {
@@ -242,6 +244,28 @@
 
 }
 
+- (AOCCoord3D *)center {
+	NSInteger xMid = (self.max.x + self.min.x) / 2;
+	NSInteger yMid = (self.max.y + self.min.y) / 2;
+	NSInteger zMid = (self.max.z + self.min.z) / 2;
+	return [AOCCoord3D x:xMid y:yMid z:zMid];
+}
+
+- (NSArray<AOCCoord3D *> *)corners {
+	NSArray<AOCCoord3D *> *result = @[
+		[AOCCoord3D x:self.min.x y:self.min.y z:self.min.z],
+		[AOCCoord3D x:self.min.x y:self.min.y z:self.max.z],
+		[AOCCoord3D x:self.min.x y:self.max.y z:self.min.z],
+		[AOCCoord3D x:self.min.x y:self.max.y z:self.max.z],
+		[AOCCoord3D x:self.max.x y:self.min.y z:self.min.z],
+		[AOCCoord3D x:self.max.x y:self.min.y z:self.max.z],
+		[AOCCoord3D x:self.max.x y:self.max.y z:self.min.z],
+		[AOCCoord3D x:self.max.x y:self.max.y z:self.max.z]
+	];
+	return result;
+}
+
+
 - (BOOL)contains:(AOCCoord3D *)coord {
 	return 	coord.x >= self.min.x &&
 			coord.x <= self.max.x &&
@@ -265,6 +289,19 @@
 
 	return [[AOCExtent3D alloc] initMin:[AOCCoord3D x:commonMinX y:commonMinY z:commonMinZ]
 									max:[AOCCoord3D x:commonMaxX y:commonMaxY z:commonMaxZ]];
+}
+
+- (NSInteger)distanceTo:(AOCCoord3D *)coord {
+	if ([self contains:coord]) { return 0; }
+	AOCExtent3D *expanded = [self expandedToFit:coord];
+	NSInteger distance = [self.min manhattanDistanceTo:expanded.min] + [self.max manhattanDistanceTo:expanded.max];
+//	NSInteger minDistance = NSIntegerMax;
+//	for (AOCCoord3D *c in self.corners) {
+//		NSInteger md = [c manhattanDistanceTo:coord];
+//		if (md < minDistance) { minDistance = md; }
+//	}
+//	return minDistance;
+	return distance;
 }
 
 
@@ -297,6 +334,14 @@
 - (nonnull id)copyWithZone:(nullable NSZone *)zone {
 	AOCExtent3D *copy = [[AOCExtent3D allocWithZone:zone] initMin:self.min max:self.max];
 	return copy;
+}
+
+- (NSString *)description {
+	return [NSString stringWithFormat:@"Box %@, %@", self.min.description, self.max.description];
+}
+
+- (NSString *)debugDescription {
+	return self.description;
 }
 
 @end

@@ -53,8 +53,15 @@
 - (NSArray<AOCCoord3D *> *)allCoords;
 - (AOCExtent3D *)inset:(NSInteger)amount;
 
+- (AOCCoord3D *)center;
+- (NSArray<AOCCoord3D *> *)corners;
+
 - (BOOL)isEqualToExtent:(AOCExtent3D *)other;
 - (BOOL)contains:(AOCCoord3D *)coord;
 - (AOCExtent3D *)intersectWith:(AOCExtent3D *)other;
 
+- (NSInteger)distanceTo:(AOCCoord3D *)coord;
+
+- (NSString *)description;
+- (NSString *)debugDescription;
 @end
