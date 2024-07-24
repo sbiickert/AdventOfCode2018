@@ -12,3 +12,4 @@ Swift/AoC 2018/AoC 2018.xcodeproj/project.xcworkspace/xcuserdata/sbiickert.xcuse
 Swift/AoC 2018/AoC 2018.xcodeproj/project.xcworkspace/xcuserdata/sbiickert.xcuserdatad/UserInterfaceState.xcuserstate
 .DS_Store
 *.xcuserstate
+input/*challenge*

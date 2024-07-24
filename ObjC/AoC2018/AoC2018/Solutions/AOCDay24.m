@@ -28,6 +28,7 @@
 - (NSInteger) effectivePower;
 - (NSInteger) theoreticalDamageTo:(ArmyGroup *)target;
 - (void) attack:(ArmyGroup *)other;
+- (void) boost:(NSInteger)amt;
 
 @end
 
@@ -41,6 +42,7 @@
 @property (readonly) NSMutableArray<ArmyGroup *> *groups;
 
 - (NSInteger) totalUnits;
+- (void) boost:(NSInteger)amt;
 @end
 
 
@@ -52,16 +54,19 @@
 	return self;
 }
 
+- (NSArray<Army *> *)makeArmiesFromInput:(NSArray<NSArray<NSString *> *> *)inputs {
+	Army *immune = [[Army alloc] initFrom:inputs[0]];
+	Army *infect = [[Army alloc] initFrom:inputs[1]];
+	return @[immune, infect];
+}
+
 - (struct AOCResult)solveInputIndex:(int)index inFile:(NSString *)filename {
 	struct AOCResult result = [super solveInputIndex:index inFile:filename];
 	
 	NSArray<NSArray<NSString *> *> *inputs = [AOCInput readGroupedInputFile:filename];
 	
-	Army *immune = [[Army alloc] initFrom:inputs[0]];
-	Army *infect = [[Army alloc] initFrom:inputs[1]];
-	
-	result.part1 = [self solvePartOne: @[immune, infect]];
-	result.part2 = [self solvePartTwo: inputs[0]];
+	result.part1 = [self solvePartOne: [self makeArmiesFromInput:inputs]];
+	result.part2 = [self solvePartTwo: inputs];
 	
 	return result;
 }
@@ -94,7 +99,8 @@
 	return result;
 }
 
-- (NSString *)solvePartOne:(NSArray<Army *> *)armies {
+- (void)doBattle:(NSArray<Army *> *)armies {
+	NSInteger previousIterationUnitCount = NSIntegerMax; // Can get into a situation where neither team can damage each other.
 	
 	while (armies[0].groups.count > 0 && armies[1].groups.count > 0) {
 		NSMutableArray<ArmyGroup *> *fightingGroups = [NSMutableArray arrayWithArray:armies.firstObject.groups];
@@ -124,17 +130,39 @@
 		
 		[armies[0].groups filterUsingPredicate:[NSPredicate predicateWithFormat:@"unitCount > 0"]];
 		[armies[1].groups filterUsingPredicate:[NSPredicate predicateWithFormat:@"unitCount > 0"]];
+		
+		NSInteger thisIterationUnitCount = armies[0].totalUnits + armies[1].totalUnits;
+		if (thisIterationUnitCount == previousIterationUnitCount) {break;}
+		previousIterationUnitCount = thisIterationUnitCount;
 	}
+}
+
+- (NSString *)solvePartOne:(NSArray<Army *> *)armies {
+	[self doBattle:armies];
 	
 	Army *winner = armies[0].groups.count > 0 ? armies[0] : armies[1];
 	NSInteger winningUnitCount = winner.totalUnits;
 	
-	return [NSString stringWithFormat: @"The winning army is %@ with %ld remaining units.", winner.name, winningUnitCount];
+	return [NSString stringWithFormat: @"The winning army is %@ with %ld remaining units", winner.name, winningUnitCount];
 }
 
-- (NSString *)solvePartTwo:(NSArray<NSString *> *)input {
+- (NSString *)solvePartTwo:(NSArray<NSArray<NSString *> *> *)inputs {
+	NSInteger boostAmt = 0;
+	NSArray<Army *> *armies;
 	
-	return [NSString stringWithFormat: @"World"];
+	while (YES) {
+		armies = [self makeArmiesFromInput:inputs];
+		boostAmt++;
+		[armies.firstObject boost:boostAmt];
+		
+		[self doBattle:armies];
+		if (armies[0].totalUnits > 0 && armies[1].totalUnits == 0) { break; }
+	}
+	
+	Army *winner = armies[0].groups.count > 0 ? armies[0] : armies[1];
+	NSInteger winningUnitCount = winner.totalUnits; // 61 is wrong
+	
+	return [NSString stringWithFormat: @"The winning army is %@ with %ld remaining units when boosted by %ld.", winner.name, winningUnitCount, boostAmt];
 }
 
 @end
@@ -164,6 +192,12 @@
 		unitCount += g.unitCount;
 	}
 	return unitCount;
+}
+
+- (void)boost:(NSInteger)amt {
+	for (ArmyGroup *g in self.groups) {
+		[g boost:amt];
+	}
 }
 
 @end
@@ -218,13 +252,17 @@
 	if (lostUnitCount > other.unitCount) {
 		lostUnitCount = other.unitCount;
 	}
-	//NSLog(@"%@ attacking %@ doing %ld damage, killing %ld units", self, other, damage, lostUnitCount);
+//	NSLog(@"%@ attacking %@ doing %ld damage, killing %ld units", self, other, damage, lostUnitCount);
 	other.unitCount -= lostUnitCount;
-	//NSLog(@"%@ has %ld units left.", other, other.unitCount);
+//	NSLog(@"%@ has %ld units left.", other, other.unitCount);
 }
 
 - (NSString *)description {
 	return [NSString stringWithFormat:@"(%@ [%ld][%ld %@]->%ld)", self.name, self.unitCount, self.damage, self.damageType, self.effectivePower];
+}
+
+- (void)boost:(NSInteger)amt {
+	_damage += amt;
 }
 
 @end
