@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		370C76472B97D51900F42BD7 /* AOCDay23.m in Sources */ = {isa = PBXBuildFile; fileRef = 370C76462B97D51900F42BD7 /* AOCDay23.m */; };
 		370C76482B97D51900F42BD7 /* AOCDay23.m in Sources */ = {isa = PBXBuildFile; fileRef = 370C76462B97D51900F42BD7 /* AOCDay23.m */; };
+		370FF97C2C517A9A007D3115 /* AOCDay25.m in Sources */ = {isa = PBXBuildFile; fileRef = 370FF97B2C517A9A007D3115 /* AOCDay25.m */; };
 		37288BA12B8B9C63004BC1A0 /* AOCDay22.m in Sources */ = {isa = PBXBuildFile; fileRef = 37288BA02B8B9C63004BC1A0 /* AOCDay22.m */; };
 		373DDF0C2B7BD2B2009A6A91 /* AOCDay01.m in Sources */ = {isa = PBXBuildFile; fileRef = 373DDF0B2B7BD2B2009A6A91 /* AOCDay01.m */; };
 		374000472B7BFBCF000945DF /* AOCDay02.m in Sources */ = {isa = PBXBuildFile; fileRef = 374000462B7BFBCF000945DF /* AOCDay02.m */; };
@@ -70,6 +71,7 @@
 
 /* Begin PBXFileReference section */
 		370C76462B97D51900F42BD7 /* AOCDay23.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCDay23.m; sourceTree = "<group>"; };
+		370FF97B2C517A9A007D3115 /* AOCDay25.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCDay25.m; sourceTree = "<group>"; };
 		37288BA02B8B9C63004BC1A0 /* AOCDay22.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCDay22.m; sourceTree = "<group>"; };
 		373DDF0B2B7BD2B2009A6A91 /* AOCDay01.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCDay01.m; sourceTree = "<group>"; };
 		374000462B7BFBCF000945DF /* AOCDay02.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AOCDay02.m; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				37288BA02B8B9C63004BC1A0 /* AOCDay22.m */,
 				370C76462B97D51900F42BD7 /* AOCDay23.m */,
 				37FA1A652C503F52002EECC0 /* AOCDay24.m */,
+				370FF97B2C517A9A007D3115 /* AOCDay25.m */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -354,6 +357,7 @@
 				374000472B7BFBCF000945DF /* AOCDay02.m in Sources */,
 				37288BA12B8B9C63004BC1A0 /* AOCDay22.m in Sources */,
 				375055C92B717E47005FCD98 /* AOCStrings.m in Sources */,
+				370FF97C2C517A9A007D3115 /* AOCDay25.m in Sources */,
 				37F20D332B705B0000113864 /* main.m in Sources */,
 				375055D12B717E47005FCD98 /* AOCArrays.m in Sources */,
 				375B51582B8257B40021AD37 /* AOCDay05.m in Sources */,
