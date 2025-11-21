@@ -14,6 +14,7 @@
 + (AOCCoord4D *)origin;
 + (AOCCoord4D *)x:(NSInteger)x y:(NSInteger)y z:(NSInteger)z t:(NSInteger)t;
 + (AOCCoord4D *)copyOf:(AOCCoord4D *)other;
++ (NSInteger)manhattanDistanceBetweenX1:(NSInteger)x1 x2:(NSInteger)x2 y1:(NSInteger)y1 y2:(NSInteger)y2 z1:(NSInteger)z1 z2:(NSInteger)z2 t1:(NSInteger)t1 t2:(NSInteger)t2;
 
 - (AOCCoord4D *)initX:(NSInteger)x y:(NSInteger)y z:(NSInteger)z t:(NSInteger)t;
 
@@ -25,6 +26,20 @@
 - (BOOL)isEqualToCoord4D:(AOCCoord4D *)other;
 - (AOCCoord4D *)deltaTo:(AOCCoord4D *)other;
 - (NSInteger)manhattanDistanceTo:(AOCCoord4D *)other;
+
+@end
+
+
+@interface Constellation : NSObject
+
+- (Constellation *)init:(AOCCoord4D *) star;
+
+@property (readwrite) NSArray<AOCCoord4D *> *stars;
+@property (readwrite) AOCCoord4D *center;
+@property (readwrite) NSInteger maxOffset;
+
+- (BOOL)isJoinedWith:(Constellation *)other;
+- (void)join:(Constellation *)other;
 
 @end
 
@@ -61,25 +76,10 @@
 	return result;
 }
 
-- (BOOL)constellationsAreJoined:(NSArray<AOCCoord4D *> *)c1 with:(NSArray<AOCCoord4D *> *)c2 {
-	for (NSInteger i = 0; i < c1.count; i++) {
-		for (NSInteger j = 0; j < c2.count; j++) {
-			AOCCoord4D *coord1 = c1[i];
-			AOCCoord4D *coord2 = c2[j];
-			NSInteger md = [coord1 manhattanDistanceTo:coord2];
-			//assert(md == mdActual);
-			if (md > 0 && md <= 3) {
-				return YES;
-			}
-		}
-	}
-	return NO;
-}
-
 - (NSString *)solvePartOne:(NSArray<AOCCoord4D *> *)input {
-	NSMutableArray<NSArray<AOCCoord4D *> *> *constellations = [NSMutableArray array];
+	NSMutableArray<Constellation *> *constellations = [NSMutableArray array];
 	for (AOCCoord4D *c in input) {
-		[constellations addObject:[NSArray arrayWithObject:c]];
+		[constellations addObject:[[Constellation alloc] init:c]];
 	}
 	
 	while (YES) {
@@ -87,10 +87,11 @@
 		for (NSInteger i = 0; i < constellations.count-1; i++) {
 			for (NSInteger j = i+1; j < constellations.count; j++) {
 				// See if constellations i and j should connect
-				if ([self constellationsAreJoined:constellations[i] with:constellations[j]]) {
-					NSArray<AOCCoord4D *> *joined = [constellations[i] arrayByAddingObjectsFromArray:constellations[j]];
+				Constellation *c1 = constellations[i];
+				Constellation *c2 = constellations[j];
+				if ([c1 isJoinedWith:c2]) {
+					[c1 join:c2];
 					[constellations removeObjectAtIndex:j];
-					[constellations replaceObjectAtIndex:i withObject:joined];
 					altered = YES;
 					break;
 				}
@@ -111,7 +112,84 @@
 @end
 
 
+@implementation Constellation
 
+- (Constellation *)init:(AOCCoord4D *)star {
+	self = [super init];
+	self.stars = @[star];
+	self.center = star;
+	self.maxOffset = 0;
+	return self;
+}
+
+- (BOOL)isJoinedWith:(Constellation *)other {
+	NSInteger centerDistance = [self.center manhattanDistanceTo:other.center];
+	if (centerDistance > (self.maxOffset + other.maxOffset + 3)) { return NO; }
+		
+	for (NSInteger i = 0; i < self.stars.count; i++) {
+		for (NSInteger j = 0; j < other.stars.count; j++) {
+			AOCCoord4D *coord1 = self.stars[i];
+			AOCCoord4D *coord2 = other.stars[j];
+			NSInteger md = [AOCCoord4D manhattanDistanceBetweenX1:coord1.x x2:coord2.x
+															   y1:coord1.y y2:coord2.y
+															   z1:coord1.z z2:coord2.z
+															   t1:coord1.t t2:coord2.t];
+			//assert(md == mdActual);
+			if (md > 0 && md <= 3) {
+				return YES;
+			}
+		}
+	}
+	return NO;
+}
+
+- (void)updateCenterAndOffset {
+	NSInteger xmin = self.stars.firstObject.x;
+	NSInteger ymin = self.stars.firstObject.y;
+	NSInteger zmin = self.stars.firstObject.z;
+	NSInteger tmin = self.stars.firstObject.t;
+	NSInteger xmax = self.stars.firstObject.x;
+	NSInteger ymax = self.stars.firstObject.y;
+	NSInteger zmax = self.stars.firstObject.z;
+	NSInteger tmax = self.stars.firstObject.t;
+	
+	for (AOCCoord4D *star in self.stars) {
+		xmin = MIN(xmin, star.x);
+		ymin = MIN(ymin, star.y);
+		zmin = MIN(zmin, star.z);
+		tmin = MIN(tmin, star.t);
+		xmax = MAX(xmax, star.x);
+		ymax = MAX(ymax, star.y);
+		zmax = MAX(zmax, star.z);
+		tmax = MAX(tmax, star.t);
+	}
+	
+	self.center = [[AOCCoord4D alloc] initX:(xmin + xmax) / 2 y:(ymin + ymax) / 2 z:(zmin + zmax) / 2 t:(tmin + tmax) / 2];
+	self.maxOffset = 0;
+	
+	for (NSNumber *x in @[[NSNumber numberWithLong:xmin], [NSNumber numberWithLong:xmax]]) {
+		for (NSNumber *y in @[[NSNumber numberWithLong:ymin], [NSNumber numberWithLong:ymax]]) {
+			for (NSNumber *z in @[[NSNumber numberWithLong:zmin], [NSNumber numberWithLong:zmax]]) {
+				for (NSNumber *t in @[[NSNumber numberWithLong:tmin], [NSNumber numberWithLong:tmax]]) {
+					NSInteger md = [AOCCoord4D manhattanDistanceBetweenX1:x.longValue x2:self.center.x
+																	   y1:y.longValue y2:self.center.y
+																	   z1:z.longValue z2:self.center.z
+																	   t1:t.longValue t2:self.center.t];
+					self.maxOffset = MAX(self.maxOffset, md);
+				}
+			}
+		}
+	}
+}
+
+
+- (void)join:(Constellation *)other {
+	NSArray<AOCCoord4D *> *joined = [self.stars arrayByAddingObjectsFromArray:other.stars];
+	self.stars = joined;
+	[self updateCenterAndOffset];
+}
+
+@end
 
 
 
@@ -195,4 +273,8 @@
 - (NSString *)debugDescription {
 	return self.description;
 }
++ (NSInteger)manhattanDistanceBetweenX1:(NSInteger)x1 x2:(NSInteger)x2 y1:(NSInteger)y1 y2:(NSInteger)y2 z1:(NSInteger)z1 z2:(NSInteger)z2 t1:(NSInteger)t1 t2:(NSInteger)t2 {
+	return labs(x1 - x2) + labs(y1 - y2) + labs(z1 - z2) + labs(t1 - t2);
+}
+
 @end

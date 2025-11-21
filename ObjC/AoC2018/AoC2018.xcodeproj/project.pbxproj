@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		370C76472B97D51900F42BD7 /* AOCDay23.m in Sources */ = {isa = PBXBuildFile; fileRef = 370C76462B97D51900F42BD7 /* AOCDay23.m */; };
-		370C76482B97D51900F42BD7 /* AOCDay23.m in Sources */ = {isa = PBXBuildFile; fileRef = 370C76462B97D51900F42BD7 /* AOCDay23.m */; };
 		370FF97C2C517A9A007D3115 /* AOCDay25.m in Sources */ = {isa = PBXBuildFile; fileRef = 370FF97B2C517A9A007D3115 /* AOCDay25.m */; };
 		37288BA12B8B9C63004BC1A0 /* AOCDay22.m in Sources */ = {isa = PBXBuildFile; fileRef = 37288BA02B8B9C63004BC1A0 /* AOCDay22.m */; };
 		373DDF0C2B7BD2B2009A6A91 /* AOCDay01.m in Sources */ = {isa = PBXBuildFile; fileRef = 373DDF0B2B7BD2B2009A6A91 /* AOCDay01.m */; };
@@ -28,18 +27,12 @@
 		375055D12B717E47005FCD98 /* AOCArrays.m in Sources */ = {isa = PBXBuildFile; fileRef = 375055C22B717E46005FCD98 /* AOCArrays.m */; };
 		375055D22B717E47005FCD98 /* AOCArrays.m in Sources */ = {isa = PBXBuildFile; fileRef = 375055C22B717E46005FCD98 /* AOCArrays.m */; };
 		375B51582B8257B40021AD37 /* AOCDay05.m in Sources */ = {isa = PBXBuildFile; fileRef = 375B51572B8257B40021AD37 /* AOCDay05.m */; };
-		376037652B814FBC0061BF64 /* AOCDay01.m in Sources */ = {isa = PBXBuildFile; fileRef = 373DDF0B2B7BD2B2009A6A91 /* AOCDay01.m */; };
-		376037662B814FBC0061BF64 /* AOCDay02.m in Sources */ = {isa = PBXBuildFile; fileRef = 374000462B7BFBCF000945DF /* AOCDay02.m */; };
-		376037672B814FBC0061BF64 /* AOCDay03.m in Sources */ = {isa = PBXBuildFile; fileRef = 374000482B7C05BE000945DF /* AOCDay03.m */; };
-		376037682B814FBC0061BF64 /* AOCDay04.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C287932B7C321F007D4725 /* AOCDay04.m */; };
 		3775E5042B97D64700C25E96 /* AOCSpatial3DTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3775E5032B97D64700C25E96 /* AOCSpatial3DTests.m */; };
 		379CE2B22B73D4660000A642 /* AOCSolutionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 379CE2B12B73D4660000A642 /* AOCSolutionTests.m */; };
 		379CE2B42B73DFE70000A642 /* AOCArraysTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 379CE2B32B73DFE70000A642 /* AOCArraysTests.m */; };
 		379CE2B62B73DFEA0000A642 /* AOCMathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 379CE2B52B73DFEA0000A642 /* AOCMathTests.m */; };
 		379CE2B82B73E06A0000A642 /* AOCStringsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 379CE2B72B73E06A0000A642 /* AOCStringsTests.m */; };
 		37B8D95E2B83A3A900DEC00C /* AOCDay06.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B8D95D2B83A3A900DEC00C /* AOCDay06.m */; };
-		37B8D95F2B83A3A900DEC00C /* AOCDay06.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B8D95D2B83A3A900DEC00C /* AOCDay06.m */; };
-		37B8D9602B83A88500DEC00C /* AOCDay05.m in Sources */ = {isa = PBXBuildFile; fileRef = 375B51572B8257B40021AD37 /* AOCDay05.m */; };
 		37C287942B7C321F007D4725 /* AOCDay04.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C287932B7C321F007D4725 /* AOCDay04.m */; };
 		37D4D21B2B71977B0094ACCF /* AOCDay00.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D4D21A2B71977B0094ACCF /* AOCDay00.m */; };
 		37D4D21C2B71977B0094ACCF /* AOCDay00.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D4D21A2B71977B0094ACCF /* AOCDay00.m */; };
@@ -51,9 +44,21 @@
 		37F20D332B705B0000113864 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F20D322B705B0000113864 /* main.m */; };
 		37F8644F2B866B26002474B0 /* AOCDay21.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F8644E2B866B26002474B0 /* AOCDay21.m */; };
 		37F864512B866BF1002474B0 /* AOCDay16.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F864502B866BF1002474B0 /* AOCDay16.m */; };
-		37F864522B866BF1002474B0 /* AOCDay16.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F864502B866BF1002474B0 /* AOCDay16.m */; };
 		37F864542B866C01002474B0 /* AOCDay19.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F864532B866C01002474B0 /* AOCDay19.m */; };
-		37F864552B866C01002474B0 /* AOCDay19.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F864532B866C01002474B0 /* AOCDay19.m */; };
+		37F90E0E2ED0D4AD00E14002 /* AOCDay01.m in Sources */ = {isa = PBXBuildFile; fileRef = 373DDF0B2B7BD2B2009A6A91 /* AOCDay01.m */; };
+		37F90E0F2ED0D4AD00E14002 /* AOCDay02.m in Sources */ = {isa = PBXBuildFile; fileRef = 374000462B7BFBCF000945DF /* AOCDay02.m */; };
+		37F90E102ED0D4AD00E14002 /* AOCDay03.m in Sources */ = {isa = PBXBuildFile; fileRef = 374000482B7C05BE000945DF /* AOCDay03.m */; };
+		37F90E112ED0D4AD00E14002 /* AOCDay04.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C287932B7C321F007D4725 /* AOCDay04.m */; };
+		37F90E122ED0D4AD00E14002 /* AOCDay05.m in Sources */ = {isa = PBXBuildFile; fileRef = 375B51572B8257B40021AD37 /* AOCDay05.m */; };
+		37F90E132ED0D4AD00E14002 /* AOCDay06.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B8D95D2B83A3A900DEC00C /* AOCDay06.m */; };
+		37F90E142ED0D4AD00E14002 /* AOCDay16.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F864502B866BF1002474B0 /* AOCDay16.m */; };
+		37F90E152ED0D4AD00E14002 /* AOCDay19.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F864532B866C01002474B0 /* AOCDay19.m */; };
+		37F90E162ED0D4AD00E14002 /* AOCDay21.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F8644E2B866B26002474B0 /* AOCDay21.m */; };
+		37F90E172ED0D4AD00E14002 /* AOCDay22.m in Sources */ = {isa = PBXBuildFile; fileRef = 37288BA02B8B9C63004BC1A0 /* AOCDay22.m */; };
+		37F90E182ED0D4AD00E14002 /* AOCDay23.m in Sources */ = {isa = PBXBuildFile; fileRef = 370C76462B97D51900F42BD7 /* AOCDay23.m */; };
+		37F90E192ED0D4AD00E14002 /* AOCDay24.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FA1A652C503F52002EECC0 /* AOCDay24.m */; };
+		37F90E1A2ED0D4AD00E14002 /* AOCDay25.m in Sources */ = {isa = PBXBuildFile; fileRef = 370FF97B2C517A9A007D3115 /* AOCDay25.m */; };
+		37F90E1B2ED0D4AD00E14002 /* AOCSpatial3D.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E4AC392B75833700064CF7 /* AOCSpatial3D.m */; };
 		37FA1A662C503F52002EECC0 /* AOCDay24.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FA1A652C503F52002EECC0 /* AOCDay24.m */; };
 /* End PBXBuildFile section */
 
@@ -312,21 +317,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37B8D9602B83A88500DEC00C /* AOCDay05.m in Sources */,
-				37B8D95F2B83A3A900DEC00C /* AOCDay06.m in Sources */,
-				376037652B814FBC0061BF64 /* AOCDay01.m in Sources */,
-				376037662B814FBC0061BF64 /* AOCDay02.m in Sources */,
-				376037672B814FBC0061BF64 /* AOCDay03.m in Sources */,
-				376037682B814FBC0061BF64 /* AOCDay04.m in Sources */,
+				37F90E0E2ED0D4AD00E14002 /* AOCDay01.m in Sources */,
+				37F90E0F2ED0D4AD00E14002 /* AOCDay02.m in Sources */,
+				37F90E102ED0D4AD00E14002 /* AOCDay03.m in Sources */,
+				37F90E112ED0D4AD00E14002 /* AOCDay04.m in Sources */,
+				37F90E122ED0D4AD00E14002 /* AOCDay05.m in Sources */,
+				37F90E132ED0D4AD00E14002 /* AOCDay06.m in Sources */,
+				37F90E142ED0D4AD00E14002 /* AOCDay16.m in Sources */,
+				37F90E152ED0D4AD00E14002 /* AOCDay19.m in Sources */,
+				37F90E162ED0D4AD00E14002 /* AOCDay21.m in Sources */,
+				37F90E172ED0D4AD00E14002 /* AOCDay22.m in Sources */,
+				37F90E182ED0D4AD00E14002 /* AOCDay23.m in Sources */,
+				37F90E192ED0D4AD00E14002 /* AOCDay24.m in Sources */,
+				37F90E1A2ED0D4AD00E14002 /* AOCDay25.m in Sources */,
+				37F90E1B2ED0D4AD00E14002 /* AOCSpatial3D.m in Sources */,
 				379CE2B22B73D4660000A642 /* AOCSolutionTests.m in Sources */,
 				37D4D21C2B71977B0094ACCF /* AOCDay00.m in Sources */,
 				375055CC2B717E47005FCD98 /* AOCInput.m in Sources */,
 				37E4AC332B7556AD00064CF7 /* AOCSpatialTests.m in Sources */,
 				379CE2B62B73DFEA0000A642 /* AOCMathTests.m in Sources */,
-				370C76482B97D51900F42BD7 /* AOCDay23.m in Sources */,
 				37D4D2202B71A87B0094ACCF /* AOCMath.m in Sources */,
 				375055CA2B717E47005FCD98 /* AOCStrings.m in Sources */,
-				37F864552B866C01002474B0 /* AOCDay19.m in Sources */,
 				375055B12B717E38005FCD98 /* AOCInputTests.m in Sources */,
 				375055D22B717E47005FCD98 /* AOCArrays.m in Sources */,
 				375055C62B717E47005FCD98 /* AOCSpatial.m in Sources */,
@@ -336,7 +347,6 @@
 				37E4AC352B75736800064CF7 /* AOCGridTests.m in Sources */,
 				379CE2B82B73E06A0000A642 /* AOCStringsTests.m in Sources */,
 				379CE2B42B73DFE70000A642 /* AOCArraysTests.m in Sources */,
-				37F864522B866BF1002474B0 /* AOCDay16.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
